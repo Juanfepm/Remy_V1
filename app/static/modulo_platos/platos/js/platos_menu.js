@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnMenuMovil = document.getElementById('btn_menu_movil');
     const barraLateral = document.getElementById('barra_lateral_nav');
 
-    const IMAGEN_DEFAULT = '/static/img/dummy_remy.png';
+    const IMAGEN_DEFAULT = '/static/modulo_platos/platos/img/dummy_remy.png';
 
     // ========== CONTROL MENÚ LATERAL MÓVIL ==========
     if (btnMenuMovil && barraLateral) {

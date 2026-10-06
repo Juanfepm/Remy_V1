@@ -9,9 +9,9 @@ function inicializarBusquedaREMY() {
 
     if (!inputBusqueda) return;
 
-    const IMAGEN_DEFAULT = '../../static/img/dummy_remy.png';
+    const IMAGEN_DEFAULT = '/static/modulo_platos/busqueda/img/dummy_remy.png';
 
-    // Función aux para resolver la ruta de la imagen (URL remota, archivo local en img_remy o Dummy)
+    // Función aux para resolver la ruta de la imagen
     function obtenerRutaImagen(img) {
         if (!img || img.trim() === '') return IMAGEN_DEFAULT;
         if (img.startsWith('http://') || img.startsWith('https://')) {
@@ -29,7 +29,6 @@ function inicializarBusquedaREMY() {
         } else if (tipoLimpio === 'menú' || tipoLimpio === 'menu') {
             window.location.href = `/detalle_menu/${id}`;
         } else if (tipoLimpio === 'ingrediente') {
-            // Ruta prehecha pero sin direccionar a nada aún
             console.log(`Detalle de ingrediente reservado (ID: ${id})`);
         }
     }
@@ -44,7 +43,6 @@ function inicializarBusquedaREMY() {
             const data = await response.json();
             contenedor.innerHTML = '';
 
-            // Mostrar el dummy únicamente cuando no hayan resultados
             if (!Array.isArray(data) || data.length === 0) {
                 msjSinResultados.classList.remove('oculto');
                 return;
@@ -79,7 +77,6 @@ function inicializarBusquedaREMY() {
                 `;
             });
 
-            // Asignar los eventos de clic a cada tarjeta recién renderizada
             const tarjetas = contenedor.querySelectorAll('.tarjeta-item-resultado');
             tarjetas.forEach(tarjeta => {
                 tarjeta.addEventListener('click', () => {
@@ -94,14 +91,21 @@ function inicializarBusquedaREMY() {
         }
     }
 
-    // Toggle para desplegar/ocultar el menú de filtros
+    // Implementación de Debounce para evitar saturar el servidor al escribir rápido
+    let temporizadorBusqueda;
+    function manejarInputConDebounce() {
+        clearTimeout(temporizadorBusqueda);
+        temporizadorBusqueda = setTimeout(() => {
+            buscar();
+        }, 300); // Espera 300ms de inactividad antes de lanzar la petición al servidor
+    }
+
     if (btnFiltro && menuFiltro) {
         btnFiltro.addEventListener('click', (e) => {
             e.stopPropagation();
             menuFiltro.classList.toggle('oculto');
         });
 
-        // Ocultar desplegable si se hace clic fuera de él
         document.addEventListener('click', (e) => {
             if (!menuFiltro.contains(e.target) && e.target !== btnFiltro) {
                 menuFiltro.classList.add('oculto');
@@ -109,26 +113,27 @@ function inicializarBusquedaREMY() {
         });
     }
 
-    // Asignar texto de la opción seleccionada al input y ejecutar la búsqueda
     opcionesFiltro.forEach(opcion => {
         opcion.addEventListener('click', () => {
             inputBusqueda.value = opcion.textContent.trim();
-            menuFiltro.classList.add('oculto');
+            menuFilltro.classList.add('oculto');
             buscar();
         });
     });
 
-    // Escuchadores de eventos para la barra de búsqueda
-    inputBusqueda.addEventListener('input', buscar);
+    // Escuchadores de eventos optimizados con debounce
+    inputBusqueda.addEventListener('input', manejarInputConDebounce);
 
     btnEjecutar.addEventListener('click', (e) => {
         e.preventDefault();
+        clearTimeout(temporizadorBusqueda);
         buscar();
     });
 
     inputBusqueda.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
+            clearTimeout(temporizadorBusqueda);
             buscar();
         }
     });

@@ -7,15 +7,16 @@ import mysql.connector
 import requests as req
 from buscarGeneral import buscarGeneral
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Directorio base apuntando a la raíz del proyecto (Remy_Web)
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 IMG_REMY_DIR = r'C:\MAMP\htdocs\img_remy'
 PLATS_IMG_DIR = os.path.join(IMG_REMY_DIR, 'platos')
 
 programa = Flask(
     __name__,
-    template_folder=os.path.join(BASE_DIR, 'services', 'templates'),
-    static_folder=os.path.join(BASE_DIR, 'services', 'static')
+    template_folder=os.path.join(BASE_DIR, 'app', 'templates'),
+    static_folder=os.path.join(BASE_DIR, 'app', 'static')
 )
 CORS(programa)
 
@@ -81,57 +82,43 @@ def obtener_imagen_local(filename):
         return send_from_directory(PLATS_IMG_DIR, filename)
     return send_from_directory(IMG_REMY_DIR, filename)
 
-@programa.route('/menus/static/<path:filename>')
-def menus_static(filename):
-    return send_from_directory(
-        os.path.join(BASE_DIR, 'services', 'templates', 'menus', 'static'),
-        filename
-    )
-
-@programa.route('/platos/static/<path:filename>')
-def platos_static(filename):
-    return send_from_directory(
-        os.path.join(BASE_DIR, 'services', 'templates', 'platos', 'static'),
-        filename
-    )
-
-# ========== RUTAS DE VISTAS ==========
+# ========== RUTAS DE VISTAS (Rutas con la jerarquía correcta) ==========
 
 @programa.route('/')
 def index():
-    return render_template('platos_menu.html')
+    return render_template('modulo_platos/platos/platos_menu.html')
 
 @programa.route('/platos_menu')
 def platos_menu():
-    return render_template('platos_menu.html')
+    return render_template('modulo_platos/platos/platos_menu.html')
 
 @programa.route('/busqueda')
 def busqueda():
-    return render_template('busqueda.html')
+    return render_template('modulo_platos/busqueda/busqueda.html')
 
 @programa.route('/crear_plato')
 def crear_plato():
-    return render_template('platos/templates/crear_plato.html')
+    return render_template('modulo_platos/platos/crear_plato.html')
 
 @programa.route('/modificar_plato/<id_plato>')
 def modificar_plato(id_plato):
-    return render_template('platos/templates/modificar_plato.html')
+    return render_template('modulo_platos/platos/modificar_plato.html')
 
 @programa.route('/detalle_plato/<id_plato>')
 def detalle_plato(id_plato):
-    return render_template('platos/templates/detalle_plato.html')
+    return render_template('modulo_platos/platos/detalle_plato.html')
 
 @programa.route('/crear_menu')
 def crear_menu():
-    return render_template('menus/templates/crear_menu.html')
+    return render_template('modulo_platos/menus/crear_menu.html')
 
 @programa.route('/modificar_menu/<id_menu>')
 def modificar_menu(id_menu):
-    return render_template('menus/templates/modificar_menu.html')
+    return render_template('modulo_platos/menus/modificar_menu.html')
 
 @programa.route('/detalle_menu/<id_menu>')
 def detalle_menu(id_menu):
-    return render_template('menus/templates/detalle_menu.html')
+    return render_template('modulo_platos/menus/detalle_menu.html')
 
 # ========== BÚSQUEDA GENERAL ==========
 
@@ -255,7 +242,6 @@ def modificar_plato_api(id_plato):
     try:
         conn = get_db_connection()
 
-        # 1. Petición DELETE
         if request.method == 'DELETE':
             cursor_del = conn.cursor()
             cursor_del.execute("DELETE FROM plato_ingrediente WHERE id_plato = %s", (id_plato,))
@@ -264,7 +250,6 @@ def modificar_plato_api(id_plato):
             cursor_del.close()
             return jsonify({"status": "success", "message": "Plato eliminado correctamente"}), 200
 
-        # 2. Petición PUT / POST (Actualización)
         is_json = request.is_json
         if is_json:
             data = request.get_json(silent=True) or {}
@@ -283,7 +268,6 @@ def modificar_plato_api(id_plato):
             ing_data = request.form.getlist('ingredientes[]') or request.form.getlist('ingredientes')
             cantidades = request.form.getlist('cantidades[]') or request.form.getlist('cantidades')
 
-        # Procesamiento de la categoría
         if categoria_raw.isdigit():
             id_categoria = int(categoria_raw)
         else:
@@ -292,7 +276,6 @@ def modificar_plato_api(id_plato):
         if not nombre or id_categoria == 0 or not descripcion:
             return jsonify({"status": "error", "message": "Campos requeridos incompletos."}), 400
 
-        # Verificar existencia del plato en la base de datos
         cursor = conn.cursor(dictionary=True)
         cursor.execute("SELECT categoria, img_plato FROM platos WHERE id_plato = %s", (id_plato,))
         plato_actual = cursor.fetchone()
@@ -301,28 +284,22 @@ def modificar_plato_api(id_plato):
         if not plato_actual:
             return jsonify({"status": "error", "message": f"El plato '{id_plato}' no existe."}), 404
 
-        # Regeneración de ID si cambió la categoría
         id_final = id_plato
         if int(plato_actual['categoria']) != id_categoria:
             id_final = generar_codigo_plato(id_categoria, conn)
 
-        # Manejo de imagen
         nombre_imagen = plato_actual['img_plato'] or ""
         if 'imagen' in request.files and request.files['imagen'].filename != '':
             nombre_imagen = guardar_imagen_png(request.files['imagen'], id_final, PLATS_IMG_DIR)
 
         cursor = conn.cursor()
-
-        # Paso 1: Eliminar ingredientes del ID ORIGINAL (Evita fallos por Foreign Key)
         cursor.execute("DELETE FROM plato_ingrediente WHERE id_plato = %s", (id_plato,))
 
-        # Paso 2: Actualizar el plato
         cursor.execute("""
             UPDATE platos SET id_plato=%s, nombre=%s, categoria=%s,
             descripcion=%s, img_plato=%s, estado=%s WHERE id_plato=%s
         """, (id_final, nombre, id_categoria, descripcion, nombre_imagen, estado, id_plato))
 
-        # Paso 3: Insertar la nueva lista de ingredientes con id_final
         datos_ing = []
         if is_json and isinstance(ing_data, list) and len(ing_data) > 0 and isinstance(ing_data[0], dict):
             for item in ing_data:

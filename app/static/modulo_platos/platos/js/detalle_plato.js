@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
     const categorias = {1: 'Entrada', 2: 'Plato Fuerte', 3: 'Postre', 4: 'Bebida'};
-    const IMAGEN_DEFAULT = '/static/img/dummy_remy.png';
+    const IMAGEN_DEFAULT = '/static/modulo_platos/platos/img/dummy_remy.png';
 
     const partes = window.location.pathname.split('/');
     const id_plato = partes[partes.length - 1];

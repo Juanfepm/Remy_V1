@@ -1,0 +1,231 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+    const pestaPlatos = document.getElementById('pesta_platos');
+    const pestaMenu = document.getElementById('pesta_menu');
+    const secColPlatos = document.getElementById('sec_col_platos');
+    const secColMenu = document.getElementById('sec_col_menu');
+    const mediaQueryPC = window.matchMedia('(min-width: 1020px)');
+    const btnFlotantePlatos = document.getElementById('btn_flotante_platos');
+    const btnFlotanteMenu   = document.getElementById('btn_flotante_menu');
+
+    // Elementos para el Menú Lateral en Móvil
+    const btnMenuMovil = document.getElementById('btn_menu_movil');
+    const barraLateral = document.getElementById('barra_lateral_nav');
+
+    const IMAGEN_DEFAULT = '/static/img/dummy_remy.png';
+
+    // ========== CONTROL MENÚ LATERAL MÓVIL ==========
+    if (btnMenuMovil && barraLateral) {
+        // Abrir/cerrar menú al hacer clic en el botón hamburguesa
+        btnMenuMovil.addEventListener('click', (e) => {
+            e.stopPropagation();
+            barraLateral.classList.toggle('menu-movil-abierto');
+        });
+
+        // Cerrar menú al hacer clic en cualquier parte fuera de la barra lateral
+        document.addEventListener('click', (e) => {
+            if (barraLateral.classList.contains('menu-movil-abierto')) {
+                if (!barraLateral.contains(e.target) && e.target !== btnMenuMovil) {
+                    barraLateral.classList.remove('menu-movil-abierto');
+                }
+            }
+        });
+    }
+
+    function recortarTexto(texto, maxCaracteres) {
+        if (!texto) return '';
+        return texto.length > maxCaracteres
+            ? texto.substring(0, maxCaracteres).trim() + '...'
+            : texto;
+    }
+
+    function obtenerRutaImagen(img) {
+        if (!img || img.trim() === '') return IMAGEN_DEFAULT;
+        if (img.startsWith('http://') || img.startsWith('https://')) return img;
+        return `/img_remy/${img}`;
+    }
+
+    function mostrarSeccion(seccionActivar) {
+    if (mediaQueryPC.matches) return;
+    if (seccionActivar === 'platos') {
+        secColPlatos.classList.remove('oculto-movil');
+        secColPlatos.classList.add('visible');
+        secColMenu.classList.add('oculto-movil');
+        secColMenu.classList.remove('visible');
+        pestaPlatos.classList.add('activa');
+        pestaMenu.classList.remove('activa');
+        if (btnFlotantePlatos) btnFlotantePlatos.style.display = '';
+        if (btnFlotanteMenu)   btnFlotanteMenu.style.display   = 'none';
+    } else if (seccionActivar === 'menu') {
+        secColMenu.classList.remove('oculto-movil');
+        secColMenu.classList.add('visible');
+        secColPlatos.classList.add('oculto-movil');
+        secColPlatos.classList.remove('visible');
+        pestaMenu.classList.add('activa');
+        pestaPlatos.classList.remove('activa');
+        if (btnFlotanteMenu)   btnFlotanteMenu.style.display   = '';
+        if (btnFlotantePlatos) btnFlotantePlatos.style.display = 'none';
+    }
+}
+
+    function verificarTamanoPantalla(e) {
+        if (e.matches) {
+            secColPlatos.classList.remove('oculto-movil');
+            secColMenu.classList.remove('oculto-movil');
+            if (barraLateral) barraLateral.classList.remove('menu-movil-abierto');
+        } else {
+            if (pestaMenu && pestaMenu.classList.contains('activa')) {
+                mostrarSeccion('menu');
+            } else {
+                mostrarSeccion('platos');
+            }
+        }
+    }
+
+    if (pestaPlatos && pestaMenu) {
+        pestaPlatos.addEventListener('click', (e) => {
+            e.preventDefault();
+            mostrarSeccion('platos');
+        });
+        pestaMenu.addEventListener('click', (e) => {
+            e.preventDefault();
+            mostrarSeccion('menu');
+        });
+    }
+
+    mediaQueryPC.addEventListener('change', verificarTamanoPantalla);
+    verificarTamanoPantalla(mediaQueryPC);
+
+    // ========== CARGAR PLATOS ==========
+    async function cargarPlatos() {
+        try {
+            const response = await fetch('/api/platos');
+            const json = await response.json();
+            const data = Array.isArray(json) ? json : (json.data || []);
+
+            data.sort((a, b) => {
+                const fechaA = new Date(a.fecha_creacion || 0);
+                const fechaB = new Date(b.fecha_creacion || 0);
+                if (fechaB - fechaA === 0) {
+                    return (b.id_plato || '').localeCompare(a.id_plato || '');
+                }
+                return fechaB - fechaA;
+            });
+
+            const contenedor = document.querySelector('#sec_col_platos .lista-tarjetas-grid');
+            if (!contenedor) return;
+            contenedor.innerHTML = '';
+
+            data.forEach(plato => {
+                const categorias = {1: 'Entrada', 2: 'Plato Fuerte', 3: 'Postre', 4: 'Bebida'};
+                const catId = plato.categoria || plato.id_categoria;
+                const categoria = categorias[catId] || 'Sin categoría';
+                const fecha = plato.fecha_creacion ? plato.fecha_creacion.split('T')[0] : 'Sin fecha';
+                const imagen = obtenerRutaImagen(plato.img_plato);
+                const opacidad = plato.estado === 'Inactivo' ? 'style="opacity:0.4"' : '';
+                const nombreFormateado = recortarTexto(plato.nombre.toUpperCase(), 30);
+                const descripcionFormateada = recortarTexto(plato.descripcion, 90);
+
+                contenedor.innerHTML += `
+                    <a href="/detalle_plato/${plato.id_plato}" class="tarjeta-plato" ${opacidad}>
+                        <figure class="foto-plato">
+                            <img src="${imagen}" alt="${plato.nombre}" onerror="this.src='${IMAGEN_DEFAULT}'">
+                        </figure>
+                        <div class="info-plato">
+                            <h3 class="nombre-plato letra-azul-dark">${nombreFormateado}</h3>
+                            <p class="desc-plato">${descripcionFormateada}</p>
+                            <p class="meta-plato">Categoría: <strong>${categoria}</strong></p>
+                            <p class="meta-plato">Fecha creación: <strong>${fecha}</strong></p>
+                        </div>
+                    </a>
+                `;
+            });
+        } catch (error) {
+            console.error('Error al cargar platos:', error);
+        }
+    }
+
+    // ========== CARGAR MENUS ==========
+    async function cargarMenus() {
+        try {
+            const response = await fetch('/api/menus');
+            const json = await response.json();
+            const data = Array.isArray(json) ? json : (json.data || []);
+
+            data.sort((a, b) => {
+                const fechaA = new Date(a.fecha_creacion || 0);
+                const fechaB = new Date(b.fecha_creacion || 0);
+                if (fechaB - fechaA === 0) {
+                    return (b.id_menu || '').localeCompare(a.id_menu || '');
+                }
+                return fechaB - fechaA;
+            });
+
+            const contenedor = document.querySelector('#sec_col_menu .lista-tarjetas-grid');
+            if (!contenedor) return;
+            contenedor.innerHTML = '';
+
+            data.forEach(menu => {
+                const platos = menu.platos || [];
+                const opacidad = menu.estado === 'Inactivo' ? 'style="opacity:0.4"' : '';
+                const precio = menu.precio ? `$${menu.precio.toLocaleString('es-CO')}` : '$0';
+                const tituloMenuFormateado = recortarTexto(menu.nombre, 30);
+
+                // Identificar los platos por categoría: 1=Entrada, 2=Plato Fuerte, 3=Postre, 4=Bebida
+                const platoPrincipal = platos.find(p => p.categoria === 2 || p.id_categoria === 2);
+                const entrada        = platos.find(p => p.categoria === 1 || p.id_categoria === 1);
+                const postre         = platos.find(p => p.categoria === 3 || p.id_categoria === 3);
+                const bebida         = platos.find(p => p.categoria === 4 || p.id_categoria === 4);
+
+                let mosaico = '';
+
+                // 1. Imagen Principal (Siempre Plato Fuerte)
+                const imgPrincipal = platoPrincipal ? obtenerRutaImagen(platoPrincipal.img_plato) : IMAGEN_DEFAULT;
+                const altPrincipal = platoPrincipal ? platoPrincipal.nombre : 'Plato fuerte';
+                mosaico += `<figure class="img-menu-ppal"><img src="${imgPrincipal}" alt="${altPrincipal}" onerror="this.src='${IMAGEN_DEFAULT}'"></figure>`;
+
+                // Obtener lista de acompañantes/secundarios ordenados
+                const secundarios = [entrada, postre, bebida].filter(p => p !== undefined);
+
+                if (platos.length === 3) {
+                    // Para 3 platos: Los 2 adicionales van en los recuadros superiores derechos
+                    secundarios.forEach((p, idx) => {
+                        mosaico += `<figure class="img-menu-sec img-cuadrada-sup-${idx + 1}">
+                            <img src="${obtenerRutaImagen(p.img_plato)}" alt="${p.nombre}" onerror="this.src='${IMAGEN_DEFAULT}'">
+                        </figure>`;
+                    });
+                    // Recuadro inferior alargado queda vacío
+                    mosaico += `<figure class="img-menu-sec img-ancho-completo vacia"></figure>`;
+                } else {
+                    // Caso de 4 tiempos (se renderizan todas las áreas asignadas)
+                    if (entrada) {
+                        mosaico += `<figure class="img-menu-sec"><img src="${obtenerRutaImagen(entrada.img_plato)}" alt="${entrada.nombre}" onerror="this.src='${IMAGEN_DEFAULT}'"></figure>`;
+                    }
+                    if (postre) {
+                        mosaico += `<figure class="img-menu-sec"><img src="${obtenerRutaImagen(postre.img_plato)}" alt="${postre.nombre}" onerror="this.src='${IMAGEN_DEFAULT}'"></figure>`;
+                    }
+                    if (bebida) {
+                        mosaico += `<figure class="img-menu-sec img-ancho-completo"><img src="${obtenerRutaImagen(bebida.img_plato)}" alt="${bebida.nombre}" onerror="this.src='${IMAGEN_DEFAULT}'"></figure>`;
+                    }
+                }
+
+                contenedor.innerHTML += `
+                    <a href="/detalle_menu/${menu.id_menu}" class="tarjeta-menu-compuesta" ${opacidad}>
+                        <div class="mosaico-imagenes-menu">
+                            ${mosaico}
+                        </div>
+                        <div class="info-tarjeta-menu">
+                            <h4 class="titulo-menu letra-negro">${tituloMenuFormateado}</h4>
+                            <span class="precio-menu letra-verde">${precio}</span>
+                        </div>
+                    </a>
+                `;
+            });
+        } catch (error) {
+            console.error('Error al cargar menús:', error);
+        }
+    }
+
+    cargarPlatos();
+    cargarMenus();
+});

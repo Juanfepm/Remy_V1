@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda - REMY 1.0</title>
+
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="../static/css/busqueda.css">
+
+    <!-- Comportamientos JavaScript -->
+    <script src="../static/js/busqueda_remy.js" defer></script>
+</head>
+<body>
+
+    <!-- MAIN COMO GRAN PADRE CONTENEDOR TOTAL -->
+    <main id="gran_padre_cont">
+        
+        <!-- CABEZOTE SUPERIOR CON ESTÉTICA VERDE DE PLATOS_MENU -->
+        <header id="cabezote_sesion">
+            <button type="button" class="btn-transparente" id="btn_menu_hambur" title="Menú" aria-label="Abrir menú principal">
+                <svg class="ico-svg ico-hambur-svg" viewBox="0 0 24 24" aria-hidden="true">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            
+            <h1 class="txt-cabezote">Búsqueda General</h1>
+            
+            <!-- Redirección mediante href hacia platos_menu -->
+            <a href="{{ url_for('platos_menu') }}" class="btn-transparente" id="btn_cerrar_modal" title="Cerrar" aria-label="Cerrar búsqueda">
+                <svg class="ico-svg ico-cerrar-svg" viewBox="0 0 24 24" aria-hidden="true">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </a>
+        </header>
+
+        <!-- SECCIÓN DE CONTENIDO PRINCIPAL -->
+        <section id="cuerpo_ppal_cont">
+            
+            <!-- BARRA DE BÚSQUEDA Y FILTRO -->
+            <section id="sec_barra_busqueda" aria-label="Sección de búsqueda y filtros">
+                <search class="caja-campo-busqueda">
+                    <label for="input_busqueda" class="visually-hidden" style="display:none;">Buscar por título, categoría o ingrediente</label>
+                    <input type="text" id="input_busqueda" class="input-texto-busqueda" placeholder="Buscar por título, categoría o ingrediente..." value="" autocomplete="off">
+                    
+                    <div class="cont-iconos-busqueda">
+                        <!-- Icono Lupa (Búsqueda) -->
+                        <button type="button" class="btn-icono-accion" id="btn_ejecutar_busqueda" title="Buscar" aria-label="Ejecutar búsqueda">
+                            <svg class="ico-accion-svg" viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                        
+                        <!-- Separador visual fino -->
+                        <span class="separador-iconos" role="separator" aria-orientation="vertical"></span>
+
+                        <!-- Icono Filtro -->
+                        <button type="button" class="btn-icono-accion" id="btn_abrir_filtro" title="Filtrar" aria-label="Abrir panel de filtros">
+                            <svg class="ico-accion-svg" viewBox="0 0 24 24" aria-hidden="true">
+                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- DESPLEGABLE MINIMALISTA DE FILTROS -->
+                    <div id="menu_desplegable_filtro" class="menu-filtro-desplegable oculto">
+                        <ul>
+                            <li class="opcion-filtro">Plato fuerte</li>
+                            <li class="opcion-filtro">Entrada</li>
+                            <li class="opcion-filtro">Postre</li>
+                            <li class="opcion-filtro">Bebida</li>
+                            <li class="opcion-filtro">Plato</li>
+                            <li class="opcion-filtro">Menú</li>
+                            <li class="opcion-filtro">Ingrediente</li>
+                        </ul>
+                    </div>
+                </search>
+            </section>
+
+            <!-- GRILLA DE RESULTADOS DE BÚSQUEDA -->
+            <section id="sec_lista_resultados" class="grilla-tarjetas" aria-label="Resultados de búsqueda">
+                <!-- Las tarjetas se generarán dinámicamente desde busqueda_remy.js -->
+            </section>
+
+            <!-- CONTENEDOR DUMMY SIN RESULTADOS -->
+            <div id="sin_resultados_msj" class="cont-sin-resultados oculto">
+                <img src="{{ url_for('static', filename='img/dummy_busqueda_empty.png') }}" alt="Sin resultados" class="img-dummy-empty" onerror="this.src='../static/img/dummy_busqueda_empty.png'">
+                <p class="txt-sin-resultados">no se han encontrado resultados a tu busqueda</p>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

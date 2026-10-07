@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos de la reserva | REMY 1.0</title>
+    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/normalize.css">
+    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/formato_rm_clientes.css">
+    <script src="/static/modulo_reservas/rm_codigos/config.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/api.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/plantillas.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/calendario.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/datos_reserva.js" defer></script>
+</head>
+<body id="cuerpo_datos">
+
+    <header id="cabezote_titulo" class="fondo-azul" data-titulo="Reservas" data-atras="reservas.html"></header>
+
+    <main id="contenido_datos">
+
+        <a href="reservas.html" id="enlace_atras">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 5l-7 7 7 7"/>
+            </svg>
+            Completa los datos para reservar tu experiencia
+        </a>
+
+        <form id="forma_datos">
+
+            
+            <fieldset class="bloque_dato">
+                <legend class="titulo_dato">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3.5" y="4.5" width="17" height="16" rx="2.2"/>
+                        <path d="M8 3v3.5M16 3v3.5M3.5 9.5h17"/>
+                    </svg>
+                    ¿Para qué día deseas reservar?
+                </legend>
+
+                <div id="selector_dias">
+                    <button type="button" class="btn_flecha" id="btn_dia_anterior" aria-label="Días anteriores">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 5l-7 7 7 7"/>
+                        </svg>
+                    </button>
+                    
+                    <div id="tira_dias"></div>
+                    <button type="button" class="btn_flecha" id="btn_dia_siguiente" aria-label="Días siguientes">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div id="calendario_reserva">
+                    <div id="almanaque_reserva">
+                        <div id="barra_mes">
+                            <button type="button" class="btn_mes" id="btn_mes_anterior" aria-label="Mes anterior">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+                            </button>
+                            <span id="rotulo_mes"></span>
+                            <button type="button" class="btn_mes" id="btn_mes_siguiente" aria-label="Mes siguiente">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                        <table id="estructura_calendario">
+                            <thead>
+                                <tr>
+                                    <td>Dom</td><td>Lun</td><td>Mar</td><td>Mie</td><td>Jue</td><td>Vie</td><td>Sab</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="semana-01">
+                                    <td id="s01dia01" class="dia-o"></td><td id="s01dia02" class="dia-o"></td><td id="s01dia03" class="dia-o"></td><td id="s01dia04" class="dia-o"></td><td id="s01dia05" class="dia-o"></td><td id="s01dia06" class="dia-o"></td><td id="s01dia07" class="dia-o"></td>
+                                </tr>
+                                <tr id="semana-02">
+                                    <td id="s02dia01" class="dia-o"></td><td id="s02dia02" class="dia-o"></td><td id="s02dia03" class="dia-o"></td><td id="s02dia04" class="dia-o"></td><td id="s02dia05" class="dia-o"></td><td id="s02dia06" class="dia-o"></td><td id="s02dia07" class="dia-o"></td>
+                                </tr>
+                                <tr id="semana-03">
+                                    <td id="s03dia01" class="dia-o"></td><td id="s03dia02" class="dia-o"></td><td id="s03dia03" class="dia-o"></td><td id="s03dia04" class="dia-o"></td><td id="s03dia05" class="dia-o"></td><td id="s03dia06" class="dia-o"></td><td id="s03dia07" class="dia-o"></td>
+                                </tr>
+                                <tr id="semana-04">
+                                    <td id="s04dia01" class="dia-o"></td><td id="s04dia02" class="dia-o"></td><td id="s04dia03" class="dia-o"></td><td id="s04dia04" class="dia-o"></td><td id="s04dia05" class="dia-o"></td><td id="s04dia06" class="dia-o"></td><td id="s04dia07" class="dia-o"></td>
+                                </tr>
+                                <tr id="semana-05">
+                                    <td id="s05dia01" class="dia-o"></td><td id="s05dia02" class="dia-o"></td><td id="s05dia03" class="dia-o"></td><td id="s05dia04" class="dia-o"></td><td id="s05dia05" class="dia-o"></td><td id="s05dia06" class="dia-o"></td><td id="s05dia07" class="dia-o"></td>
+                                </tr>
+                                <tr id="semana-06">
+                                    <td id="s06dia01" class="dia-o"></td><td id="s06dia02" class="dia-o"></td><td id="s06dia03" class="dia-o"></td><td id="s06dia04" class="dia-o"></td><td id="s06dia05" class="dia-o"></td><td id="s06dia06" class="dia-o"></td><td id="s06dia07" class="dia-o"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </fieldset>
+
+            
+            <fieldset class="bloque_dato">
+                <legend class="titulo_dato">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="8.5"/>
+                        <path d="M12 7v5.2l3.2 2"/>
+                    </svg>
+                    Selecciona la hora
+                </legend>
+                <ul id="lista_horas"></ul>
+            </fieldset>
+
+            
+            <fieldset class="bloque_dato">
+                <legend class="titulo_dato">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="8" r="3.4"/>
+                        <path d="M3.2 19.2c0-3.2 2.6-5.4 5.8-5.4s5.8 2.2 5.8 5.4"/>
+                        <path d="M16.2 5.2a3.4 3.4 0 0 1 0 6.6M17.4 14.2c2.1.6 3.4 2.4 3.4 5"/>
+                    </svg>
+                    ¿Cuántas personas asistirán al evento?
+                </legend>
+                <div id="control_personas">
+                    <div class="contador_personas">
+                        <button type="button" class="btn_paso" id="btn_menos_personas" aria-label="Quitar una persona">&minus;</button>
+                        <input type="number" name="cant_personas" id="cant_personas" value="20" min="20" max="40" step="1" inputmode="numeric" required>
+                        <button type="button" class="btn_paso" id="btn_mas_personas" aria-label="Agregar una persona">&plus;</button>
+                    </div>
+                    <p class="nota_aforo">Aforo permitido:<br>de 20 a 40 personas</p>
+                </div>
+            </fieldset>
+
+            
+            <fieldset class="bloque_dato">
+                <legend class="titulo_dato">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="5.5" width="18" height="13" rx="2.2"/>
+                        <path d="M3.6 7l8.4 6 8.4-6"/>
+                    </svg>
+                    Correo institucional
+                </legend>
+                <input type="email" name="correo_reserva" id="campo_correo"
+                       placeholder="ejemplo@soy.sena.edu.co"
+                       pattern="[a-zA-Z0-9._%+\-]+@(soy\.)?sena\.edu\.co"
+                       title="Usa tu correo institucional @sena.edu.co o @soy.sena.edu.co"
+                       maxlength="80" required>
+            </fieldset>
+
+        </form>
+
+        <div id="resumen_reserva">
+            <figure class="ico_check">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9.2"/>
+                    <path d="M8 12.4l2.7 2.7L16.2 9.6"/>
+                </svg>
+            </figure>
+            <div class="txt_resumen">
+                <h3>Tu reserva</h3>
+                <p id="detalle_resumen"></p>
+            </div>
+            <div class="monto_resumen">
+                <span class="rotulo_total">Total</span>
+                <span class="valor_total" id="valor_total">$0</span>
+            </div>
+        </div>
+
+        <p id="aviso_evento" class="aviso oculto"></p>
+
+        <button type="submit" form="forma_datos" id="btn_reservar" class="btn-capsula capsula-full fondo-verde letra-blanca">Reservar Evento</button>
+
+    </main>
+
+    <nav id="tabs_inferior" data-activo="reservas"></nav>
+
+</body>
+</html>

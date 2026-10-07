@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiencias | REMY 1.0</title>
+    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/normalize.css">
+    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/formato_rm_clientes.css">
+    <script src="/static/modulo_reservas/rm_codigos/config.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/api.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/plantillas.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/experiencias.js" defer></script>
+</head>
+<body id="cuerpo_eventos">
+
+    <header id="cabezote_titulo" class="fondo-azul" data-titulo="Experiencias" data-atras="eventos.html"></header>
+
+    <main id="contenido_eventos">
+
+        <div class="cont-busqueda">
+            <input type="text" id="buscar_experiencia" class="input-busqueda" placeholder="Buscar experiencia...">
+            <svg class="icono-filtro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+        </div>
+
+        <div class="seccion-hoy-titulo">
+            <span class="punto-v"></span>
+            Nuestras experiencias
+        </div>
+
+        <p id="aviso_experiencias" class="aviso aviso-cargando">Cargando experiencias...</p>
+
+        
+        <div id="lista_experiencias_pub" class="carrusel"></div>
+
+    </main>
+
+    <nav id="tabs_inferior" data-activo="eventos"></nav>
+
+</body>
+</html>

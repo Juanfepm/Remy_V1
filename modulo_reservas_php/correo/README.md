@@ -2,8 +2,7 @@
 
 Manda el correo de confirmación a quien reserva. Está en Python porque el envío
 ya estaba resuelto así en el proyecto (`smtplib` + `MIMEMultipart` sobre SMTP
-con STARTTLS), y sigue la misma forma que los otros servicios (`services/eventos`,
-`services/reservas_dia`, ...): Flask + Flask-RESTful, `conexion.py` con la
+con STARTTLS): Flask + Flask-RESTful, `conexion.py` con la
 configuración y `app.py` con el Resource.
 
 ## Qué confirma
@@ -17,7 +16,7 @@ configuración y `app.py` con el Resource.
 ## Puesta en marcha
 
 ```bash
-cd C:\xampp\htdocs\Remy_V1\app\modulo_reservas\services\correo
+cd C:\xampp\htdocs\Remy_V1\modulo_reservas_php\correo
 pip install -r requirements.txt
 ```
 

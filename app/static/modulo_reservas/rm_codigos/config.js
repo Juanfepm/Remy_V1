@@ -1,10 +1,10 @@
 
 
-const URL_BACKEND = 'http://localhost/Remy_V1/app/modulo_reservas/services/';
+const URL_BACKEND = 'http://localhost/Remy_V1/modulo_reservas_php/';
 
 
-const URL_IMG_MENU = URL_BACKEND + 'img_menu/';
-const URL_IMG_EXP = URL_BACKEND + 'img_exp/';
+const URL_IMG_MENU = URL_BACKEND + 'assets/img_menu/';
+const URL_IMG_EXP = URL_BACKEND + 'assets/img_exp/';
 
 
 const ROL_INSTRUCTOR = 1;

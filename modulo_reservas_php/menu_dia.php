@@ -5,7 +5,7 @@ header('Content-Type: application/json; charset=utf-8');
 require_once 'conexion.php';
 
 
-$baseImg = "img_menu/";
+$baseImg = "assets/img_menu/";
 
 $sql = "SELECT * FROM menu WHERE estado = 'activo' LIMIT 1";
 

@@ -1,0 +1,250 @@
+#gran_padre_insumos {
+    display: flex;
+    min-height: 100vh;
+    background: var(--blanco);
+}
+
+#gran_padre_insumos #menu_lateral_insumos {
+    flex: 0 0 90px;
+    min-height: 100vh;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--blanco);
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.08);
+}
+
+#menu_lateral_insumos #marca_remy_insumos {
+    width: 45px;
+    margin-bottom: 30px;
+}
+
+#menu_lateral_insumos nav {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 0 12px;
+}
+
+#menu_lateral_insumos .opciones-menu-insumos {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+#menu_lateral_insumos a {
+    color: var(--gris-dark);
+    text-align: center;
+    text-decoration: none;
+}
+
+#menu_lateral_insumos .opcion-menu-insumos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+}
+
+#menu_lateral_insumos .opcion-menu-insumos strong {
+    color: var(--verde);
+    font-size: 1.55rem;
+    line-height: 1;
+}
+
+#panel_insumos {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#cabezote_insumos {
+    padding: 22px 40px;
+    background: var(--azul-dark);
+}
+
+#cabezote_insumos h1 {
+    margin: 0;
+    color: var(--blanco);
+    font-size: 1.6rem;
+}
+
+.formulario_buscar_insumo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 480px;
+    margin: 24px 40px 8px;
+    padding: 6px 6px 6px 20px;
+    border: 1px solid var(--gris);
+    border-radius: 2rem;
+    background: var(--blanco);
+}
+
+.campo_buscar_insumo {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--negro);
+    font: inherit;
+}
+
+.boton_enviar_busqueda_insumo {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--gris);
+}
+
+.boton_enviar_busqueda_insumo svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--gris-dark);
+}
+
+.lista_tarjetas_insumo {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    padding: 16px 40px 120px;
+}
+
+.tarjeta_insumo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: var(--gris);
+    color: inherit;
+    text-decoration: none;
+}
+
+.tarjeta_insumo:hover {
+    background: #dedede;
+}
+
+.tarjeta_insumo_stock_bajo {
+    background: var(--gris-dark);
+}
+
+.tarjeta_insumo_stock_bajo .nombre_insumo,
+.tarjeta_insumo_stock_bajo .categoria_insumo {
+    color: var(--blanco);
+}
+
+.nombre_insumo {
+    margin: 0 0 4px;
+    color: var(--negro);
+    font-size: 1.05rem;
+}
+
+.categoria_insumo {
+    color: var(--verde);
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.categoria_insumo::before {
+    content: "•";
+    margin-right: 4px;
+}
+
+.cantidad_insumo {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    border-radius: 2rem;
+    background: var(--verde-lite);
+    color: var(--azul-dark);
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.tarjeta_insumo_stock_bajo .cantidad_insumo {
+    background: var(--naranja);
+    color: var(--blanco);
+}
+
+.zona_botones_flotantes_insumo {
+    position: fixed;
+    right: 32px;
+    bottom: 28px;
+}
+
+.boton_flotante_agregar_insumo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--verde);
+}
+
+.boton_flotante_agregar_insumo svg {
+    width: 26px;
+    height: 26px;
+    fill: var(--blanco);
+}
+
+@media screen and (max-width: 767px) {
+    #gran_padre_insumos {
+        display: block;
+    }
+
+    #gran_padre_insumos #menu_lateral_insumos {
+        width: 100%;
+        min-height: auto;
+        height: auto;
+        padding: 10px 16px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    #menu_lateral_insumos #marca_remy_insumos {
+        width: 100px;
+        margin: 0;
+    }
+
+    #menu_lateral_insumos nav,
+    #menu_lateral_insumos .opciones-menu-insumos {
+        width: auto;
+        flex: 0 1 auto;
+        flex-direction: row;
+        gap: 14px;
+        padding: 0;
+    }
+
+    #menu_lateral_insumos .opcion-menu-insumos {
+        font-size: 0;
+    }
+
+    #cabezote_insumos {
+        padding: 18px 16px;
+    }
+
+    .formulario_buscar_insumo {
+        margin: 16px 16px 8px;
+        max-width: none;
+    }
+
+    .lista_tarjetas_insumo {
+        grid-template-columns: 1fr;
+        padding: 16px 16px 110px;
+    }
+
+    .zona_botones_flotantes_insumo {
+        right: 20px;
+        bottom: 20px;
+    }
+}

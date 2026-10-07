@@ -1,0 +1,170 @@
+.fondo_ventana_emergente {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(1, 1, 1, 0.5);
+}
+
+.fondo_ventana_emergente:target {
+    display: flex;
+}
+
+.cuadro_ventana_emergente {
+    width: 100%;
+    max-width: 420px;
+    padding: 24px;
+    border-radius: 14px;
+    background: var(--blanco);
+}
+
+.encabezado_ventana_emergente {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.encabezado_ventana_emergente h2 {
+    margin: 0;
+    color: var(--negro);
+    font-size: 1.2rem;
+}
+
+.boton_cerrar_ventana_emergente {
+    color: var(--gris-dark);
+    font-size: 1.6rem;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.formulario_agregar_insumo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.formulario_agregar_insumo label {
+    margin-top: 10px;
+    color: var(--gris-dark);
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.formulario_agregar_insumo input,
+.formulario_agregar_insumo select {
+    padding: 10px 12px;
+    border: 1px solid var(--gris);
+    border-radius: 8px;
+    color: var(--negro);
+    font: inherit;
+    background-color: var(--blanco, #fff);
+}
+
+/* Estilo específico para el select desplegable */
+.formulario_agregar_insumo select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%2300304D' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+/* Placeholder del select en gris */
+.formulario_agregar_insumo select:invalid,
+.formulario_agregar_insumo select option[disabled] {
+    color: var(--gris-dark, #999);
+}
+
+.formulario_agregar_insumo select option {
+    color: var(--negro, #000);
+}
+
+.botones_formulario_agregar_insumo {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.boton_cancelar_agregar_insumo,
+.boton_guardar_insumo {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.boton_cancelar_agregar_insumo {
+    color: var(--gris-dark);
+}
+
+.boton_guardar_insumo {
+    border: 0;
+    background: var(--verde);
+    color: var(--blanco);
+}
+
+.formulario_editar_insumo_pagina {
+    max-width: 420px;
+    margin: 0;
+    padding: 24px 28px;
+    border-radius: 14px;
+    background: var(--gris);
+}
+
+.formulario_editar_insumo_pagina,
+.formulario_editar_insumo_pagina label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.formulario_editar_insumo_pagina label {
+    margin-top: 10px;
+    color: var(--gris-dark);
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.formulario_editar_insumo_pagina input,
+.formulario_editar_insumo_pagina select {
+    padding: 10px 12px;
+    border: 1px solid var(--gris);
+    border-radius: 8px;
+    background: var(--blanco);
+    color: var(--negro);
+    font: inherit;
+}
+
+.botones_formulario_editar_insumo {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.boton_cancelar_edicion_insumo,
+.boton_guardar_cambios_insumo {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.boton_cancelar_edicion_insumo {
+    color: var(--gris-dark);
+}
+
+.boton_guardar_cambios_insumo {
+    border: 0;
+    background: var(--verde);
+    color: var(--blanco);
+}

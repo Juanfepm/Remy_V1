@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar insumo | REMY 1.0</title>
+    <link rel="stylesheet" href="../static/modulo_inventario/css/normalize.css">
+    <link rel="stylesheet" href="../static/modulo_inventario/css/Formato_Rm_interno.css?v=18">
+    <link rel="stylesheet" href="../static/modulo_inventario/css/formato_formulario_insumo.css">
+</head>
+<body id="cuerpo_inventario">
+    <div id="app_inventario">
+        <aside id="barra_lateral">
+            <div id="cont_marcas"><figure id="marca_sena"><img src="../static/modulo_inventario/componentes/simbolo_sena_verde.svg" alt="SENA"></figure><div id="linea_vert"></div><figure id="marca_remy"><img src="../static/modulo_inventario/componentes/remy_green.svg" alt="REMY"></figure></div>
+            <nav id="menu_lateral">
+                <a href="insumos_panel.html" class="item-menu">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2 2 7l10 5 10-5-10-5m0 8L2 15l10 5 10-5-10-5m0 8-8-4v2l8 4 8-4v-2l-8 4Z" />
+                    </svg>
+                    <span>Inventario</span>
+                </a>
+                <a href="entradas.html" class="item-menu">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z" />
+                    </svg>
+                    <span>Entradas</span>
+                </a>
+                <a href="salidas.html" class="item-menu">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M5 11h9.17l-3.58-3.59L12 6l6 6-6 6-1.41-1.41L14.17 13H5v-2Z" />
+                    </svg>
+                    <span>Salidas</span>
+                </a>
+            </nav>
+            <footer class="pie-menu-lateral">
+                <a href="https://www.sena.edu.co" target="_blank" rel="noopener noreferrer">www.sena.edu.co</a>
+                <span>Centro Agropecuario de Buga</span>
+                <small>© 2026 - Versión 1.0</small>
+            </footer>
+        </aside>
+        <main id="zona_principal">
+            <header id="cabezote_dashboard"><div class="cabecera-izquierda"><a href="insumos_panel.html" class="btn-acceso-header">&lt; Volver a insumos</a></div></header>
+            <section id="contenido_inventario"><div class="panel-inventario" style="display:block"><div class="cabecera-panel"><h2 class="letra-azul-dark">Modificar insumo</h2></div><form class="formulario_editar_insumo formulario_editar_insumo_pagina"><label for="nombre">Nombre del insumo</label><input id="nombre" name="nombre" required><label for="categoria">Categoría</label><select id="categoria" name="categoria" required></select><label for="cantidad">Cantidad disponible</label><input id="cantidad" name="cantidad" type="number" min="0" step="0.001" required><label for="unidad">Unidad de medida</label><select id="unidad" name="unidad"><option value="KG">Kg</option><option value="GR">Gr</option><option value="L">L</option><option value="UND">Und</option></select><div class="botones_formulario_editar_insumo"><a href="insumos_panel.html" class="boton_cancelar_edicion_insumo">Cancelar</a><button type="submit" class="boton_guardar_cambios_insumo">Guardar cambios</button></div></form></div></section>
+        </main>
+    </div>
+</body>
+    <script src="../static/modulo_inventario/js/inventario_api.js?v=20"></script>
+</html>

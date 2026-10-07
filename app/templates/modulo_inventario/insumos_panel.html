@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insumos | REMY 1.0</title>
+    <link rel="stylesheet" href="../static/modulo_inventario/css/normalize.css">
+    <link rel="stylesheet" href="../static/modulo_inventario/css/Formato_Rm_interno.css?v=18">
+    <link rel="stylesheet" href="../static/modulo_inventario/css/formato_insumos_integrado.css?v=4">
+    <link rel="stylesheet" href="../static/modulo_inventario/css/formato_formulario_insumo.css">
+</head>
+<body id="cuerpo_inventario">
+    <div id="app_inventario">
+        <input type="checkbox" id="checkbox_menu" class="checkbox-menu-toggle">
+        <input type="radio" name="tab_inventario" id="radio_existencias" class="radio-tab" checked>
+        <input type="radio" name="tab_inventario" id="radio_entradas" class="radio-tab">
+        <input type="radio" name="tab_inventario" id="radio_salidas" class="radio-tab">
+
+        <aside id="barra_lateral">
+            <label for="checkbox_menu" class="btn-cerrar-menu-lateral" aria-label="Cerrar menú">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" />
+                </svg>
+            </label>
+            <div id="cont_marcas"><figure id="marca_sena"><img src="../static/modulo_inventario/componentes/simbolo_sena_verde.svg" alt="SENA"></figure><div id="linea_vert"></div><figure id="marca_remy"><img src="../static/modulo_inventario/componentes/remy_green.svg" alt="REMY"></figure></div>
+            <nav id="menu_lateral">
+                <a href="insumos_panel.html?v=2" class="item-menu" id="link_inventario">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2 2 7l10 5 10-5-10-5m0 8L2 15l10 5 10-5-10-5m0 8-8-4v2l8 4 8-4v-2l-8 4Z" />
+                    </svg>
+                    <span>Inventario</span>
+                </a>
+
+                <a href="entradas.html" class="item-menu" id="link_entradas">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z" />
+                    </svg>
+                    <span>Entradas</span>
+                </a>
+
+                <a href="salidas.html" class="item-menu" id="link_salidas">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M5 11h9.17l-3.58-3.59L12 6l6 6-6 6-1.41-1.41L14.17 13H5v-2Z" />
+                    </svg>
+                    <span>Salidas</span>
+                </a>
+            </nav>
+            <footer class="pie-menu-lateral">
+                <a href="https://www.sena.edu.co" target="_blank" rel="noopener noreferrer">www.sena.edu.co</a>
+                <span>Centro Agropecuario de Buga</span>
+                <small>© 2026 - Versión 1.0</small>
+            </footer>
+        </aside>
+
+        <label for="checkbox_menu" class="capa-oscura-menu" aria-label="Cerrar menú"></label>
+
+        <main id="zona_principal">
+            <header id="cabezote_dashboard">
+                <div class="cabecera-izquierda" style="display: flex; gap: 1rem; align-items: center;">
+                    <label for="checkbox_menu" class="btn-menu-hamburguesa">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z" />
+                        </svg>
+                    </label>
+                    <a href="inventario.html?v=2" class="btn-menu-hamburguesa" aria-label="Volver a Inventario" title="Volver a Inventario" style="text-decoration: none; display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.8rem; width: auto;">
+                        <b style="font-size: 1.2rem; line-height: 1;">&larr;</b> <span style="font-size: 0.85rem; font-weight: 600;">Volver a Inventario</span>
+                    </a>
+                </div>
+            </header>
+            <section id="contenido_inventario">
+                <div id="resumen_inventario">
+                    <a href="insumos_panel.html?v=2" class="tarjeta-resumen fondo-blanco" id="tarj_insumos" aria-label="Ver todos los insumos" style="border: 2px solid var(--verde);">
+                        <figure class="icono-resumen fondo-verde-lite">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44A.99.99 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9M12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15M5 15.91l6 3.38v-6.71L5 9.21v6.7m14 0v-6.7l-6 3.37v6.71l6-3.38Z" />
+                            </svg>
+                        </figure>
+                        <div class="texto-resumen">
+                            <p class="dato-resumen letra-azul-dark" id="valor_insumos">12</p>
+                            <p class="etiqueta-resumen letra-gris-dark">Insumos</p>
+                        </div>
+                    </a>
+
+                    <a href="agotados.html?v=2" class="tarjeta-resumen fondo-blanco" id="tarj_agotados" aria-label="Ver insumos agotados">
+                        <figure class="icono-resumen fondo-rojo-lite">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m5 13.6L15.6 17 12 13.4 8.4 17 7 15.6l3.6-3.6L7 8.4 8.4 7 12 10.6 15.6 7 17 8.4 13.4 12 17 15.6Z" />
+                            </svg>
+                        </figure>
+                        <div class="texto-resumen">
+                            <p class="dato-resumen letra-azul-dark" id="valor_agotados">3</p>
+                            <p class="etiqueta-resumen letra-gris-dark">Agotados</p>
+                        </div>
+                    </a>
+
+                    <a href="bajo_stock.html?v=2" class="tarjeta-resumen fondo-blanco" id="tarj_bajostock" aria-label="Ver insumos con bajo stock">
+                        <figure class="icono-resumen fondo-naranja-lite">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2 1 21h22L12 2m0 3.99L19.53 19H4.47L12 5.99M11 10v4h2v-4h-2m0 6v2h2v-2h-2Z" />
+                            </svg>
+                        </figure>
+                        <div class="texto-resumen">
+                            <p class="dato-resumen letra-azul-dark" id="valor_bajostock">5</p>
+                            <p class="etiqueta-resumen letra-gris-dark">Bajo stock</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="panel-inventario panel-insumos-integrado" id="panel_existencias">
+                    <div class="cabecera-panel cabecera-insumos-integrada"><h2 class="letra-azul-dark">Insumos</h2><a href="#ventana_agregar_insumo" class="btn-agregar-movimiento fondo-verde letra-blanca">Añadir insumo</a></div>
+                    <form action="insumos_panel.html" method="get" class="formulario_buscar_insumo"><input type="search" name="buscar_insumo" class="campo_buscar_insumo" placeholder="Buscar ingrediente..." aria-label="Buscar insumo"><button type="submit" class="boton_enviar_busqueda_insumo" aria-label="Buscar insumo"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg></button></form>
+                    <div class="lista_tarjetas_insumo">
+                        <details class="tarjeta_insumo"><summary><div><h3 class="nombre_insumo">Tomate Cherry</h3><span class="categoria_insumo">Verduras</span></div><span class="cantidad_insumo">142 KG</span></summary><div class="acciones_insumo"><a href="editar_insumo_panel.html?insumo=tomate">Modificar</a><a href="#confirmar_eliminacion" class="accion_eliminar">Eliminar</a></div></details>
+                        <details class="tarjeta_insumo tarjeta_insumo_stock_bajo"><summary><div><h3 class="nombre_insumo">Huevo AAA</h3><span class="categoria_insumo">Huevo</span></div><span class="cantidad_insumo">14 UND</span></summary><div class="acciones_insumo"><a href="editar_insumo_panel.html?insumo=huevo">Modificar</a><a href="#confirmar_eliminacion" class="accion_eliminar">Eliminar</a></div></details>
+                        <details class="tarjeta_insumo"><summary><div><h3 class="nombre_insumo">Pechuga de Pollo</h3><span class="categoria_insumo">Carnes</span></div><span class="cantidad_insumo">45 KG</span></summary><div class="acciones_insumo"><a href="editar_insumo_panel.html?insumo=pollo">Modificar</a><a href="#confirmar_eliminacion" class="accion_eliminar">Eliminar</a></div></details>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modal Agregar Insumo -->
+        <div id="ventana_agregar_insumo" class="fondo_ventana_emergente">
+            <div class="cuadro_ventana_emergente">
+                <div class="encabezado_ventana_emergente">
+                    <h2>Agregar insumo</h2>
+                    <a href="#" class="boton_cerrar_ventana_emergente" title="Cerrar">&times;</a>
+                </div>
+                <form class="formulario_agregar_insumo" id="form_agregar_insumo">
+                    <label for="campo_nombre_insumo">Nombre del insumo</label>
+                    <input type="text" id="campo_nombre_insumo" name="nombre_insumo" placeholder="Ej: Tomate Cherry" required>
+
+                    <label for="campo_categoria_insumo">Categoría</label>
+                    <input type="text" id="campo_categoria_insumo" name="categoria_insumo" placeholder="Ej: Verduras" required>
+
+                    <label for="campo_cantidad_insumo">Cantidad inicial</label>
+                    <input type="number" id="campo_cantidad_insumo" name="cantidad_insumo" min="0" step="0.1" placeholder="0" required>
+
+                    <label for="campo_unidad_insumo">Unidad de medida</label>
+                    <select id="campo_unidad_insumo" name="unidad_insumo" required>
+                        <option value="" disabled selected>Selecciona una unidad</option>
+                        <option value="KG">Kilogramos (Kg)</option>
+                        <option value="GR">Gramos (Gr)</option>
+                        <option value="L">Litros (L)</option>
+                        <option value="UND">Unidades (Und)</option>
+                    </select>
+
+                    <label for="campo_stock_minimo_insumo">Stock mínimo</label>
+                    <input type="number" id="campo_stock_minimo_insumo" name="stock_minimo" min="0" step="0.1" placeholder="Ej: 5" required>
+
+                    <div class="botones_formulario_agregar_insumo">
+                        <a href="#" class="boton_cancelar_agregar_insumo">Cancelar</a>
+                        <button type="submit" class="boton_guardar_insumo">Guardar insumo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="confirmar_eliminacion" class="fondo_ventana_emergente">
+            <div class="cuadro_ventana_emergente">
+                <div class="encabezado_ventana_emergente"><h2>Eliminar insumo</h2><a href="#" class="boton_cerrar_ventana_emergente" title="Cerrar">&times;</a></div>
+                <p>¿Seguro que quieres eliminar este insumo?</p>
+                <div class="botones_formulario_agregar_insumo"><a href="#" class="boton_cancelar_agregar_insumo">Cancelar</a><a href="insumos_panel.html?v=2" class="boton_guardar_insumo">Sí, eliminar</a></div>
+            </div>
+        </div>
+    </div>
+</body>
+    <script src="../static/modulo_inventario/js/inventario_api.js?v=20"></script>
+</html>

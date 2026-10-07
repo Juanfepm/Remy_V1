@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Aprendiz | REMY 1.0</title>
+    <link rel="stylesheet" href="../static/modulo_inventario/css/normalize.css">
+    <link rel="stylesheet" href="../static/modulo_inventario/css/Formato_Rm_interno.css?v=24">
+
+</head>
+
+<body id="cuerpo_inventario">
+
+    <div id="app_inventario">
+
+        <input type="checkbox" id="checkbox_menu" class="checkbox-menu-toggle">
+
+        <aside id="barra_lateral">
+
+            <label for="checkbox_menu" class="btn-cerrar-menu-lateral" aria-label="Cerrar menú">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" />
+                </svg>
+            </label>
+
+            <div id="cont_marcas">
+                <figure id="marca_sena">
+                    <img src="../static/modulo_inventario/componentes/simbolo_sena_verde.svg" alt="sena">
+                </figure>
+                <div id="linea_vert"></div>
+                <figure id="marca_remy">
+                    <img src="../static/modulo_inventario/componentes/remy_green.svg" alt="remy">
+                </figure>
+            </div>
+
+            <nav id="menu_lateral">
+
+                <a href="#panel_calendario_instructor" class="item-menu" id="link_inicio">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m0 16H5V8h14v11" />
+                    </svg>
+                    <span>Calendario</span>
+                </a>
+
+                <a href="#panel_alertas_instructor" class="item-menu" id="link_reservas">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44A.99.99 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9M12 4.15 6.04 7.5 12 10.85 17.96 7.5 12 4.15M5 15.91l6 3.38v-6.71L5 9.21v6.7m14 0v-6.7l-6 3.37v6.71l6-3.38Z" />
+                    </svg>
+                    <span>Inventario</span>
+                </a>
+
+                <a href="#panel_eventos_instructor" class="item-menu" id="link_eventos_menu">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20m1 5v4h4v2h-6V7h2Z" />
+                    </svg>
+                    <span>Eventos y agenda</span>
+                </a>
+
+                <a href="#panel_menu_instructor" class="item-menu" id="link_liderazgo">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 3h2v8H3V3m4 0h2v8H7V3m4 0h2v8h-2V3m-4 9h2v9H7v-9m9-9h2v18h-2V3m4 0h2v18h-2V3Z" />
+                    </svg>
+                    <span>Menú</span>
+                </a>
+
+                <a href="inventario.html" class="item-menu" id="link_inventario">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2 2 7l10 5 10-5-10-5m0 8L2 15l10 5 10-5-10-5m0 8-8-4v2l8 4 8-4v-2l-8 4Z" />
+                    </svg>
+                    <span>Abrir inventario</span>
+                </a>
+
+            </nav>
+
+            <footer class="pie-menu-lateral">
+                <a href="https://www.sena.edu.co" target="_blank" rel="noopener noreferrer">www.sena.edu.co</a>
+                <span>Centro Agropecuario de Buga</span>
+                <small>© 2026 - Versión 1.0</small>
+            </footer>
+
+        </aside>
+
+        <label for="checkbox_menu" class="capa-oscura-menu" aria-label="Cerrar menú"></label>
+
+        <main id="zona_principal">
+
+            <header id="cabezote_dashboard">
+                <div class="cabecera-izquierda">
+                    <label for="checkbox_menu" class="btn-menu-hamburguesa">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z" />
+                        </svg>
+                    </label>
+                </div>
+                <div class="cabecera-derecha">
+                    <span id="usuario_info" class="letra-azul-dark"></span>
+                    <button id="btn_cerrar_sesion">Cerrar sesión</button>
+                </div>
+            </header>
+
+
+            <section id="contenido_inventario" class="dashboard-instructor-grid">
+
+                <div class="panel-aprendiz panel-instructor" id="panel_calendario_instructor">
+
+                    <div class="cabecera-panel">
+                        <h2 class="letra-azul-dark">Calendario</h2>
+                    </div>
+
+                    <div class="encabezado-calendario-instructor">
+                        <button type="button" class="navegar-mes-instructor" id="mes_anterior_aprendiz" aria-label="Mes anterior">&#8249;</button>
+                        <p id="mes_actual_aprendiz" aria-live="polite"></p>
+                        <button type="button" class="navegar-mes-instructor" id="mes_siguiente_aprendiz" aria-label="Mes siguiente">&#8250;</button>
+                    </div>
+
+                    <div id="calendario_aprendiz">
+                        <table id="estructura_calendario_instructor">
+                            <thead>
+                                <tr><td>Dom</td><td>Lun</td><td>Mar</td><td>Mié</td><td>Jue</td><td>Vie</td><td>Sáb</td></tr>
+                            </thead>
+                            <tbody id="cuerpo_calendario_aprendiz"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div class="panel-aprendiz panel-instructor" id="panel_alertas_instructor">
+
+                    <div class="cabecera-panel">
+                        <h2 class="letra-azul-dark">Insumos en alerta</h2>
+                    </div>
+
+                    <p id="estado_alertas_aprendiz" class="estado-panel-instructor" aria-live="polite">Consultando inventario...</p>
+                    <ul class="lista-alertas-instructor" id="lista_alertas_aprendiz"></ul>
+                    <a href="insumos_panel.html" class="enlace-panel-instructor">Ver inventario</a>
+
+                </div>
+
+                <div class="panel-aprendiz panel-instructor" id="panel_eventos_instructor">
+
+                    <div class="cabecera-panel">
+                        <h2 class="letra-azul-dark">Resumen de Eventos</h2>
+                    </div>
+
+                    <ul class="lista-eventos">
+                        <li class="evento-item">
+                            <p class="nombre-evento letra-verde">Evento ADSO - 10</p>
+                            <p class="fecha-evento letra-gris-dark">22 - Mayo - 2026<br>8:00 AM - 9:00 AM</p>
+                        </li>
+                        <li class="evento-item">
+                            <p class="nombre-evento letra-verde">Evento SST</p>
+                            <p class="fecha-evento letra-gris-dark">06 - Septiembre - 2026<br>2:00 PM - 4:00 PM</p>
+                        </li>
+                        <li class="evento-item">
+                            <p class="nombre-evento letra-verde">Evento ETD</p>
+                            <p class="fecha-evento letra-gris-dark">27 - Septiembre - 2026<br>8:00 PM - 10:00 PM</p>
+                        </li>
+                        <li class="evento-item">
+                            <p class="nombre-evento letra-verde">Evento ADSO - 09</p>
+                            <p class="fecha-evento letra-gris-dark">26 - Noviembre - 2026<br>9:00 AM - 11:00 AM</p>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <div class="panel-aprendiz panel-instructor" id="panel_agenda_instructor">
+
+                    <div class="cabecera-panel"><h2 class="letra-azul-dark">Agenda de aprendices</h2></div>
+
+                    <div class="lista-liderazgos">
+                        <article class="liderazgo-item">
+                            <div class="cabecera-liderazgo">
+                                <p class="nombre-liderazgo letra-verde">Evento ADSO - 10</p>
+                                <p class="fecha-liderazgo letra-gris-dark">22 - Mayo - 2026</p>
+                            </div>
+                            <p class="responsable-liderazgo letra-gris-dark">Líder: Abel Tobar</p>
+                            <p class="responsable-liderazgo letra-gris-dark">Líder suplente: Martha Campos</p>
+                            <p class="cantidad-liderazgo letra-azul-dark">10</p>
+                        </article>
+
+                        <article class="liderazgo-item">
+                            <div class="cabecera-liderazgo">
+                                <p class="nombre-liderazgo letra-verde">Evento SST - 11</p>
+                                <p class="fecha-liderazgo letra-gris-dark">06 - Septiembre - 2026</p>
+                            </div>
+                            <p class="responsable-liderazgo letra-gris-dark">Líder: Andrea Cárdenas</p>
+                            <p class="responsable-liderazgo letra-gris-dark">Líder suplente: Carlos Gómez</p>
+                            <p class="cantidad-liderazgo letra-azul-dark">20</p>
+                        </article>
+
+                        <article class="liderazgo-item">
+                            <div class="cabecera-liderazgo">
+                                <p class="nombre-liderazgo letra-verde">Evento ETD</p>
+                                <p class="fecha-liderazgo letra-gris-dark">27 - Septiembre - 2026</p>
+                            </div>
+                            <p class="responsable-liderazgo letra-gris-dark">Líder: Camila Prieto</p>
+                            <p class="responsable-liderazgo letra-gris-dark">Líder suplente: Daniel García</p>
+                            <p class="cantidad-liderazgo letra-azul-dark">30</p>
+                        </article>
+                    </div>
+
+                </div>
+
+                <div class="panel-aprendiz panel-instructor" id="panel_menu_instructor">
+
+                    <div class="cabecera-panel">
+                        <h2 class="letra-azul-dark">Menú</h2>
+                    </div>
+
+                    <div class="menu-resumen">
+                        <div class="menu-top">
+                            <div class="menu-encabezado">
+                                <span class="menu-titulo letra-azul-dark">Menú</span>
+                            </div>
+
+                            <div class="menu-estadisticas">
+                                <div class="mini-estado">
+                                    <span class="label-estado letra-gris-dark">Platos</span>
+                                    <strong class="valor-estado letra-azul-dark">8</strong>
+                                </div>
+                                <div class="mini-estado">
+                                    <span class="label-estado letra-gris-dark">Categorías</span>
+                                    <strong class="valor-estado letra-azul-dark">3</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lista-menu-imagenes">
+                            <article class="item-menu-imagen">
+                                <div class="miniatura-plato" aria-label="Sopa de pollo">
+                                    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" role="img"
+                                        aria-hidden="true">
+                                        <rect width="80" height="80" fill="#F6F6F4" />
+                                        <circle cx="40" cy="40" r="26" fill="#F6F6F4" stroke="#C9D0D0"
+                                            stroke-width="2" />
+                                        <path d="M18 42c8-10 14-14 22-14s16 4 22 14v4H18v-4Z" fill="#D79C6B" />
+                                        <circle cx="26" cy="33" r="4" fill="#A6C36B" />
+                                        <circle cx="38" cy="28" r="4" fill="#A6C36B" />
+                                        <circle cx="50" cy="34" r="4" fill="#A6C36B" />
+                                        <circle cx="32" cy="42" r="3" fill="#E6D1A0" />
+                                        <circle cx="48" cy="42" r="3" fill="#E6D1A0" />
+                                        <circle cx="40" cy="48" r="3" fill="#E6D1A0" />
+                                    </svg>
+                                </div>
+                                <div class="info-menu-imagen">
+                                    <p class="nombre-plato letra-verde">Sopa de pollo</p>
+                                    <p class="detalle-plato letra-gris-dark">Fuerte</p>
+                                </div>
+                                <span class="badge-plato letra-azul-dark">4</span>
+                            </article>
+
+                            <article class="item-menu-imagen">
+                                <div class="miniatura-plato" aria-label="Sopa de verduras">
+                                    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" role="img"
+                                        aria-hidden="true">
+                                        <rect width="80" height="80" fill="#F6F6F4" />
+                                        <circle cx="40" cy="40" r="26" fill="#F5F3EC" stroke="#C9D0D0"
+                                            stroke-width="2" />
+                                        <path d="M18 42c8-10 14-14 22-14s16 4 22 14v4H18v-4Z" fill="#B9D56B" />
+                                        <circle cx="28" cy="32" r="4" fill="#93BA4A" />
+                                        <circle cx="40" cy="28" r="5" fill="#93BA4A" />
+                                        <circle cx="52" cy="34" r="4" fill="#93BA4A" />
+                                        <circle cx="34" cy="44" r="3" fill="#E7B36B" />
+                                        <circle cx="48" cy="42" r="3" fill="#E7B36B" />
+                                        <circle cx="40" cy="48" r="3" fill="#E7B36B" />
+                                    </svg>
+                                </div>
+                                <div class="info-menu-imagen">
+                                    <p class="nombre-plato letra-verde">Sopa de verduras</p>
+                                    <p class="detalle-plato letra-gris-dark">Ligera</p>
+                                </div>
+                                <span class="badge-plato letra-azul-dark">2</span>
+                            </article>
+
+                            <article class="item-menu-imagen">
+                                <div class="miniatura-plato" aria-label="Salmon al limón">
+                                    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" role="img"
+                                        aria-hidden="true">
+                                        <rect width="80" height="80" fill="#F6F6F4" />
+                                        <circle cx="40" cy="40" r="26" fill="#F3F1E8" stroke="#C9D0D0"
+                                            stroke-width="2" />
+                                        <path d="M20 42c4-11 12-18 20-18 12 0 20 9 20 18s-9 18-20 18c-8 0-16-7-20-18Z"
+                                            fill="#F0A755" />
+                                        <path d="M26 42c5-5 10-6 14-6 7 0 12 3 18 9-5 7-11 10-18 10-6 0-10-4-14-13Z"
+                                            fill="#F7C872" />
+                                        <circle cx="40" cy="34" r="2.5" fill="#E8C46D" />
+                                        <circle cx="50" cy="42" r="2.5" fill="#E8C46D" />
+                                    </svg>
+                                </div>
+                                <div class="info-menu-imagen">
+                                    <p class="nombre-plato letra-verde">Salmón a la plancha</p>
+                                    <p class="detalle-plato letra-gris-dark">Fuerza</p>
+                                </div>
+                                <span class="badge-plato letra-azul-dark">3</span>
+                            </article>
+                        </div>
+
+                        <div class="total-menu">
+                            <p class="label-total letra-gris-dark">Total platos</p>
+                            <p class="valor-total letra-azul-dark">8</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="../static/modulo_inventario/js/aprendiz_panel.js?v=1"></script>
+</body>
+
+</html>

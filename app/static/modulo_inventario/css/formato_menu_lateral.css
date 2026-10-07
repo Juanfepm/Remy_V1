@@ -1,0 +1,113 @@
+:root {
+    --sombra-menu: rgba(0, 0, 0, 0.08);
+}
+
+#gran_padre_entradas {
+    display: flex;
+    align-items: stretch;
+    min-height: 100vh;
+    background: var(--blanco);
+}
+
+#gran_padre_entradas header#menu_lateral {
+    flex: 0 0 90px;
+    min-height: 100vh;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--blanco);
+    box-shadow: 2px 0 6px var(--sombra-menu);
+}
+
+#gran_padre_entradas header#menu_lateral figure#marca_remy {
+    width: 45px;
+    margin-bottom: 30px;
+}
+
+#gran_padre_entradas nav#menu_ppal {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 0 12px;
+}
+
+#gran_padre_entradas nav#menu_ppal #opcs_menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+
+#gran_padre_entradas nav#menu_ppal .btn-opc {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--gris-dark);
+    font-size: 0.72rem;
+    text-align: center;
+}
+
+#gran_padre_entradas nav#menu_ppal .btn-opc > span:first-child {
+    font-size: 1.55rem;
+    line-height: 1;
+}
+
+#gran_padre_entradas nav#menu_ppal .btn-opc-activo {
+    color: var(--verde);
+    font-weight: bold;
+}
+
+@media screen and (max-width: 767px) {
+    #gran_padre_entradas {
+        display: block;
+    }
+
+    #gran_padre_entradas header#menu_lateral {
+        width: 100%;
+        min-height: auto;
+        height: auto;
+        padding: 10px 16px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    #gran_padre_entradas header#menu_lateral figure#marca_remy {
+        width: 100px;
+        margin: 0;
+    }
+
+    #gran_padre_entradas nav#menu_ppal {
+        width: auto;
+        flex: 0 1 auto;
+        padding: 0;
+        flex-direction: row;
+        gap: 18px;
+    }
+
+    #gran_padre_entradas nav#menu_ppal #opcs_menu {
+        width: auto;
+        flex-direction: row;
+        gap: 14px;
+    }
+
+    #gran_padre_entradas nav#menu_ppal .btn-opc {
+        width: auto;
+        font-size: 0;
+    }
+
+    #gran_padre_entradas nav#menu_ppal .btn-opc > span:first-child {
+        font-size: 1.45rem;
+    }
+
+    #gran_padre_entradas nav#menu_ppal #btn_salir {
+        width: auto;
+        font-size: 0.7rem;
+    }
+}

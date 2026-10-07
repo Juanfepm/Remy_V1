@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insumos | REMY 1.0</title>
+    <link rel="stylesheet" href="../static/modulo_inventario/css/normalize.css">
+    <link rel="stylesheet" href="../static/modulo_inventario/css/Formato_Rm_interno.css?v=9">
+    <link rel="stylesheet" href="../static/modulo_inventario/css/formato_insumos.css">
+    <link rel="stylesheet" href="../static/modulo_inventario/css/formato_formulario_insumo.css">
+</head>
+<body>
+    <main id="gran_padre_insumos">
+        <header id="menu_lateral_insumos">
+            <figure id="marca_remy_insumos"><img src="../static/modulo_inventario/componentes/remy_green.svg" alt="Logo de Remy"></figure>
+            <nav aria-label="Navegacion de inventario">
+                <div class="opciones-menu-insumos">
+                    <a href="inventario.html" class="opcion-menu-insumos"><strong aria-hidden="true">[]</strong><span>Inventario</span></a>
+                    <a href="entradas.html" class="opcion-menu-insumos"><strong aria-hidden="true">+</strong><span>Entradas</span></a>
+                    <a href="salidas.html" class="opcion-menu-insumos"><strong aria-hidden="true">&gt;</strong><span>Salidas</span></a>
+                </div>
+                <a href="index.html" class="opcion-menu-insumos"><span>Cerrar sesion</span></a>
+            </nav>
+        </header>
+
+        <section id="panel_insumos">
+            <header id="cabezote_insumos"><h1>Insumos</h1></header>
+            <form action="insumos.html" method="get" class="formulario_buscar_insumo">
+                <input type="search" name="buscar_insumo" class="campo_buscar_insumo" placeholder="Buscar ingrediente..." aria-label="Buscar insumo">
+                <button type="submit" class="boton_enviar_busqueda_insumo" title="Buscar insumo" aria-label="Buscar insumo">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+                </button>
+            </form>
+
+            <div class="lista_tarjetas_insumo">
+                <a href="detalle_insumo.html" class="tarjeta_insumo">
+                    <div><h2 class="nombre_insumo">Tomate Cherry</h2><span class="categoria_insumo">Verduras</span></div>
+                    <span class="cantidad_insumo">142 KG</span>
+                </a>
+                <a href="detalle_insumo.html" class="tarjeta_insumo tarjeta_insumo_stock_bajo">
+                    <div><h2 class="nombre_insumo">Huevo AAA</h2><span class="categoria_insumo">Huevo</span></div>
+                    <span class="cantidad_insumo">14 UND</span>
+                </a>
+                <a href="detalle_insumo.html" class="tarjeta_insumo">
+                    <div><h2 class="nombre_insumo">Pechuga de Pollo</h2><span class="categoria_insumo">Carnes</span></div>
+                    <span class="cantidad_insumo">45 KG</span>
+                </a>
+            </div>
+
+            <div class="zona_botones_flotantes_insumo">
+                <a href="#ventana_agregar_insumo" class="boton_flotante_agregar_insumo" title="Agregar insumo" aria-label="Agregar insumo">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                </a>
+            </div>
+        </section>
+
+        <div id="ventana_agregar_insumo" class="fondo_ventana_emergente">
+            <div class="cuadro_ventana_emergente">
+                <div class="encabezado_ventana_emergente"><h2>Agregar insumo</h2><a href="#" class="boton_cerrar_ventana_emergente" title="Cerrar">&times;</a></div>
+                <form class="formulario_agregar_insumo">
+                    <label for="campo_nombre_insumo">Nombre del insumo</label>
+                    <input type="text" id="campo_nombre_insumo" name="nombre_insumo" placeholder="Ej: Tomate Cherry" required>
+                    <label for="campo_categoria_insumo">Categoria</label>
+                    <input type="text" id="campo_categoria_insumo" name="categoria_insumo" placeholder="Ej: Verduras" required>
+                    <label for="campo_cantidad_insumo">Cantidad inicial</label>
+                    <input type="number" id="campo_cantidad_insumo" name="cantidad_insumo" min="0" step="0.1" placeholder="0" required>
+                    <label for="campo_unidad_insumo">Unidad de medida</label>
+                    <select id="campo_unidad_insumo" name="unidad_insumo" required><option value="" disabled selected>Selecciona una unidad</option><option value="KG">Kilogramos (Kg)</option><option value="GR">Gramos (Gr)</option><option value="L">Litros (L)</option><option value="UND">Unidades (Und)</option></select>
+                    <div class="botones_formulario_agregar_insumo"><a href="#" class="boton_cancelar_agregar_insumo">Cancelar</a><button type="submit" class="boton_guardar_insumo">Guardar insumo</button></div>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

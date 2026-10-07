@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Instructor | REMY 1.0</title>
+    <link rel="stylesheet" href="../static/modulo_inventario/css/normalize.css">
+    <link rel="stylesheet" href="../static/modulo_inventario/css/Formato_Rm_interno.css?v=24">
+</head>
+
+<body id="cuerpo_inventario">
+    <div id="app_inventario">
+        <input type="checkbox" id="checkbox_menu" class="checkbox-menu-toggle">
+
+        <aside id="barra_lateral">
+            <label for="checkbox_menu" class="btn-cerrar-menu-lateral" aria-label="Cerrar menú">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" />
+                </svg>
+            </label>
+            <div id="cont_marcas">
+                <figure id="marca_sena"><img src="../static/modulo_inventario/componentes/simbolo_sena_verde.svg" alt="SENA"></figure>
+                <div id="linea_vert"></div>
+                <figure id="marca_remy"><img src="../static/modulo_inventario/componentes/remy_green.svg" alt="REMY"></figure>
+            </div>
+            <nav id="menu_lateral" aria-label="Navegación del instructor">
+                <a href="#panel_calendario_instructor" class="item-menu">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m0 16H5V8h14v11" />
+                    </svg>
+                    <span>Calendario</span>
+                </a>
+                <a href="#panel_alertas_instructor" class="item-menu">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44A.99.99 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9M12 4.15 6.04 7.5 12 10.85 17.96 7.5 12 4.15M5 15.91l6 3.38v-6.71L5 9.21v6.7m14 0v-6.7l-6 3.37v6.71l6-3.38Z" />
+                    </svg>
+                    <span>Inventario</span>
+                </a>
+                <a href="#panel_eventos_instructor" class="item-menu">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20m1 5v4h4v2h-6V7h2Z" />
+                    </svg>
+                    <span>Eventos y agenda</span>
+                </a>
+                <a href="#panel_menu_instructor" class="item-menu">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M3 3h2v8H3V3m4 0h2v8H7V3m4 0h2v8h-2V3m-4 9h2v9H7v-9m9-9h2v18h-2V3m4 0h2v18h-2V3Z" />
+                    </svg>
+                    <span>Menú y producción</span>
+                </a>
+                <a href="inventario.html" class="item-menu">
+                    <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2 2 7l10 5 10-5-10-5m0 8L2 15l10 5 10-5-10-5m0 8-8-4v2l8 4 8-4v-2l-8 4Z" />
+                    </svg>
+                    <span>Abrir inventario</span>
+                </a>
+            </nav>
+            <footer class="pie-menu-lateral">
+                <a href="https://www.sena.edu.co" target="_blank" rel="noopener noreferrer">www.sena.edu.co</a>
+                <span>Centro Agropecuario de Buga</span>
+                <small>© 2026 - Versión 1.0</small>
+            </footer>
+        </aside>
+
+        <label for="checkbox_menu" class="capa-oscura-menu" aria-label="Cerrar menú"></label>
+
+        <main id="zona_principal">
+            <header id="cabezote_dashboard">
+                <div class="cabecera-izquierda">
+                    <label for="checkbox_menu" class="btn-menu-hamburguesa" aria-label="Abrir menú">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z" />
+                        </svg>
+                    </label>
+                </div>
+                <div class="cabecera-derecha">
+                    <span id="usuario_info" class="letra-azul-dark">Instructor</span>
+                    <button id="btn_cerrar_sesion" type="button">Cerrar sesión</button>
+                </div>
+            </header>
+
+            <section id="contenido_instructor" class="dashboard-instructor-grid">
+                <div class="panel-aprendiz panel-instructor" id="panel_calendario_instructor">
+                    <div class="cabecera-panel"><h2 class="letra-azul-dark">Calendario</h2></div>
+                    <div class="encabezado-calendario-instructor">
+                        <button type="button" class="navegar-mes-instructor" id="mes_anterior" aria-label="Mes anterior">&#8249;</button>
+                        <p id="mes_actual_instructor" aria-live="polite"></p>
+                        <button type="button" class="navegar-mes-instructor" id="mes_siguiente" aria-label="Mes siguiente">&#8250;</button>
+                    </div>
+                    <div id="calendario_instructor">
+                        <table id="estructura_calendario_instructor" aria-label="Calendario mensual">
+                            <thead>
+                                <tr><th scope="col">Dom</th><th scope="col">Lun</th><th scope="col">Mar</th><th scope="col">Mié</th><th scope="col">Jue</th><th scope="col">Vie</th><th scope="col">Sáb</th></tr>
+                            </thead>
+                            <tbody id="cuerpo_calendario_instructor"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="panel-aprendiz panel-instructor" id="panel_alertas_instructor">
+                    <div class="cabecera-panel"><h2 class="letra-azul-dark">Insumos en alerta</h2></div>
+                    <p class="estado-panel-instructor" id="estado_alertas_instructor" aria-live="polite">Consultando inventario...</p>
+                    <ul class="lista-alertas-instructor" id="lista_alertas_instructor"></ul>
+                    <a href="insumos_panel.html" class="enlace-panel-instructor">Ver inventario</a>
+                </div>
+
+                <div class="panel-aprendiz panel-instructor" id="panel_menu_instructor">
+                    <div class="cabecera-panel"><h2 class="letra-azul-dark">Menú</h2></div>
+                    <p class="estado-panel-instructor">No hay información de menú disponible.</p>
+                </div>
+
+                <div class="panel-aprendiz panel-instructor" id="panel_eventos_instructor">
+                    <div class="cabecera-panel"><h2 class="letra-azul-dark">Resumen de eventos</h2></div>
+                    <p class="estado-panel-instructor">No hay eventos disponibles para mostrar.</p>
+                </div>
+
+                <div class="panel-aprendiz panel-instructor" id="panel_agenda_instructor">
+                    <div class="cabecera-panel"><h2 class="letra-azul-dark">Agenda de aprendices</h2></div>
+                    <p class="estado-panel-instructor">No hay información de agenda disponible.</p>
+                </div>
+
+                <div class="panel-aprendiz panel-instructor" id="panel_produccion_instructor">
+                    <div class="cabecera-panel"><h2 class="letra-azul-dark">Resumen de producción</h2></div>
+                    <p class="estado-panel-instructor">No hay información de producción disponible.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../static/modulo_inventario/js/instructor_panel.js?v=1"></script>
+</body>
+
+</html>

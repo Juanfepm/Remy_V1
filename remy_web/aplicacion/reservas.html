@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas | REMY 1.0</title>
+    <link rel="stylesheet" href="../rm_codigos/normalize.css">
+    <link rel="stylesheet" href="../rm_codigos/formato_rm_clientes.css">
+    <script src="../rm_codigos/config.js" defer></script>
+    <script src="../rm_codigos/api.js" defer></script>
+    <script src="../rm_codigos/plantillas.js" defer></script>
+    <script src="../rm_codigos/reservas.js" defer></script>
+</head>
+<body id="cuerpo_reservas">
+
+    <header id="cabezote_titulo" class="fondo-azul" data-titulo="Reservas"></header>
+
+    <main id="contenido_reservas">
+
+        
+        <section id="intro_seleccion">
+            <figure class="ico_seccion letra-verde">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path fill="currentColor" d="M464,344.063c0-109.308-84.755-199.193-192-207.39V80H240v56.673c-107.245,8.2-192,98.082-192,207.39V377.17H464Zm-32,1.107H80v-1.107c0-97.046,78.953-176,176-176s176,78.953,176,176Z"/>
+                    <rect width="480" height="32" x="16" y="416" fill="currentColor"/>
+                </svg>
+            </figure>
+            <div class="txt_intro">
+                <h2 class="letra-azul-dark">Selecciona tu menú</h2>
+                <p class="letra-gris-dark">Elige uno de nuestros menús de platos</p>
+            </div>
+        </section>
+
+        <p id="aviso_menus" class="aviso aviso-cargando">Cargando los menús disponibles...</p>
+
+        <form id="forma_menus">
+
+            
+            <ul id="lista_menus"></ul>
+
+            <button type="button" id="btn_continuar" class="btn-capsula capsula-full fondo-verde letra-blanca">Continuar con la reserva</button>
+
+        </form>
+
+    </main>
+
+    
+    <section id="capa_experiencias" class="oculto">
+        <div id="panel_experiencias">
+
+            <div id="encabezado_experiencias">
+                <h2 class="letra-blanca">Suma una experiencia</h2>
+                <button type="button" id="btn_sin_experiencia" class="btn-capsula capsula-full fondo-gris letra-gris-dark">No, gracias</button>
+            </div>
+
+            
+            <ul id="lista_experiencias"></ul>
+
+        </div>
+    </section>
+
+    <nav id="tabs_inferior" data-activo="reservas"></nav>
+
+</body>
+</html>

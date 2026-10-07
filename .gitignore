@@ -1,0 +1,22 @@
+.DS_Store
+
+# Local environment and credentials
+**/.env
+**/.env.*
+!**/.env.ejemplo
+!**/.env.example
+
+# Generated files and dependencies
+**/node_modules/
+**/vendor/
+**/__pycache__/
+**/*.py[cod]
+**/.venv/
+**/venv/
+**/.gradle/
+**/build/
+**/local.properties
+
+# IDE files
+.idea/
+*.iml

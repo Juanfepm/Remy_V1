@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel | REMY 1.0</title>
+    <link rel="stylesheet" href="../rm_codigos/normalize.css">
+    <link rel="stylesheet" href="../rm_codigos/formato_rm_interno.css">
+    <script src="../rm_codigos/config.js" defer></script>
+    <script src="../rm_codigos/api.js" defer></script>
+    <script src="../rm_codigos/sesion.js" defer></script>
+    <script src="../rm_codigos/panel.js" defer></script>
+    <script src="../rm_codigos/dashboard.js" defer></script>
+</head>
+<body>
+
+    <main id="gran_padre_contenedor">
+
+        
+        <header id="cabezote_sesion" data-activo="inicio"></header>
+
+        <section id="contenido_sesion">
+
+            <div id="bienvenida_panel">
+                <h2 class="letra-azul-dark">Hola, <span id="saludo_nombre"></span></h2>
+                <p id="saludo_fecha"></p>
+            </div>
+
+            
+            <div id="resumenes_superior">
+                <div class="tarjeta_resumen">
+                    <strong id="cifra_reservas">-</strong>
+                    <span>Reservas de hoy</span>
+                </div>
+                <div class="tarjeta_resumen">
+                    <strong id="cifra_menus">-</strong>
+                    <span>Menús pedidos</span>
+                </div>
+                <div class="tarjeta_resumen">
+                    <strong id="cifra_pendientes">-</strong>
+                    <span>Por entregar</span>
+                </div>
+                <div class="tarjeta_resumen">
+                    <strong id="cifra_eventos">-</strong>
+                    <span>Eventos activos</span>
+                </div>
+            </div>
+
+            
+            <div id="modulos_panel"></div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

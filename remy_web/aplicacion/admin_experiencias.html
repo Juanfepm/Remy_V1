@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador / Experiencias | REMY 1.0</title>
+    <link rel="stylesheet" href="../rm_codigos/normalize.css">
+    <link rel="stylesheet" href="../rm_codigos/formato_rm_interno.css">
+    <script src="../rm_codigos/config.js" defer></script>
+    <script src="../rm_codigos/api.js" defer></script>
+    <script src="../rm_codigos/sesion.js" defer></script>
+    <script src="../rm_codigos/panel.js" defer></script>
+    <script src="../rm_codigos/admin_experiencias.js" defer></script>
+</head>
+<body>
+
+    <main id="gran_padre_contenedor">
+
+        <header id="cabezote_sesion" data-activo="experiencias"></header>
+
+        <section id="contenido_sesion">
+
+            <header id="cabezote_admin" class="fondo-azul">
+                <a href="dashboard.html" class="btn_volver letra-blanca" aria-label="Volver">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </a>
+                <h1 class="letra-blanca">Administrador / Experiencias</h1>
+                <span class="hueco_cabezote"></span>
+            </header>
+
+            <div class="cont-busqueda">
+                <input type="text" id="buscar_experiencia" class="input-busqueda" placeholder="Buscar experiencia...">
+                <svg class="icono-filtro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+            </div>
+
+            <p id="aviso_experiencias" class="aviso aviso-cargando">Cargando experiencias...</p>
+
+            
+            <div id="lista_experiencias_admin" class="lista"></div>
+
+        </section>
+
+    </main>
+
+    <button type="button" class="fab" id="btn_nueva_experiencia" aria-label="Nueva experiencia">+</button>
+
+    
+    <dialog id="modal_experiencia" class="modal_rm">
+
+        <form id="forma_experiencia">
+
+            <h2 class="letra-azul-dark" id="titulo_modal_experiencia">Nueva experiencia</h2>
+
+            <input type="hidden" id="id_experiencia">
+
+            <label for="nombre_experiencia">Nombre</label>
+            <input type="text" id="nombre_experiencia" maxlength="64" required>
+
+            <label for="descripcion_experiencia">Descripción</label>
+            <textarea id="descripcion_experiencia" maxlength="400"></textarea>
+
+            <label for="precio_experiencia">Precio por persona</label>
+            <input type="number" id="precio_experiencia" min="0" step="1000" value="12000" required>
+
+            <label for="img_experiencia">Imagen (archivo de img_exp/)</label>
+            <select id="img_experiencia">
+                <option value="cafe.jpg">cafe.jpg</option>
+                <option value="vino.jpg">vino.jpg</option>
+                <option value="quesos.jpg">quesos.jpg</option>
+                <option value="plato.jpg">plato.jpg</option>
+                <option value="postre.jpg">postre.jpg</option>
+                <option value="entrada.jpg">entrada.jpg</option>
+                <option value="bebida.jpg">bebida.jpg</option>
+            </select>
+
+            <p id="aviso_modal_experiencia" class="aviso oculto"></p>
+
+            <div class="fila_botones_modal">
+                <button type="button" id="btn_cerrar_experiencia" class="btn-capsula capsula-full fondo-gris letra-gris-dark">Cancelar</button>
+                <button type="submit" id="btn_guardar_experiencia" class="btn-capsula capsula-full fondo-verde letra-blanca">Guardar</button>
+            </div>
+
+        </form>
+
+    </dialog>
+
+</body>
+</html>

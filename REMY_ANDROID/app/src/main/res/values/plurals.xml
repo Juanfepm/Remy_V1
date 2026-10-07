@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="op_reservas_count">
+        <item quantity="one">%1$d Reserva</item>
+        <item quantity="other">%1$d Reservas</item>
+    </plurals>
+    <plurals name="op_menus_count">
+        <item quantity="one">%1$d Menu</item>
+        <item quantity="other">%1$d Menus</item>
+    </plurals>
+    <plurals name="op_menus_del_dia">
+        <item quantity="one">%1$d menú del día</item>
+        <item quantity="other">%1$d menús del día</item>
+    </plurals>
+    <plurals name="op_personas_count">
+        <item quantity="one">%1$d persona</item>
+        <item quantity="other">%1$d personas</item>
+    </plurals>
+    <plurals name="menu_personas_count">
+        <item quantity="one">%1$d Persona</item>
+        <item quantity="other">%1$d Personas</item>
+    </plurals>
+</resources>

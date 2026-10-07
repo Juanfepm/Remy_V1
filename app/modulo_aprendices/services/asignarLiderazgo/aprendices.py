@@ -16,9 +16,11 @@ class Aprendices:
     def listar_disponibles(self, ficha=None):
         try:
             sql = """ SELECT id_usuario, nombre, apellido, ficha FROM usuarios WHERE rol_usuario = 0 AND estado = 'activo' AND id_usuario NOT IN ( 
-            SELECT lider_cocina FROM eventos WHERE lider_cocina IS NOT NULL UNION 
-            SELECT lider_servicio FROM eventos WHERE lider_servicio IS NOT NULL UNION )
-            """
+                SELECT lider_cocina FROM eventos WHERE lider_cocina IS NOT NULL 
+                UNION 
+                SELECT lider_servicio FROM eventos WHERE lider_servicio IS NOT NULL 
+            ) """
+            
             if ficha:
                 sql += " AND ficha = %s"
                 mi_cursor.execute(sql, (ficha,))

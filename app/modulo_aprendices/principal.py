@@ -48,7 +48,7 @@ def lista_aprendices():
 
 @app.route("/dashboard")
 def dashboard():
-    return render_template("modulo_aprendices/panel_Instructor.html")
+    return render_template("modulo_aprendices/Panel_Instructor.html")
 
 @app.route("/asignarLiderazgo")
 def asignar_liderazgo():

@@ -12,22 +12,38 @@ Llave_secreta = "ADSO_2026"
 
 @programa.route('/login', methods=['POST'])
 def iniciar():
-    datos = request.get_json()
+    datos = request.get_json(silent=True)
+    if not datos:
+        return jsonify({"status": "error", "message": "No se recibieron datos en el cuerpo de la petición"}), 400
+
     correo = datos.get('correo')
     contrasena = datos.get('contrasena')
 
-    resultado = mi_login().login(correo, contrasena)
+    try:
+        resultado = mi_login.login(correo, contrasena)
 
-    if resultado["status"] == "success":
-        payload = {
-            'correo': correo,
-            'rol_usuario': resultado['rol_usuario'],
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=10)
-        }
-        token = jwt.encode(payload, Llave_secreta, algorithm='HS256')
-        return jsonify({"mensaje": resultado["message"], "rol_usuario": resultado["rol_usuario"], "token": token}), 200
-    else:
-        return jsonify(resultado), 401
+        if resultado.get("status") == "success":
+            payload = {
+                'correo': correo,
+                'rol_usuario': resultado['rol_usuario'],
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            }
+            token = jwt.encode(payload, Llave_secreta, algorithm='HS256')
+            return jsonify({
+                "status": "success",
+                "mensaje": resultado.get("message", "Login exitoso"), 
+                "rol_usuario": resultado.get("rol_usuario"), 
+                "token": token
+            }), 200
+        else:
+            return jsonify(resultado), 401
+
+    except Exception as e:
+        print(f"Error en app.py: {e}")
+        return jsonify({
+            "status": "error",
+            "message": f"Error procesando la solicitud: {str(e)}"
+        }), 500
 
 @programa.route('/verificar-sesion', methods=['GET'])
 def verificar_sesion():

@@ -82,8 +82,8 @@ class Consultas:
     def info_platos(self):
         try:
             conexion = get_connection()
-            cursor = conexion.cursor()
-            sql=""" SELECT p.id_plato,
+            cursor = conexion.cursor(dictionary=True) 
+            sql = """ SELECT p.id_plato,
                 p.nombre AS plato_nombre, 
                 c.nombre AS categoria, p.descripcion
                 FROM platos p

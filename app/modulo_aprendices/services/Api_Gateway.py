@@ -10,6 +10,7 @@ gateway = Flask(__name__)
 CORS(
     gateway,
     resources={r"/*": {"origins": "*"}},
+    supports_credentials=True,
     expose_headers=["X-Nuevo-Token"],
     allow_headers=["Content-Type", "Authorization", "X-Nuevo-Token"],
     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
@@ -19,12 +20,13 @@ Llave_Secreta = "ADSO_2026"
 DURACION_SESION = timedelta(minutes=30)
 
 Servicios = {
-    "login": "http://127.0.0.1:5006/login",
-    "usuarios": "http://127.0.0.1:5003/usuarios",
-    "eventos": "http://127.0.0.1:5004/eventos",
-    "aprendices": "http://127.0.0.1:5004/aprendices",
-    "carga_masiva": "http://127.0.0.1:5005/programas/cargar-masiva",
-    "dashboard": "http://127.0.0.1:5007/programa/dashboard"
+    "login": "http://127.0.0.1:5106/login",
+    "verificar_sesion": "http://127.0.0.1:5106/verificar-sesion",
+    "usuarios": "http://127.0.0.1:5103/usuarios",
+    "eventos": "http://127.0.0.1:5104/eventos",
+    "aprendices": "http://127.0.0.1:5104/aprendices",
+    "carga_masiva": "http://127.0.0.1:5105/programas/cargar-masiva",
+    "dashboard": "http://127.0.0.1:5107/programa/dashboard"
 }
 
 def requerir_jwt(f):
@@ -68,16 +70,51 @@ def requerir_jwt(f):
     return decorador
 
 
-@gateway.route("/login", methods=["POST"])
+@gateway.route("/login", methods=["POST", "OPTIONS"])
 def gateway_login():
-    datos = request.get_json()
-    respuesta = requests.post(Servicios["login"], json=datos)
-    return jsonify(respuesta.json()), respuesta.status_code
+    if request.method == "OPTIONS":
+        res = make_response('', 200)
+        res.headers["Access-Control-Allow-Origin"] = "*"
+        res.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        res.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        return res
 
-@gateway.route("/verificar-sesion", methods=["GET"])
+    try:
+        datos = request.get_json()
+        respuesta = requests.post(Servicios["login"], json=datos, timeout=5)
+
+        try:
+            contenido = respuesta.json()
+        except Exception:
+            print(f"El servicio de login devolvió un formato no-JSON. Estado HTTP: {respuesta.status_code}")
+            print(f"Cuerpo recibido: {respuesta.text}")
+            return jsonify({
+                "status": "error",
+                "message": f"El servicio de autenticación devolvió una respuesta inválida (HTTP {respuesta.status_code})."
+            }), 502
+
+        return jsonify(contenido), respuesta.status_code
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({
+            "status": "error",
+            "message": f"No fue posible conectar con el microservicio de autenticación: {str(e)}"
+        }), 503
+
+@gateway.route("/verificar-sesion", methods=["GET", "OPTIONS"])
 @requerir_jwt
 def gateway_verificar_sesion(payload):
-    return jsonify({"mensaje": "Sesión válida", "usuario": payload}), 200
+    headers = {"Authorization": request.headers.get("Authorization")}
+    try:
+        respuesta = requests.get(Servicios["verificar_sesion"], headers=headers, timeout=5)
+        try:
+            contenido = respuesta.json()
+        except:
+            return jsonify({"status": "error", "message": "Respuesta inválida del servidor"}), 502
+        return jsonify(contenido), respuesta.status_code
+    except requests.exceptions.RequestException as e:
+        return jsonify({"status": "error", "message": f"Error de conexión: {str(e)}"}), 503
+
 
 
 @gateway.route("/usuarios", methods=["GET", "POST"])
@@ -167,12 +204,26 @@ def gateway_carga_masiva(payload):
     respuesta = requests.post(Servicios["carga_masiva"], files=files, headers=headers)
     return jsonify(respuesta.json()), respuesta.status_code
 
+@gateway.route("/programa/dashboard/menu-resumen", methods=["GET", "OPTIONS"])
 @gateway.route("/dashboard/menu-resumen", methods=["GET", "OPTIONS"])
+def gateway_menu_resumen():
+    if request.method == 'OPTIONS':
+        res = make_response('', 200)
+        res.headers["Access-Control-Allow-Origin"] = "*"
+        res.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Nuevo-Token"
+        res.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        return res
+
+    return ejecutar_menu_resumen()
+
 @requerir_jwt
-def gateway_menu_resumen(payload):
+def ejecutar_menu_resumen(payload):
     headers = {"Authorization": request.headers.get("Authorization")}
-    respuesta = requests.get(f"{Servicios['dashboard']}/menu-resumen", headers=headers)
-    return jsonify(respuesta.json()), respuesta.status_code
+    try:
+        respuesta = requests.get(f"{Servicios['dashboard']}/menu-resumen", headers=headers, timeout=5)
+        return jsonify(respuesta.json()), respuesta.status_code
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": f"Error de conexión con el servicio de dashboard: {str(e)}"}), 503
 
 @gateway.route("/dashboard/completo", methods=["GET", "OPTIONS"])
 @requerir_jwt
@@ -195,4 +246,4 @@ def gateway_dashboard_eventos(payload):
 
 
 if __name__ == "__main__":
-    gateway.run(host="0.0.0.0", debug=True, port=5001)
+    gateway.run(host="0.0.0.0", debug=True, port=5101)

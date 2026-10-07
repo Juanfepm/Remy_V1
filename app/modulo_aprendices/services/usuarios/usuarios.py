@@ -1,8 +1,23 @@
 from conexion import *
 
 class Usuarios:
+
+    def actualizar_aprendices_vencidos(self):
+        sql = """
+            UPDATE usuarios 
+            SET estado = 'inactivo' 
+            WHERE rol_usuario = 0 
+            AND estado = 'activo' 
+            AND fecha_fin_etapa_lectiva < CURDATE()
+        """
+        mi_cursor.execute(sql)
+        mi_db.commit()
+        return mi_cursor.rowcount
+
     def listar(self):
-        sql = "SELECT id_usuario, nombre, apellido, ficha FROM usuarios WHERE rol_usuario= 0 and estado ='activo' "
+        self.actualizar_aprendices_vencidos()
+        
+        sql = "SELECT id_usuario, nombre, apellido, ficha FROM usuarios WHERE rol_usuario = 0 AND estado = 'activo'"
         mi_cursor.execute(sql)
         return mi_cursor.fetchall()
 
@@ -13,7 +28,9 @@ class Usuarios:
         mi_db.commit()
 
     def consultar(self, cedula):
-        sql = "SELECT nombre, apellido, celular, ficha, fecha_fin_etapa_lectiva FROM usuarios WHERE id_usuario=%s and estado ='activo'"
+        self.actualizar_aprendices_vencidos()
+        
+        sql = "SELECT nombre, apellido, celular, ficha, fecha_fin_etapa_lectiva FROM usuarios WHERE id_usuario = %s AND estado = 'activo'"
         mi_cursor.execute(sql, (cedula,))
         return mi_cursor.fetchall()
     

@@ -1,0 +1,13 @@
+Flask>=2.3
+flask-cors
+flask-sqlalchemy
+flask-restful
+PyMySQL
+mysql-connector-python
+Pillow
+requests
+bcrypt
+PyJWT
+pandas
+openpyxl
+xlrd

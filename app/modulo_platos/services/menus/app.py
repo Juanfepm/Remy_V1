@@ -43,4 +43,4 @@ api.add_resource(ListaMenus, "/menus")
 api.add_resource(Menu,"/menus/<id_menu>")
 
 if __name__=="__main__":
-    programa.run(host="0.0.0.0",debug=True,port=5002)
+    programa.run(host="0.0.0.0",debug=True,port=5084)

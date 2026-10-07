@@ -7,23 +7,23 @@ import mysql.connector
 import requests as req
 from buscarGeneral import buscarGeneral
 
-# Directorio base apuntando a la raíz del proyecto (Remy_Web)
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+# Sube un nivel desde app/modulo_platos/ para llegar a la carpeta 'app'
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 IMG_REMY_DIR = r'C:\MAMP\htdocs\img_remy'
 PLATS_IMG_DIR = os.path.join(IMG_REMY_DIR, 'platos')
 
 programa = Flask(
     __name__,
-    template_folder=os.path.join(BASE_DIR, 'app', 'templates'),
-    static_folder=os.path.join(BASE_DIR, 'app', 'static')
+    template_folder=os.path.join(BASE_DIR, 'templates'),
+    static_folder=os.path.join(BASE_DIR, 'static')
 )
 CORS(programa)
 
 DB_CONFIG = {
     'host': 'localhost',
-    'user': 'root',
-    'password': '',
+    'user': 'remy',
+    'password': '12345',
     'database': 'remy',
     'port': 3306
 }
@@ -82,12 +82,9 @@ def obtener_imagen_local(filename):
         return send_from_directory(PLATS_IMG_DIR, filename)
     return send_from_directory(IMG_REMY_DIR, filename)
 
-# ========== RUTAS DE VISTAS (Rutas con la jerarquía correcta) ==========
+# ========== RUTAS DE VISTAS (ACTUALIZADAS A LAS NUEVAS RUTAS DE TEMPLATES) ==========
 
 @programa.route('/')
-def index():
-    return render_template('modulo_platos/platos/platos_menu.html')
-
 @programa.route('/platos_menu')
 def platos_menu():
     return render_template('modulo_platos/platos/platos_menu.html')
@@ -102,11 +99,11 @@ def crear_plato():
 
 @programa.route('/modificar_plato/<id_plato>')
 def modificar_plato(id_plato):
-    return render_template('modulo_platos/platos/modificar_plato.html')
+    return render_template('modulo_platos/platos/modificar_plato.html', id_plato=id_plato)
 
 @programa.route('/detalle_plato/<id_plato>')
 def detalle_plato(id_plato):
-    return render_template('modulo_platos/platos/detalle_plato.html')
+    return render_template('modulo_platos/platos/detalle_plato.html', id_plato=id_plato)
 
 @programa.route('/crear_menu')
 def crear_menu():
@@ -114,11 +111,11 @@ def crear_menu():
 
 @programa.route('/modificar_menu/<id_menu>')
 def modificar_menu(id_menu):
-    return render_template('modulo_platos/menus/modificar_menu.html')
+    return render_template('modulo_platos/menus/modificar_menu.html', id_menu=id_menu)
 
 @programa.route('/detalle_menu/<id_menu>')
 def detalle_menu(id_menu):
-    return render_template('modulo_platos/menus/detalle_menu.html')
+    return render_template('modulo_platos/menus/detalle_menu.html', id_menu=id_menu)
 
 # ========== BÚSQUEDA GENERAL ==========
 
@@ -294,7 +291,6 @@ def modificar_plato_api(id_plato):
 
         cursor = conn.cursor()
         cursor.execute("DELETE FROM plato_ingrediente WHERE id_plato = %s", (id_plato,))
-
         cursor.execute("""
             UPDATE platos SET id_plato=%s, nombre=%s, categoria=%s,
             descripcion=%s, img_plato=%s, estado=%s WHERE id_plato=%s
@@ -365,4 +361,4 @@ def proxy_menus_post():
     return programa.response_class(response=r.text, status=r.status_code, mimetype='application/json')
 
 if __name__ == '__main__':
-    programa.run(host='0.0.0.0', debug=True, port=5001)
+    programa.run(host='0.0.0.0', debug=True, port=5000)

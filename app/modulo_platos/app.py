@@ -22,8 +22,8 @@ CORS(programa)
 
 DB_CONFIG = {
     'host': 'localhost',
-    'user': 'remy',
-    'password': '12345',
+    'user': 'root',
+    'password': '',
     'database': 'remy',
     'port': 3306
 }
@@ -365,4 +365,4 @@ def proxy_menus_post():
     return programa.response_class(response=r.text, status=r.status_code, mimetype='application/json')
 
 if __name__ == '__main__':
-    programa.run(host='0.0.0.0', debug=True, port=5000)
+    programa.run(host='0.0.0.0', debug=True, port=5001)

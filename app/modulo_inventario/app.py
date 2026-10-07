@@ -126,6 +126,6 @@ def salir():
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))
+    port = int(os.getenv('PORT', 5200))
     print(f'Iniciando Modulo Inventario en http://127.0.0.1:{port}')
     app.run(host='0.0.0.0', port=port, debug=True)

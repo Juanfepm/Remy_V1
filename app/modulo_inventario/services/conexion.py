@@ -6,7 +6,7 @@ class ConexionService:
         self.host = "localhost"
         self.user = "root"
         self.password = ""
-        self.database = "inventario_adso08"
+        self.database = "remy"
         self.port = 3306
 
     def obtener_conexion(self):

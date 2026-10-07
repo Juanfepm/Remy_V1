@@ -8,15 +8,15 @@ import requests as req
 from buscarGeneral import buscarGeneral
 
 # Sube un nivel desde app/modulo_platos/ para llegar a la carpeta 'app'
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 IMG_REMY_DIR = r'C:\MAMP\htdocs\img_remy'
 PLATS_IMG_DIR = os.path.join(IMG_REMY_DIR, 'platos')
 
 programa = Flask(
     __name__,
-    template_folder=os.path.join(BASE_DIR, 'templates'),
-    static_folder=os.path.join(BASE_DIR, 'static')
+    template_folder=os.path.join(BASE_DIR, "templates"),
+    static_folder=os.path.join(BASE_DIR, "static"),
 )
 CORS(programa)
 
@@ -82,9 +82,12 @@ def obtener_imagen_local(filename):
         return send_from_directory(PLATS_IMG_DIR, filename)
     return send_from_directory(IMG_REMY_DIR, filename)
 
-# ========== RUTAS DE VISTAS (ACTUALIZADAS A LAS NUEVAS RUTAS DE TEMPLATES) ==========
+# ========== RUTAS DE VISTAS (Rutas con la jerarquía correcta) ==========
 
 @programa.route('/')
+def index():
+    return render_template('modulo_platos/platos/platos_menu.html')
+
 @programa.route('/platos_menu')
 def platos_menu():
     return render_template('modulo_platos/platos/platos_menu.html')
@@ -99,11 +102,11 @@ def crear_plato():
 
 @programa.route('/modificar_plato/<id_plato>')
 def modificar_plato(id_plato):
-    return render_template('modulo_platos/platos/modificar_plato.html', id_plato=id_plato)
+    return render_template('modulo_platos/platos/modificar_plato.html')
 
 @programa.route('/detalle_plato/<id_plato>')
 def detalle_plato(id_plato):
-    return render_template('modulo_platos/platos/detalle_plato.html', id_plato=id_plato)
+    return render_template('modulo_platos/platos/detalle_plato.html')
 
 @programa.route('/crear_menu')
 def crear_menu():
@@ -111,11 +114,11 @@ def crear_menu():
 
 @programa.route('/modificar_menu/<id_menu>')
 def modificar_menu(id_menu):
-    return render_template('modulo_platos/menus/modificar_menu.html', id_menu=id_menu)
+    return render_template('modulo_platos/menus/modificar_menu.html')
 
 @programa.route('/detalle_menu/<id_menu>')
 def detalle_menu(id_menu):
-    return render_template('modulo_platos/menus/detalle_menu.html', id_menu=id_menu)
+    return render_template('modulo_platos/menus/detalle_menu.html')
 
 # ========== BÚSQUEDA GENERAL ==========
 
@@ -291,6 +294,7 @@ def modificar_plato_api(id_plato):
 
         cursor = conn.cursor()
         cursor.execute("DELETE FROM plato_ingrediente WHERE id_plato = %s", (id_plato,))
+
         cursor.execute("""
             UPDATE platos SET id_plato=%s, nombre=%s, categoria=%s,
             descripcion=%s, img_plato=%s, estado=%s WHERE id_plato=%s

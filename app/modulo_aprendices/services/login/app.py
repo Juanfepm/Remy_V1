@@ -48,4 +48,4 @@ def verificar_sesion():
         return jsonify({'error': 'Token inválido'}), 401
 
 if __name__ == "__main__":
-    programa.run(host="0.0.0.0", debug=True, port=5006)
+    programa.run(host="0.0.0.0", debug=True, port=5106)

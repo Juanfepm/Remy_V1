@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas de eventos | REMY 1.0</title>
+    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/normalize.css">
+    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/formato_rm_interno.css">
+    <script src="/static/modulo_reservas/rm_codigos/config.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/api.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/sesion.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/panel.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/admin_reservas_eventos.js" defer></script>
+</head>
+<body>
+
+    <main id="gran_padre_contenedor">
+
+        <header id="cabezote_sesion" data-activo="reservas_eventos"></header>
+
+        <section id="contenido_sesion">
+
+            <header id="cabezote_admin" class="fondo-azul">
+                <a href="dashboard.html" class="btn_volver letra-blanca" aria-label="Volver">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </a>
+                <h1 class="letra-blanca">Reservas / Eventos</h1>
+                <span class="hueco_cabezote"></span>
+            </header>
+
+            <div class="cont-busqueda">
+                <input type="text" id="buscar_evento" class="input-busqueda" placeholder="Buscar por correo o evento...">
+                <svg class="icono-filtro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.3-4.3"></path>
+                </svg>
+            </div>
+
+            <p id="aviso_reservas_eventos" class="aviso aviso-cargando">Cargando las reservas de eventos...</p>
+
+            
+            <div id="lista_reservas_eventos" class="lista"></div>
+
+        </section>
+
+    </main>
+
+    
+    <dialog id="modal_reserva" class="modal_rm">
+
+        <h2 class="letra-azul-dark" id="nombre_evento_modal"></h2>
+
+        <p id="detalle_evento_modal" class="letra-gris-dark"></p>
+
+        <label for="editar_fecha">Fecha del evento</label>
+        <input type="date" id="editar_fecha">
+
+        <label for="editar_franja">Franja horaria</label>
+        <input type="text" id="editar_franja" maxlength="6" placeholder="12:00"
+               title="Máximo 6 caracteres, que es lo que guarda la base">
+
+        <label for="editar_personas">Número de personas</label>
+        <input type="number" id="editar_personas" min="1" max="200">
+
+        <p id="aviso_modal_reserva" class="aviso oculto"></p>
+
+        <p id="confirmar_cancelacion" class="aviso aviso-error oculto">
+            ¿Seguro que quieres cancelar esta reserva? El cliente pierde el cupo.
+        </p>
+
+        <div class="fila_botones_modal" id="fila_acciones">
+            <button type="button" id="btn_cerrar_modal" class="btn-capsula capsula-full fondo-gris letra-gris-dark">Cerrar</button>
+            <button type="button" id="btn_guardar_reserva" class="btn-capsula capsula-full fondo-verde letra-blanca">Guardar cambios</button>
+        </div>
+
+        <div class="fila_botones_modal">
+            <button type="button" id="btn_cancelar_reserva" class="btn-capsula capsula-full fondo-rojo letra-blanca">Cancelar reserva</button>
+        </div>
+
+        <div class="fila_botones_modal oculto" id="fila_confirmar">
+            <button type="button" id="btn_confirmar_no" class="btn-capsula capsula-full fondo-gris letra-gris-dark">No</button>
+            <button type="button" id="btn_confirmar_si" class="btn-capsula capsula-full fondo-rojo letra-blanca">Sí, cancelar</button>
+        </div>
+
+    </dialog>
+
+</body>
+</html>

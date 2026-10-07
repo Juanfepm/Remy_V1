@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar reserva | REMY 1.0</title>
+    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/normalize.css">
+    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/formato_rm_interno.css">
+    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/agregar_reserva.css">
+    <script src="/static/modulo_reservas/rm_codigos/config.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/api.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/sesion.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/panel.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/admin_agregar_reserva.js" defer></script>
+</head>
+<body id="cuerpo_agregar_reserva">
+
+    <main id="gran_padre_contenedor">
+
+        <header id="cabezote_sesion" data-activo="agregar_reserva"></header>
+
+        <section id="contenido_sesion">
+
+            <header id="cabezote_admin" class="fondo-azul">
+                <a href="dashboard.html" class="btn_volver letra-blanca" aria-label="Volver">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </a>
+                <h1 class="letra-blanca">Agregar reserva</h1>
+                <span class="hueco_cabezote"></span>
+            </header>
+
+            <section id="tarjeta_agregar_reserva">
+
+                <form id="forma_reserva">
+
+                    <div class="tarjeta-seccion">
+                        <div class="titulo-seccion">
+                            <figure class="icono-circulo letra-verde">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" fill="currentColor">
+                                    <path d="M22.5,3H21V2a1,1,0,0,0-1-1H19a1,1,0,0,0-1,1V3H14V2a1,1,0,0,0-1-1H12a1,1,0,0,0-1,1V3H7V2A1,1,0,0,0,6,1H5A1,1,0,0,0,4,2V3H2.5A1.5,1.5,0,0,0,1,4.5v18A1.5,1.5,0,0,0,2.5,24h16A5.51,5.51,0,0,0,24,18.5s0-.08,0-.13,0,0,0,0V4.5A1.5,1.5,0,0,0,22.5,3ZM19,2l1,0,0,3L19,5ZM12,2l1,0V3.44s0,0,0,.06,0,0,0,.07L13,5,12,5ZM5,2,6,2,6,5,5,5ZM2.5,4H4V5A1,1,0,0,0,5,6H6A1,1,0,0,0,7,5V4h4V5a1,1,0,0,0,1,1H13a1,1,0,0,0,1-1V4h4V5a1,1,0,0,0,1,1H20a1,1,0,0,0,1-1V4h1.5a.5.5,0,0,1,.5.5V8H2V4.5A.5.5,0,0,1,2.5,4Zm16,19A4.5,4.5,0,1,1,23,18.5,4.51,4.51,0,0,1,18.5,23Zm0-10a5.49,5.49,0,0,0-3.15,10H2.5a.5.5,0,0,1-.5-.5V9H23v6.35A5.49,5.49,0,0,0,18.5,13Z"/>
+                                    <path d="M20.72,19.05,19,18.19V16.5a.5.5,0,0,0-1,0v2a.51.51,0,0,0,.28.45l2,1a.54.54,0,0,0,.22.05.5.5,0,0,0,.22-.95Z"/>
+                                </svg>
+                            </figure>
+                            <h3>Datos de la reserva</h3>
+                        </div>
+
+                        <label for="correo">Correo institucional</label>
+                        <input type="email" id="correo" name="correo" inputmode="email" maxlength="72" minlength="2"
+                               placeholder="ejemplo@soy.sena.edu.co"
+                               pattern="[a-zA-Z0-9._%+\-]+@(soy\.)?sena\.edu\.co"
+                               title="Ingrese un correo electrónico institucional"
+                               class="campo" required>
+                        <p class="texto-ayuda">Debe ser un correo institucional válido. Un correo sólo puede tener una reserva por día.</p>
+
+                        <h4>Cantidad de menús</h4>
+                        <div id="cont_controles">
+                            <button type="button" id="btn_menos" class="btn-circulo-mini fondo-azul letra-blanca" aria-label="Quitar un menú">-</button>
+                            <span id="num_menus" class="fondo-gris-dark letra-blanca">1</span>
+                            <button type="button" id="btn_mas" class="btn-circulo-mini fondo-azul letra-blanca" aria-label="Agregar un menú">+</button>
+                        </div>
+                        <p id="valor_unitario">Valor por menú: $0</p>
+                    </div>
+
+                    <div class="tarjeta-seccion">
+                        <div class="titulo-seccion">
+                            <figure class="icono-circulo letra-verde">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor">
+                                    <path d="M16 15.503A5.041 5.041 0 1 0 16 5.42a5.041 5.041 0 0 0 0 10.083zm0 2.215c-6.703 0-11 3.699-11 5.5v3.363h22v-3.363c0-2.178-4.068-5.5-11-5.5z"/>
+                                </svg>
+                            </figure>
+                            <h3>Resumen de la reserva</h3>
+                        </div>
+
+                        <div class="fila-resumen">
+                            <p>Menú de hoy</p>
+                            <p class="valor-resumen" id="nombre_menu">-</p>
+                        </div>
+                        <div class="fila-resumen">
+                            <p>Menús seleccionados</p>
+                            <p class="valor-resumen" id="resumen_cantidad">1</p>
+                        </div>
+                        <div class="fila-resumen">
+                            <p>Valor unitario</p>
+                            <p class="valor-resumen" id="resumen_unitario">$0</p>
+                        </div>
+
+                        <div id="total_reserva">
+                            <span>TOTAL</span>
+                            <span id="resumen_total">$0</span>
+                        </div>
+                    </div>
+
+                    <p id="aviso_reserva" class="aviso oculto"></p>
+
+                    <button type="submit" id="btn_registrar" class="btn-capsula capsula-full fondo-verde letra-blanca">Registrar Reserva</button>
+
+                </form>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

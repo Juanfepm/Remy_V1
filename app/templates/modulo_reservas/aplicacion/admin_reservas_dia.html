@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas del día | REMY 1.0</title>
+    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/normalize.css">
+    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/formato_rm_interno.css">
+    <script src="/static/modulo_reservas/rm_codigos/config.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/api.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/sesion.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/panel.js" defer></script>
+    <script src="/static/modulo_reservas/rm_codigos/admin_reservas_dia.js" defer></script>
+</head>
+<body>
+
+    <main id="gran_padre_contenedor">
+
+        <header id="cabezote_sesion" data-activo="reservas_dia"></header>
+
+        <section id="contenido_sesion">
+
+            <header id="cabezote_admin" class="fondo-azul">
+                <a href="dashboard.html" class="btn_volver letra-blanca" aria-label="Volver">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </a>
+                <h1 class="letra-blanca">Administrador / Reservas del día</h1>
+                <span class="hueco_cabezote"></span>
+            </header>
+
+            <div class="cont-busqueda">
+                <input type="text" id="buscar_reserva" class="input-busqueda" placeholder="Buscar por correo...">
+                <svg class="icono-filtro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.3-4.3"></path>
+                </svg>
+            </div>
+
+            <div id="resumen_fecha">
+                <p id="fecha_actual" class="letra-azul-dark"></p>
+                <p id="total_reservas" class="letra-verde">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="8" r="3.4"/>
+                        <path d="M3.2 19.2c0-3.2 2.6-5.4 5.8-5.4s5.8 2.2 5.8 5.4"/>
+                        <path d="M16.2 5.2a3.4 3.4 0 0 1 0 6.6M17.4 14.2c2.1.6 3.4 2.4 3.4 5"/>
+                    </svg>
+                    <span id="conteo_reservas">0</span>&nbsp;reservas
+                </p>
+            </div>
+
+            <p id="aviso_reservas" class="aviso aviso-cargando">Cargando las reservas de hoy...</p>
+
+            
+            <div id="lista_reservas" class="lista"></div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

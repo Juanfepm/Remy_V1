@@ -3,7 +3,19 @@ from conexion import *
 
 class Eventos:
 
+    def actualizar_eventos_vencidos(self):
+        sql = """
+            UPDATE eventos 
+            SET estado = 'inactivo'
+            WHERE fecha_fin < NOW() AND estado = 'activo'
+        """
+        mi_cursor.execute(sql)
+        mi_db.commit()
+        return mi_cursor.rowcount
+
     def listar(self, solo_sin_lideres=False):
+        self.actualizar_eventos_vencidos()
+
         condicion_filtro = ""
         if solo_sin_lideres:
             condicion_filtro = """ AND (e.lider_cocina IS NULL OR e.lider_cocina = '' OR e.lider_cocina = '0') AND (e.lider_servicio IS NULL OR e.lider_servicio = '' OR e.lider_servicio = '0') """
@@ -30,7 +42,6 @@ class Eventos:
             LEFT JOIN usuarios u_cocina ON e.lider_cocina = u_cocina.id_usuario
             LEFT JOIN usuarios u_servicio ON e.lider_servicio = u_servicio.id_usuario
             WHERE e.estado = 'activo' {condicion_filtro}
-            
         """
 
         mi_cursor.execute(sql)
@@ -38,6 +49,8 @@ class Eventos:
         return resultados
 
     def consultar(self, id_evento):
+        self.actualizar_eventos_vencidos()
+
         sql = """ 
                 SELECT 
                     e.id_evento,
@@ -69,7 +82,6 @@ class Eventos:
         return mi_cursor.fetchall()
 
     def asignar_lideres(self, id_evento, lider_cocina, lider_servicio):
-        
         sql = """ UPDATE eventos SET lider_cocina=%s, lider_servicio=%s, fecha_modificacion=NOW() WHERE id_evento=%s"""
         valores = (lider_cocina, lider_servicio, id_evento)
         mi_cursor.execute(sql, valores)

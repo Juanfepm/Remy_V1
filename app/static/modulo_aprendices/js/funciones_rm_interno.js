@@ -1,5 +1,5 @@
 /* URL Base de la API Gateway */
-const API_BASE_URL = `http://${window.location.hostname}:5001`;
+const API_BASE_URL = `http://${window.location.hostname}:5101`;
 
 
 
@@ -8,7 +8,7 @@ function redireccionarALogin() {
     localStorage.removeItem("rol_usuario");
 
     const rutaActual = window.location.pathname.toLowerCase().replace(/\/$/, "");
-    const rutasPublicas = ["/login", "/", "/index.html", "/login.html"];
+    const rutasPublicas = ["/login", "/", "modulo_aprendices/index.html"];
 
     if (!rutasPublicas.includes(rutaActual) && rutaActual !== "") {
         window.location.href = "/login";
@@ -89,7 +89,11 @@ async function fetchConToken(url, opciones = {}) {
         headers['Content-Type'] = 'application/json';
     }
 
-    const respuesta = await fetch(url, { ...opciones, headers });
+    const respuesta = await fetch(url, { 
+        ...opciones, 
+        headers,
+        cache: 'no-store' 
+    });
 
     if (respuesta.status === 401) {
         localStorage.removeItem('token');
@@ -174,7 +178,7 @@ function aplicarControlDeRol() {
 
         selectoresRestringidos.forEach(selector => {
             document.querySelectorAll(selector).forEach(elemento => {
-                elemento.style.setProperty("display", "none", "important"); // Oculta los íconos asegurando prioridad sobre CSS
+                elemento.style.setProperty("display", "none", "important");
             });
         });
     }
@@ -988,19 +992,19 @@ async function cargarDetalleEvento() {
 
 async function cargarMenuResumen() {
     const token = localStorage.getItem("token");
-
     if (!token) {
         redireccionarALogin();
         return;
     }
 
     try {
-        const respuesta = await fetch(`${API_BASE_URL}/dashboard/menu-resumen`, {
+        const respuesta = await fetch(`${API_BASE_URL}/programa/dashboard/menu-resumen`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
-            }
+            },
+            cache: "no-store"
         });
         if (respuesta.status === 401) {
             alert("Tu sesión ha expirado. Por favor ingresa nuevamente.");
@@ -1228,6 +1232,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     /** Dashboard */
     if (document.getElementById("menu_resumen")) {
         cargarMenuResumen();
+
+        // Cargar fechas de eventos en el calendario
+        cargarFechasEventos();
+
+        const btnPrev = document.getElementById('btn-prev-mes');
+        const btnNext = document.getElementById('btn-next-mes');
+        if (btnPrev) {
+            btnPrev.addEventListener('click', () => {
+                fechaActual.setMonth(fechaActual.getMonth() - 1);
+                generarCalendarioTabla();
+            });
+        }
+        if (btnNext) {
+            btnNext.addEventListener('click', () => {
+                fechaActual.setMonth(fechaActual.getMonth() + 1);
+                generarCalendarioTabla();
+            });
+        }
     }
 
     const opcionesTipo = document.querySelectorAll(".selector_tipo_usuario .opcion_tipo");
@@ -1246,7 +1268,6 @@ let fechasEventosActivos = [];
 
 
 async function cargarFechasEventos() {
-    // Verificar que la tabla del calendario y la etiqueta de mes existan en la vista
     const cuerpoTabla = document.getElementById('cuerpo-calendario');
     const labelMes = document.getElementById('mes-actual');
     if (!cuerpoTabla || !labelMes) return;
@@ -1262,9 +1283,33 @@ async function cargarFechasEventos() {
         const eventos = resultado.data || [];
 
         fechasEventosActivos = eventos.map(ev => {
-            const fechaRaw = Array.isArray(ev) ? ev[1] : (ev.fecha_inicio || ev.fecha);
+            const fechaRaw = Array.isArray(ev) ? ev[2] : (ev.fecha_inicio || ev.fecha);
             if (!fechaRaw) return null;
-            return fechaRaw.toString().split('T')[0].split(' ')[0];
+
+            const raw = fechaRaw.toString();
+
+
+            const isoMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+            if (isoMatch) return `${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}`;
+
+            const mesesMap = {
+                Jan: '01', Feb: '02', Mar: '03', Apr: '04', May: '05', Jun: '06',
+                Jul: '07', Aug: '08', Sep: '09', Oct: '10', Nov: '11', Dec: '12'
+            };
+            const gmtMatch = raw.match(/(\d{1,2})\s([A-Za-z]{3})\s(\d{4})/);
+            if (gmtMatch) {
+                const dia = gmtMatch[1].padStart(2, '0');
+                const mes = mesesMap[gmtMatch[2]] || null;
+                const anio = gmtMatch[3];
+                if (mes) return `${anio}-${mes}-${dia}`;
+            }
+
+            const d = new Date(raw);
+            if (isNaN(d.getTime())) return null;
+            const yyyy = d.getUTCFullYear();
+            const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+            const dd = String(d.getUTCDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
         }).filter(Boolean);
 
         generarCalendarioTabla();
@@ -1339,26 +1384,7 @@ function generarCalendarioTabla() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    cargarFechasEventos();
 
-    const btnPrev = document.getElementById('btn-prev-mes');
-    const btnNext = document.getElementById('btn-next-mes');
-
-    if (btnPrev) {
-        btnPrev.addEventListener('click', () => {
-            fechaActual.setMonth(fechaActual.getMonth() - 1);
-            generarCalendarioTabla();
-        });
-    }
-
-    if (btnNext) {
-        btnNext.addEventListener('click', () => {
-            fechaActual.setMonth(fechaActual.getMonth() + 1);
-            generarCalendarioTabla();
-        });
-    }
-});
 
 async function renderizarInsumosAlerta() {
     const contenedor = document.getElementById('contenedor-insumos');

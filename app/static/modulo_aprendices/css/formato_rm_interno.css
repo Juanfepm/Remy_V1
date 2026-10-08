@@ -1146,8 +1146,7 @@ div.dato_aprendiz {
 }
 
 .dia-even {
-    background-color: var(--verde);
-    color: var(--negro);
+    background-color: var(--verde) !important;
 
 }
 

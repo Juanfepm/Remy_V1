@@ -30,6 +30,7 @@ def iniciar():
             }
             token = jwt.encode(payload, Llave_secreta, algorithm='HS256')
             return jsonify({
+                
                 "status": "success",
                 "mensaje": resultado.get("message", "Login exitoso"), 
                 "rol_usuario": resultado.get("rol_usuario"), 

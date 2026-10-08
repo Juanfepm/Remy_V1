@@ -70,5 +70,9 @@ def modificar_aprendiz():
 def salir():
     return redirect(url_for("login"))
 
+@app.route("/platos_menu")
+def platos_menu():
+    return redirect('http://127.0.0.1:5000/platos_menu')
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5004, debug=True)

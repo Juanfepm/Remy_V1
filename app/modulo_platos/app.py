@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import *
 from flask_cors import CORS
 from PIL import Image
 import mysql.connector
@@ -119,6 +119,10 @@ def modificar_menu(id_menu):
 @programa.route('/detalle_menu/<id_menu>')
 def detalle_menu(id_menu):
     return render_template('modulo_platos/menus/detalle_menu.html')
+
+@programa.route("/liderazgo")
+def salir():
+    return redirect('http://127.0.0.1:5004/liderazgo')
 
 # ========== BÚSQUEDA GENERAL ==========
 

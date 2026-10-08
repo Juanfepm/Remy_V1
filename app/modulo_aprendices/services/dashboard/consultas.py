@@ -6,7 +6,7 @@ class Consultas:
     def listar_eventos(self):
         try:
             conexion = get_connection()
-            cursor = conexion.cursor()
+            cursor = conexion.cursor(dictionary=True)
             sql = """ SELECT id_evento, nombre_evento, fecha_inicio, fecha_fin FROM eventos WHERE estado = 'activo' ORDER BY fecha_inicio ASC LIMIT 5 """
             cursor.execute(sql)
             resultados = cursor.fetchall()

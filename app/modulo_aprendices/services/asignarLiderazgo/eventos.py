@@ -42,6 +42,7 @@ class Eventos:
             LEFT JOIN usuarios u_cocina ON e.lider_cocina = u_cocina.id_usuario
             LEFT JOIN usuarios u_servicio ON e.lider_servicio = u_servicio.id_usuario
             WHERE e.estado = 'activo' {condicion_filtro}
+            ORDER BY e.fecha_inicio ASC
         """
 
         mi_cursor.execute(sql)

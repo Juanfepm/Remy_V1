@@ -121,8 +121,16 @@ def detalle_menu(id_menu):
     return render_template('modulo_platos/menus/detalle_menu.html')
 
 @programa.route("/liderazgo")
-def salir():
+def liderazgo():
     return redirect('http://127.0.0.1:5004/liderazgo')
+
+@programa.route("/dashboard")
+def dashboard():
+    return redirect('http://127.0.0.1:5004/dashboard')
+
+@programa.route("/salir")
+def salir():
+    return redirect('http://127.0.0.1:5004/login')
 
 # ========== BÚSQUEDA GENERAL ==========
 

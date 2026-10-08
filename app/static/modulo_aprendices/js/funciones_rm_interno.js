@@ -702,7 +702,7 @@ async function cargarEventosYAprendices() {
             }
 
             const resetLideres = () => {
-                const msjInicial = '<option value="" selected disabled hidden>Seleccione una ficha primero...</option>';
+                const msjInicial = '<option value="">Seleccione una ficha primero...</option>';
                 selectCocina.innerHTML = msjInicial;
                 selectServicio.innerHTML = msjInicial;
                 selectCocina.disabled = true;
@@ -711,7 +711,7 @@ async function cargarEventosYAprendices() {
 
             const cargarLideres = (lista) => {
                 if (!lista || lista.length === 0) {
-                    const msjVacio = '<option value="" selected disabled hidden>No hay aprendices en esta ficha</option>';
+                    const msjVacio = '<option value="">No hay aprendices en esta ficha</option>';
                     selectCocina.innerHTML = msjVacio;
                     selectServicio.innerHTML = msjVacio;
                     selectCocina.disabled = true;
@@ -719,7 +719,7 @@ async function cargarEventosYAprendices() {
                     return;
                 }
 
-                const opcionesHTML = '<option value="" selected disabled hidden>Seleccione un líder</option>' +
+                const opcionesHTML = '<option value="">Seleccione un líder</option>' +
                     lista.map(ap => {
                         const id = Array.isArray(ap) ? ap[0] : ap.id_usuario;
                         const nombre = Array.isArray(ap) ? ap[1] : ap.nombre;
@@ -736,11 +736,14 @@ async function cargarEventosYAprendices() {
             resetLideres();
 
             if (selectFicha) {
-                selectFicha.innerHTML = '<option value="" selected disabled hidden>Seleccione una ficha</option>';
+                selectFicha.innerHTML = '<option value="">Todas las fichas</option>';
 
                 const fichasUnicas = [...new Set(aprendices.map(ap => Array.isArray(ap) ? ap[3] : ap.ficha).filter(Boolean))];
                 fichasUnicas.forEach(ficha => {
-                    selectFicha.innerHTML += `<option value="${ficha}">${ficha}</option>`;
+                    const option = document.createElement("option");
+                    option.value = ficha;
+                    option.textContent = `Ficha: ${ficha}`;
+                    selectFicha.appendChild(option);
                 });
 
                 selectFicha.addEventListener("change", (e) => {
@@ -1283,32 +1286,24 @@ async function cargarFechasEventos() {
         const eventos = resultado.data || [];
 
         fechasEventosActivos = eventos.map(ev => {
+            // Soporta respuesta tanto como objeto (dict) como tupla (array)
             const fechaRaw = Array.isArray(ev) ? ev[2] : (ev.fecha_inicio || ev.fecha);
             if (!fechaRaw) return null;
 
-            const raw = fechaRaw.toString();
-
-
-            const isoMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
-            if (isoMatch) return `${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}`;
-
-            const mesesMap = {
-                Jan: '01', Feb: '02', Mar: '03', Apr: '04', May: '05', Jun: '06',
-                Jul: '07', Aug: '08', Sep: '09', Oct: '10', Nov: '11', Dec: '12'
-            };
-            const gmtMatch = raw.match(/(\d{1,2})\s([A-Za-z]{3})\s(\d{4})/);
-            if (gmtMatch) {
-                const dia = gmtMatch[1].padStart(2, '0');
-                const mes = mesesMap[gmtMatch[2]] || null;
-                const anio = gmtMatch[3];
-                if (mes) return `${anio}-${mes}-${dia}`;
+            // Si viene como string ISO directo "YYYY-MM-DD..."
+            const strRaw = String(fechaRaw).trim();
+            const isoMatch = strRaw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+            if (isoMatch) {
+                return `${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}`;
             }
 
-            const d = new Date(raw);
+            // Convertir a objeto Date y formatear en zona local
+            const d = new Date(strRaw);
             if (isNaN(d.getTime())) return null;
-            const yyyy = d.getUTCFullYear();
-            const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
-            const dd = String(d.getUTCDate()).padStart(2, '0');
+
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
             return `${yyyy}-${mm}-${dd}`;
         }).filter(Boolean);
 

@@ -10,7 +10,7 @@
         <h1>Backend de reservas REMY</h1>
         <p>Este directorio contiene las API PHP y sus recursos.</p>
         <p>Inicia la aplicación Flask y abre la interfaz web:</p>
-        <a href="http://127.0.0.1:5000/">Abrir REMY Reservas</a>
+        <a href="http://127.0.0.1:5300/">Abrir REMY Reservas</a>
     </main>
 </body>
 </html>

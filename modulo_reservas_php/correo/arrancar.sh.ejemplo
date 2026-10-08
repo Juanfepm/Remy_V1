@@ -1,0 +1,17 @@
+#!/bin/bash
+DIRECTORIO="$(cd -- "$(dirname -- "$0")" && pwd)"
+if [[ ! -f "$DIRECTORIO/.env" ]]; then
+	printf 'Falta el archivo %s/.env\n' "$DIRECTORIO" >&2
+	exit 1
+fi
+
+set -a
+. "$DIRECTORIO/.env"
+set +a
+
+# export REMY_SMTP_HOST="smtp.gmail.com"
+# export REMY_SMTP_PORT="587"
+# export REMY_CORREO_PUERTO="5090"
+
+cd "$DIRECTORIO"
+exec ./.venv/bin/python app.py

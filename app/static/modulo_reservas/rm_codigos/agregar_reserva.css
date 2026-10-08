@@ -1,0 +1,367 @@
+
+
+
+
+section#tarjeta_agregar_reserva {
+    margin: 0 auto;
+    padding: 1rem;
+    width: 100%;
+}
+
+#btn_registrar {
+    font-size: 16px;
+}
+
+form#forma_reserva {
+    width: 100%;
+
+    & input.campo {
+        background: var(--blanco);
+        border: solid 1px var(--verde);
+        border-radius: 0.6rem;
+        color: var(--negro);
+        font-size: 14px;
+        padding: 0.8em 1em;
+        width: 100%;
+    }
+
+        & input::placeholder, input::-moz-placeholder, input::-webkit-input-placeholder {
+            color: var(--gris-dark);
+        }
+
+    & label, & h4 {
+        color: var(--azul-dark);
+        display: block;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0 0 0.5rem;
+    }
+}
+
+
+
+
+#cont_controles {
+    margin: 0.4rem 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#num_menus {
+    border-radius: 3rem;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 11px;
+    padding: 8px 28px;
+}
+
+#valor_unitario {
+    color: var(--azul-dark);
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0.7rem 0 0;
+    text-align: center;
+}
+
+#total_reserva {
+    border: solid 2px var(--verde);
+    border-radius: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0 0;
+    padding: 0.8rem 1rem;
+
+    & span:first-child {
+        color: var(--azul-dark);
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 0.05em;
+    }
+
+    & #resumen_total {
+        color: var(--verde);
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+}
+
+
+
+
+.tarjeta-seccion {
+    background: var(--gris);
+    border-radius: 1rem;
+    margin: 0 0 1rem;
+    padding: 0.9rem;
+}
+
+.titulo-seccion {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 0 1rem;
+
+    & figure.icono-circulo {
+        margin-right: 8px;
+    }
+
+    & h3 {
+        color: var(--azul-dark);
+        font-size: 16px;
+        margin: 0;
+    }
+}
+
+.icono-circulo {
+    background: var(--blanco);
+    border-radius: 50%;
+    height: 40px;
+    padding: 9px;
+    width: 40px;
+}
+
+.btn-circulo-mini {
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: bold;
+    height: 42px;
+    padding: 0;
+    width: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.texto-ayuda {
+    color: var(--gris-dark);
+    font-size: 11px;
+    margin: 0.4rem 0 1rem;
+}
+
+.fila-resumen {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 0 0.8rem;
+
+    & p {
+        color: var(--gris-dark);
+        margin: 0;
+    }
+
+    & .valor-resumen {
+        color: var(--azul-dark);
+        font-weight: bold;
+        overflow-wrap: anywhere;
+        text-align: right;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 360px) {
+
+    section#tarjeta_agregar_reserva {
+        padding: 0.7rem;
+    }
+
+    .tarjeta-seccion {
+        padding: 0.8rem;
+    }
+
+    #num_menus {
+        padding: 8px 20px;
+    }
+
+    .fila-resumen {
+        font-size: 14px;
+        gap: 0.6rem;
+    }
+
+    #total_reserva #resumen_total {
+        font-size: 1.3rem;
+    }
+}
+
+@media screen and (min-width: 768px) {
+
+    section#tarjeta_agregar_reserva {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        min-height: calc(100vh - 65px);
+        min-height: calc(100dvh - 65px);
+        padding: 2rem 1.5rem;
+    }
+
+    form#forma_reserva {
+        max-width: 560px;
+    }
+
+    .tarjeta-seccion {
+        padding: 1.3rem;
+    }
+
+    #btn_registrar {
+        display: block;
+        margin: 0.5rem auto 0;
+        max-width: 380px;
+    }
+}
+
+@media screen and (min-width: 1020px) {
+
+    form#forma_reserva {
+        display: grid;
+        align-items: stretch;
+        column-gap: 2rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 1080px;
+
+        & input.campo {
+            font-size: 17px;
+            padding: 1em 1.2em;
+        }
+
+        & label, & h4 {
+            font-size: 17px;
+            margin: 0 0 0.7rem;
+        }
+    }
+
+    #aviso_reserva, #btn_registrar {
+        grid-column: 1 / -1;
+    }
+
+    #aviso_reserva {
+        margin: 1.5rem 0 0;
+    }
+
+    #btn_registrar {
+        font-size: 18px;
+        margin-top: 2rem;
+        max-width: 440px;
+        padding: 17px 20px;
+    }
+
+    .tarjeta-seccion {
+        border-radius: 1.4rem;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 2.2rem 2rem;
+    }
+
+    .titulo-seccion {
+        margin: 0 0 1.8rem;
+
+        & figure.icono-circulo {
+            margin-right: 14px;
+        }
+
+        & h3 {
+            font-size: 22px;
+        }
+    }
+
+    .icono-circulo {
+        height: 54px;
+        padding: 12px;
+        width: 54px;
+    }
+
+    .texto-ayuda {
+        font-size: 14px;
+        margin: 0.6rem 0 1.8rem;
+    }
+
+    .btn-circulo-mini {
+        font-size: 24px;
+        height: 54px;
+        width: 54px;
+    }
+
+    #cont_controles {
+        margin: 0.8rem 0 0;
+    }
+
+    #num_menus {
+        font-size: 24px;
+        margin: 0 16px;
+        padding: 10px 38px;
+    }
+
+    #valor_unitario {
+        font-size: 16px;
+        margin: 1.2rem 0 0;
+    }
+
+    .fila-resumen {
+        font-size: 17px;
+        margin: 0 0 1.3rem;
+    }
+
+    #total_reserva {
+        border-radius: 1rem;
+        margin: auto 0 0;
+        padding: 1.2rem 1.4rem;
+
+        & span:first-child {
+            font-size: 17px;
+        }
+
+        & #resumen_total {
+            font-size: 2.1rem;
+        }
+    }
+}
+
+@media screen and (min-width: 1440px) {
+
+    form#forma_reserva {
+        column-gap: 2.6rem;
+        max-width: 1240px;
+    }
+
+    .tarjeta-seccion {
+        padding: 2.6rem 2.4rem;
+    }
+
+    .titulo-seccion h3 {
+        font-size: 24px;
+    }
+
+    .fila-resumen {
+        font-size: 18px;
+    }
+}
+
+@media screen and (min-width: 1900px) {
+
+    form#forma_reserva {
+        max-width: 1400px;
+    }
+
+    .tarjeta-seccion {
+        padding: 3rem 2.8rem;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-height: 600px) {
+
+    section#tarjeta_agregar_reserva {
+        align-items: flex-start;
+        min-height: 0;
+    }
+}

@@ -1,17 +1,17 @@
 @font-face {
     font-family: 'sena-calibri';
-    src: url('../insumos/calibri.eot');
-    src: url('../insumos/calibri.eot') format('embedded-opentype'),
-        url('../insumos/calibri.ttf') format('truetype');
+    src: url('../fonts/calibri.eot');
+    src: url('../fonts/calibri.eot') format('embedded-opentype'),
+        url('../fonts/calibri.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'sena-worksans';
-    src: url('../insumos/worksans.eot');
-    src: url('../insumos/worksans.eot') format('embedded-opentype'),
-        url('../insumos/worksans.ttf') format('truetype');
+    src: url('../fonts/worksans.eot');
+    src: url('../fonts/worksans.eot') format('embedded-opentype'),
+        url('../fonts/worksans.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }

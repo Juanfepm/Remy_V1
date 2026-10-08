@@ -10,8 +10,9 @@ const MODULOS_REMY = {
     aprendices: `http://${HOST_REMY}:5100`,
     // Vistas de menus y platos (modulo_platos/app.py)
     platos: `http://${HOST_REMY}:5000`,
-    // Modulo de reservas: aun no tiene servidor en el proyecto
-    reservas: '',
+    // Vistas de reservas (run.py en la raiz). Usa 5000 por defecto, igual que platos,
+    // asi que se inicia con la variable PORT=5300 para que ambos funcionen a la vez
+    reservas: `http://${HOST_REMY}:5300`,
     // Este mismo modulo (inventario)
     inventario: window.location.origin && window.location.origin.startsWith('http') ? window.location.origin : `http://${HOST_REMY}:5200`
 };

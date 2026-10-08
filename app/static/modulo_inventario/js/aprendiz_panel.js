@@ -328,7 +328,7 @@ async function loadApprenticeEvents() {
 
         // En las listas solo los eventos de hoy en adelante; el calendario muestra todos
         const today = startOfToday();
-        const upcoming = events.filter(event => event.inicio && event.inicio.date >= today).slice(0, 5);
+        const upcoming = events.filter(event => event.inicio && event.inicio.date >= today).slice(0, 4);
         renderApprenticeEvents(upcoming);
         renderApprenticeAgenda(upcoming);
     } catch (error) {

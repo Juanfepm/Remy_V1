@@ -2,6 +2,13 @@ import os
 import sys
 from flask import Flask, render_template, redirect, url_for
 
+from app.modulo_inventario.database import db
+from app.modulo_inventario.routes.ingrediente_router import ingrediente_bp
+from app.modulo_inventario.routes.categoria_router import categoria_bp
+from app.modulo_inventario.routes.movimiento_router import movimiento_bp
+from app.modulo_inventario.routes.auth_router import auth_bp
+from app.modulo_inventario.models import entrada, salida, proveedor, usuario
+
 try:
     from flask_cors import CORS
     has_cors = True
@@ -13,12 +20,7 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
-from app.modulo_inventario.database import db
-from app.modulo_inventario.routes.ingrediente_router import ingrediente_bp
-from app.modulo_inventario.routes.categoria_router import categoria_bp
-from app.modulo_inventario.routes.movimiento_router import movimiento_bp
-from app.modulo_inventario.routes.auth_router import auth_bp
-from app.modulo_inventario.models import entrada, salida, proveedor, usuario
+
 
 app = Flask(
     __name__,

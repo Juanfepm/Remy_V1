@@ -44,7 +44,7 @@ class DashboardService:
             "SELECT COUNT(*) FROM platos WHERE estado = 'activo'"
         )).scalar() or 0
         platos = db.session.execute(text("""
-            SELECT p.id_plato, p.nombre AS plato_nombre, c.nombre AS categoria, p.descripcion
+            SELECT p.id_plato, p.nombre AS plato_nombre, c.nombre AS categoria, p.descripcion, p.img_plato
             FROM platos p
             INNER JOIN categorias_platos c ON p.categoria = c.id_categoria
             WHERE p.estado = 'activo'

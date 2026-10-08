@@ -1787,10 +1787,15 @@ div#panel_agenda .cabecera-panel {
     width: 58px;
 }
 
-.miniatura-plato svg {
+.miniatura-plato svg,
+.miniatura-plato img {
     display: block;
     height: 100%;
     width: 100%;
+}
+
+.miniatura-plato img {
+    object-fit: cover;
 }
 
 .info-menu-imagen {

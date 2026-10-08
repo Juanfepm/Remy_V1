@@ -387,6 +387,15 @@ async function loadApprenticeReservations() {
     }
 }
 
+// Misma regla que usa el modulo de platos (platos_menu.js): enlace completo
+// o nombre de archivo servido por el modulo de platos en /img_remy
+function dishImageUrl(img) {
+    const value = String(img || '').trim();
+    if (!value) return null;
+    if (value.startsWith('http://') || value.startsWith('https://')) return value;
+    return MODULOS_REMY.platos ? `${MODULOS_REMY.platos}/img_remy/${value}` : null;
+}
+
 async function loadApprenticeMenu() {
     const container = document.getElementById('menu_resumen_aprendiz');
     const list = document.getElementById('lista_platos_aprendiz');
@@ -408,7 +417,19 @@ async function loadApprenticeMenu() {
             const item = template.content.firstElementChild.cloneNode(true);
             const name = Array.isArray(dish) ? dish[1] : dish.plato_nombre;
             const category = Array.isArray(dish) ? dish[2] : dish.categoria;
-            item.querySelector('.miniatura-plato').setAttribute('aria-label', name || 'Plato');
+            const thumbnail = item.querySelector('.miniatura-plato');
+            thumbnail.setAttribute('aria-label', name || 'Plato');
+            const imageUrl = dishImageUrl(Array.isArray(dish) ? null : dish.img_plato);
+            if (imageUrl) {
+                // Si la imagen no carga se deja el dibujo de la plantilla
+                const placeholder = thumbnail.querySelector('svg');
+                const image = document.createElement('img');
+                image.src = imageUrl;
+                image.alt = name || 'Plato';
+                image.loading = 'lazy';
+                image.addEventListener('error', () => image.replaceWith(placeholder));
+                placeholder.replaceWith(image);
+            }
             item.querySelector('.nombre-plato').textContent = name || 'Plato';
             item.querySelector('.detalle-plato').textContent = category || '';
             list.appendChild(item);

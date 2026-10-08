@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle de Menú | REMY 1.0</title>
     
-    <link rel="stylesheet" href="../../static/modulo_platos/menus/css/normalize.css">
-    <link rel="stylesheet" href="../../static/modulo_platos/menus/css/detalle_menu.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_platos/platos/css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_platos/menus/css/detalle_menu.css') }}">
 </head>
 <body>
     <div id="gran_padre_cont">
@@ -15,7 +16,7 @@
                 <path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/>
             </svg>
             <h2 id="titulo_vista_ppal">Detalle de menú</h2>
-            <a href="/platos_menu" id="btn_cerrar_vista" title="Cerrar">✕</a>
+            <a href="{{ url_for('platos.platos_menu') }}" id="btn_cerrar_vista" title="Cerrar">✕</a>
         </header>
 
         <main id="cuerpo_ppal_cont">
@@ -69,6 +70,6 @@
         </main>
     </div>
 
-    <script src="../../static/modulo_platos/menus/js/detalle_menu.js" defer></script>
+    <script src="{{ url_for('static', filename='modulo_platos/menus/js/detalle_menu.js') }}" defer></script>
 </body>
 </html>

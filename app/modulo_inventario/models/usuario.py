@@ -1,3 +1,4 @@
+from app.roles import ROL_APRENDIZ, ROL_INSTRUCTOR
 from datetime import datetime
 from app.modulo_inventario.database import db
 
@@ -23,5 +24,5 @@ class UsuarioModel(db.Model):
             'rol_usuario': self.rol_usuario,
             'ficha': self.ficha,
             'estado': self.estado,
-            'rol_nombre': 'Aprendiz' if self.rol_usuario == 1 else ('Instructor' if self.rol_usuario == 2 else 'Usuario')
+            'rol_nombre': 'Instructor' if self.rol_usuario == ROL_INSTRUCTOR else ('Aprendiz' if self.rol_usuario == ROL_APRENDIZ else 'Usuario')
         }

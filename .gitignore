@@ -22,3 +22,6 @@ entorno/
 # IDE files
 .idea/
 *.iml
+
+# Archivos subidos por los usuarios
+uploads/

@@ -27,7 +27,7 @@ def generarCodigoPlato(categoria: int, conn) -> str:
     prefijo = "PL" + mapCategorias[categoria]
 
     # Buscar el último código existente en la BD para esa categoría
-    sql = "SELECT id_plato FROM Platos WHERE id_plato LIKE %s ORDER BY id_plato DESC LIMIT 1"
+    sql = "SELECT id_plato FROM platos WHERE id_plato LIKE %s ORDER BY id_plato DESC LIMIT 1"
     cursor = conn.cursor()
     cursor.execute(sql, (prefijo + "%",))
     resultado = cursor.fetchone()
@@ -56,7 +56,7 @@ def generarCodigoMenu(conn) -> str:
     prefijoBase = "MN" + fechaSimple + "-"
 
     # Buscar el último menú creado en toda la tabla
-    sql = "SELECT id_menu FROM Menu WHERE id_menu LIKE 'MN%' ORDER BY id_menu DESC LIMIT 1"
+    sql = "SELECT id_menu FROM menu WHERE id_menu LIKE 'MN%' ORDER BY id_menu DESC LIMIT 1"
     cursor = conn.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchone()

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Plato | REMY 1.0</title>
-    <link rel="stylesheet" href="../../static/modulo_platos/platos/css/modificar_plato.css">
-    <script src="../../static/modulo_platos/platos/js/compresor_imagen.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_platos/platos/css/modificar_plato.css') }}">
+    <script src="{{ url_for('static', filename='modulo_platos/platos/js/compresor_imagen.js') }}"></script>
 </head>
 <body id="cuerpo_modificar_plato">
 
@@ -18,7 +19,7 @@
                 
                 <h2 id="titulo_vista_form">Modificar Plato</h2>
                 
-                <a href="/platos_menu" id="btn_cerrar_form" title="Cerrar">
+                <a href="{{ url_for('platos.platos_menu') }}" id="btn_cerrar_form" title="Cerrar">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
                         <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/>
                     </svg>
@@ -117,6 +118,6 @@
 
     </main>
 
-    <script src="../../static/modulo_platos/platos/js/modificar_plato.js" defer></script>
+    <script src="{{ url_for('static', filename='modulo_platos/platos/js/modificar_plato.js') }}" defer></script>
 </body>
 </html>

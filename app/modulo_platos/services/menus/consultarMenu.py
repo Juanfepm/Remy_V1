@@ -2,16 +2,17 @@
 Traducción de consultarMenu.php
 Lista todos los menús con sus platos anidados (JOIN con contiene).
 """
-from dbremy import conn
+from app.db import con_conexion
 import json
 
-def consultarMenu():
+@con_conexion
+def consultarMenu(conn):
     sql = """
         SELECT m.*, p.id_plato, p.nombre AS plato_nombre, p.categoria,
                p.descripcion AS plato_descripcion, p.img_plato
-        FROM Menu m
-        LEFT JOIN Contiene c ON m.id_menu = c.id_menu
-        LEFT JOIN Platos p ON c.id_plato = p.id_plato
+        FROM menu m
+        LEFT JOIN contiene c ON m.id_menu = c.id_menu
+        LEFT JOIN platos p ON c.id_plato = p.id_plato
     """
     cursor = conn.cursor()
     cursor.execute(sql)

@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ==========================================
     async function cargarIngredientesDesdeDB() {
         try {
-            const respuesta = await fetch('/api/ingredientes');
+            const respuesta = await fetch(RAIZ + '/platos/api/ingredientes');
             if (!respuesta.ok) return;
 
             const data = await respuesta.json();
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ==========================================
     async function cargarPlato() {
         try {
-            const res = await fetch(`/api/platos/${id_plato}`);
+            const res = await fetch(`${RAIZ}/platos/api/platos/${id_plato}`);
             if (!res.ok) return;
             const plato = await res.json();
 
@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (imgPreview && plato.img_plato) {
                     imgPreview.src = plato.img_plato.startsWith('http') || plato.img_plato.startsWith('data:')
                         ? plato.img_plato 
-                        : `/img_remy/${plato.img_plato}`;
+                        : `${RAIZ}/platos/img_remy/${plato.img_plato}`;
                 }
             }
         } catch (err) {
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function cargarIngredientesPlato() {
         try {
-            const res = await fetch(`/api/platos/${id_plato}/ingredientes`);
+            const res = await fetch(`${RAIZ}/platos/api/platos/${id_plato}/ingredientes`);
             if (!res.ok) return;
             const ingredientes = await res.json();
 
@@ -444,7 +444,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             try {
-                const res = await fetch(`/api/platos/${id_plato}`, {
+                const res = await fetch(`${RAIZ}/platos/api/platos/${id_plato}`, {
                     method: 'PUT',
                     body: formData
                 });
@@ -452,7 +452,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const resultado = await res.json();
 
                 if (res.ok && resultado.status === 'success') {
-                    window.location.href = '/platos_menu';
+                    window.location.href = RAIZ + '/platos/platos_menu';
                 } else {
                     alert('Error: ' + (resultado.message || 'No se pudo actualizar el plato.'));
                 }

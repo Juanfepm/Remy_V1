@@ -1,14 +1,9 @@
-from conexiones import *
-from login import mi_login
-from flask import Flask, request, jsonify
-from flask_restful import Api
+from app.modulo_aprendices.services.login.login import mi_login
+from flask import Blueprint, current_app, request, jsonify
 import jwt
 import datetime
 
-programa = Flask(__name__)
-api = Api(programa)
-
-Llave_secreta = "ADSO_2026"
+programa = Blueprint("login", __name__)
 
 @programa.route('/login', methods=['POST'])
 def iniciar():
@@ -28,7 +23,7 @@ def iniciar():
                 'rol_usuario': resultado['rol_usuario'],
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
             }
-            token = jwt.encode(payload, Llave_secreta, algorithm='HS256')
+            token = jwt.encode(payload, current_app.config['SECRET_KEY'], algorithm='HS256')
             return jsonify({
                 "status": "success",
                 "mensaje": resultado.get("message", "Login exitoso"), 
@@ -55,13 +50,10 @@ def verificar_sesion():
     token = auth_header.split(" ")[1]
 
     try:
-        datos = jwt.decode(token, Llave_secreta, algorithms=['HS256'])
+        datos = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
         return jsonify({'mensaje': 'Sesión válida', 'usuario': datos}), 200
 
     except jwt.ExpiredSignatureError:
         return jsonify({'error': 'Sesión expirada'}), 401
     except jwt.InvalidTokenError:
         return jsonify({'error': 'Token inválido'}), 401
-
-if __name__ == "__main__":
-    programa.run(host="0.0.0.0", debug=True, port=5106)

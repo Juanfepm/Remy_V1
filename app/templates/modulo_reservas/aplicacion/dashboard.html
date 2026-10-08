@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel | REMY 1.0</title>
-    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/normalize.css">
-    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/formato_rm_interno.css">
-    <script src="/static/modulo_reservas/rm_codigos/config.js" defer></script>
-    <script src="/static/modulo_reservas/rm_codigos/api.js" defer></script>
-    <script src="/static/modulo_reservas/rm_codigos/sesion.js" defer></script>
-    <script src="/static/modulo_reservas/rm_codigos/panel.js" defer></script>
-    <script src="/static/modulo_reservas/rm_codigos/dashboard.js" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_reservas/rm_codigos/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_reservas/rm_codigos/formato_rm_interno.css') }}">
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/config.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/api.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/sesion.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/panel.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/dashboard.js') }}" defer></script>
 </head>
 <body>
 

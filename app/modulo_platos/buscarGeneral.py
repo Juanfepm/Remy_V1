@@ -1,10 +1,11 @@
 """
 Búsqueda unificada en Platos, Menús e Ingredientes usando UNION ALL.
 """
-from dbremy import *
+from app.db import con_conexion
 import json
 
-def buscarGeneral(q: str) -> str:
+@con_conexion
+def buscarGeneral(conn, q: str) -> str:
     q = q.strip() if q else ""
     
     # Si q tiene texto, se aplica el filtro LIKE; si no, se consulta todo.
@@ -18,8 +19,8 @@ def buscarGeneral(q: str) -> str:
                 p.img_plato AS img_registro,
                 p.fecha_creacion AS fecha_creacion,
                 'Plato' AS tipo
-            FROM Platos p
-            LEFT JOIN Categorias_Platos cp ON p.categoria = cp.id_categoria
+            FROM platos p
+            LEFT JOIN categorias_platos cp ON p.categoria = cp.id_categoria
             WHERE p.estado = 'Activo' AND (
                 p.nombre LIKE %s
                 OR cp.nombre LIKE %s
@@ -34,14 +35,14 @@ def buscarGeneral(q: str) -> str:
                 m.descripcion AS descripcion,
                 (
                     SELECT p2.img_plato
-                    FROM Contiene c
-                    JOIN Platos p2 ON c.id_plato = p2.id_plato
+                    FROM contiene c
+                    JOIN platos p2 ON c.id_plato = p2.id_plato
                     WHERE c.id_menu = m.id_menu AND p2.categoria = 2 AND p2.estado = 'Activo'
                     LIMIT 1
                 ) AS img_registro,
                 m.fecha_creacion AS fecha_creacion,
                 'Menú' AS tipo
-            FROM Menu m
+            FROM menu m
             WHERE m.estado = 'Activo' AND (
                 m.nombre LIKE %s
                 OR 'Menú' LIKE %s
@@ -56,7 +57,7 @@ def buscarGeneral(q: str) -> str:
                 NULL AS img_registro,
                 NULL AS fecha_creacion,
                 'Ingrediente' AS tipo
-            FROM Ingredientes
+            FROM ingredientes
             WHERE nombre LIKE %s
             OR 'Ingrediente' LIKE %s
 
@@ -73,7 +74,7 @@ def buscarGeneral(q: str) -> str:
                 p.img_plato AS img_registro,
                 p.fecha_creacion AS fecha_creacion,
                 'Plato' AS tipo
-            FROM Platos p
+            FROM platos p
             WHERE p.estado = 'Activo'
 
             UNION ALL
@@ -84,14 +85,14 @@ def buscarGeneral(q: str) -> str:
                 m.descripcion AS descripcion,
                 (
                     SELECT p2.img_plato
-                    FROM Contiene c
-                    JOIN Platos p2 ON c.id_plato = p2.id_plato
+                    FROM contiene c
+                    JOIN platos p2 ON c.id_plato = p2.id_plato
                     WHERE c.id_menu = m.id_menu AND p2.categoria = 2 AND p2.estado = 'Activo'
                     LIMIT 1
                 ) AS img_registro,
                 m.fecha_creacion AS fecha_creacion,
                 'Menú' AS tipo
-            FROM Menu m
+            FROM menu m
             WHERE m.estado = 'Activo'
 
             UNION ALL
@@ -103,17 +104,17 @@ def buscarGeneral(q: str) -> str:
                 NULL AS img_registro,
                 NULL AS fecha_creacion,
                 'Ingrediente' AS tipo
-            FROM Ingredientes
+            FROM ingredientes
 
             ORDER BY nombre ASC
         """
         params = ()
 
-    # cursor = conn.cursor()
+    cursor = conn.cursor()
     cursor.execute(sql, params)
     columnas = [col[0] for col in cursor.description]
     resultado = cursor.fetchall()
-    # cursor.close()
+    cursor.close()
 
     resultados = []
     for row in resultado:

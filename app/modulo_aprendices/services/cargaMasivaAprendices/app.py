@@ -1,12 +1,11 @@
 import bcrypt
 import pandas as pd
 import traceback
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from cargaMasivaAprendices import mi_cargaMasiva
+from flask import Blueprint, request, jsonify
+from app.modulo_aprendices.services.cargaMasivaAprendices.cargaMasivaAprendices import mi_cargaMasiva
+from app.roles import ROL_APRENDIZ
 
-programa = Flask(__name__)
-CORS(programa)
+programa = Blueprint("carga_masiva", __name__)
 
 @programa.route("/programas/cargar-masiva", methods=["POST"])
 def cargar_masiva():
@@ -190,7 +189,7 @@ def cargar_masiva():
                 telefono,
                 ficha,
                 fecha_fin,
-                0
+                ROL_APRENDIZ
             )
 
             registros.append({
@@ -226,7 +225,3 @@ def cargar_masiva():
             "error": "No se pudo procesar el archivo",
             "detalle": str(e)
         }), 500
-
-
-if __name__ == "__main__":
-    programa.run(host="0.0.0.0", debug=True, port=5105)

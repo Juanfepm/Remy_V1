@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión | REMY 1.0</title>
 
-    <script src="../static/modulo_aprendices/js/funciones_rm_interno.js"></script>
-    <link rel="stylesheet" href="../static/modulo_aprendices/css/normalize.css">
-    <link rel="stylesheet" href="../static/modulo_aprendices/css/formato_rm_interno.css">
+    <script src="{{ url_for('static', filename='modulo_aprendices/js/funciones_rm_interno.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_aprendices/css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_aprendices/css/formato_rm_interno.css') }}">
 </head>
 <body id="cuerpo_login">
     
     <header id="cabezote">
         <div id="cont_marcas">
             <figure id="marca_sena">
-                <img src="../../static/img/simbolo_sena_verde.svg" alt="sena cab">
+                <img src="{{ url_for('static', filename='img/simbolo_sena_verde.svg') }}" alt="sena cab">
             </figure>
 
             <div id="linea_vert"></div>
 
             <figure id="marca_remy">
-                <img src="../../static/img/remy_green.svg" alt="remy cab">
+                <img src="{{ url_for('static', filename='img/remy_green.svg') }}" alt="remy cab">
             </figure>
         </div>
     </header>

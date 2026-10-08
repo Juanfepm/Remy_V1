@@ -48,8 +48,8 @@ async function loadInstructorInventoryAlerts() {
 
     try {
         const [ingredientsResponse, categoriesResponse] = await Promise.all([
-            fetch(`${(window.location.origin && window.location.origin.startsWith('http')) ? window.location.origin : 'http://127.0.0.1:5000'}/ingredientes/`),
-            fetch(`${(window.location.origin && window.location.origin.startsWith('http')) ? window.location.origin : 'http://127.0.0.1:5000'}/categoria/`).catch(() => null)
+            fetch(`${RAIZ}/inventario/api/ingredientes/`),
+            fetch(`${RAIZ}/inventario/api/categoria/`).catch(() => null)
         ]);
         if (!ingredientsResponse.ok) throw new Error('No se pudo consultar el inventario');
         const ingredients = await ingredientsResponse.json();

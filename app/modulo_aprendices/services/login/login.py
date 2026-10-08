@@ -1,4 +1,4 @@
-from conexiones import *
+from app.db import obtener_conexion
 import bcrypt
 
 class Login:

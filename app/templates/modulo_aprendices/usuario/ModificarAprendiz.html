@@ -2,6 +2,7 @@
 <html lang="es">
 
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Aprendiz | REMY 1.0</title>
@@ -22,7 +23,7 @@
             <div id="cont_logo">
 
                 <figure id="marca_remy">
-                    <img src="../../static/img/remy_green.svg" alt="remy cab">
+                    <img src="{{ url_for('static', filename='img/remy_green.svg') }}" alt="remy cab">
                 </figure>
             </div>
 
@@ -36,7 +37,7 @@
 
                 <div id="opcs_menu">
 
-                    <a href="/dashboard" class="btn-opc" id="btn_inicio">
+                    <a href="{{ url_for('aprendices.dashboard') }}" class="btn-opc" id="btn_inicio">
 
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64"
@@ -52,7 +53,7 @@
                     </a> <!--Fin boton Inicio-->
 
 
-                    <a href="/liderazgo" class="btn-opc" id="btn_liderazgo">
+                    <a href="{{ url_for('aprendices.liderazgo') }}" class="btn-opc" id="btn_liderazgo">
 
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             x="0px" y="0px" viewBox="0 0 54.201 54.201" style="enable-background:new 0 0 54.201 54.201;"
@@ -91,7 +92,7 @@
                     </a><!--Fin boton liderazgo-->
 
 
-                    <a href="/cargaMasiva" class="btn-opc" id="btn_carga_masiva">
+                    <a href="{{ url_for('aprendices.carga_masiva') }}" class="btn-opc" id="btn_carga_masiva">
 
                         <svg version="1.1" x="0px" y="0px" width="30px" height="30px" viewBox="0 70 612 470"
                             style="enable-background:new 0 0 612 612;" xml:space="preserve">
@@ -113,7 +114,7 @@
 
                     </a>
 
-                    <a href="/cargaIndividual" class="btn-opc" id="btn_carga_individual">
+                    <a href="{{ url_for('aprendices.carga_individual') }}" class="btn-opc" id="btn_carga_individual">
 
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                             <title />
@@ -129,7 +130,7 @@
 
                     </a><!--Fin boton carga individual-->
 
-                    <a href="/listaAprendices" class="btn-opc" id="btn_lista">
+                    <a href="{{ url_for('aprendices.lista_aprendices') }}" class="btn-opc" id="btn_lista">
 
                         <svg style="enable-background:new 0 0 100.4 100.4;" version="1.1" viewBox="0 0 100.4 100.4"
                             xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
@@ -143,7 +144,7 @@
                     </a>
 
 
-                    <a href="/asignarLiderazgo" class="btn-opc" id="btn_asignar_liderazgo">
+                    <a href="{{ url_for('aprendices.asignar_liderazgo') }}" class="btn-opc" id="btn_asignar_liderazgo">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="9" cy="8" r="3.3"/>
                             <path d="M3.5 20c0-3.4 2.5-6 5.5-6s5.5 2.6 5.5 6"/>
@@ -153,7 +154,7 @@
                         <span>Asignar liderazgo</span>
                     </a><!--fin btn_asignar_liderazgo-->
 
-                    <a href="/salir" class="btn-opc" id="btn_salir">
+                    <a href="{{ url_for('aprendices.salir') }}" class="btn-opc" id="btn_salir">
 
                         <svg height="30" viewBox="0 0 30 30" width="30" xmlns="http://www.w3.org/2000/svg"
                             id="ico_salir">

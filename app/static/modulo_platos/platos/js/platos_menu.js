@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnMenuMovil = document.getElementById('btn_menu_movil');
     const barraLateral = document.getElementById('barra_lateral_nav');
 
-    const IMAGEN_DEFAULT = '/static/modulo_platos/platos/img/dummy_remy.png';
+    const IMAGEN_DEFAULT = RAIZ + '/static/modulo_platos/platos/img/dummy_remy.png';
 
     // ========== CONTROL MENÚ LATERAL MÓVIL ==========
     if (btnMenuMovil && barraLateral) {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function obtenerRutaImagen(img) {
         if (!img || img.trim() === '') return IMAGEN_DEFAULT;
         if (img.startsWith('http://') || img.startsWith('https://')) return img;
-        return `/img_remy/${img}`;
+        return `${RAIZ}/platos/img_remy/${img}`;
     }
 
     function mostrarSeccion(seccionActivar) {
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========== CARGAR PLATOS ==========
     async function cargarPlatos() {
         try {
-            const response = await fetch('/api/platos');
+            const response = await fetch(RAIZ + '/platos/api/platos');
             const json = await response.json();
             const data = Array.isArray(json) ? json : (json.data || []);
 
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const descripcionFormateada = recortarTexto(plato.descripcion, 90);
 
                 contenedor.innerHTML += `
-                    <a href="/detalle_plato/${plato.id_plato}" class="tarjeta-plato" ${opacidad}>
+                    <a href="${RAIZ}/platos/detalle_plato/${plato.id_plato}" class="tarjeta-plato" ${opacidad}>
                         <figure class="foto-plato">
                             <img src="${imagen}" alt="${plato.nombre}" onerror="this.src='${IMAGEN_DEFAULT}'">
                         </figure>
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========== CARGAR MENUS ==========
     async function cargarMenus() {
         try {
-            const response = await fetch('/api/menus');
+            const response = await fetch(RAIZ + '/platos/api/menus');
             const json = await response.json();
             const data = Array.isArray(json) ? json : (json.data || []);
 
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 contenedor.innerHTML += `
-                    <a href="/detalle_menu/${menu.id_menu}" class="tarjeta-menu-compuesta" ${opacidad}>
+                    <a href="${RAIZ}/platos/detalle_menu/${menu.id_menu}" class="tarjeta-menu-compuesta" ${opacidad}>
                         <div class="mosaico-imagenes-menu">
                             ${mosaico}
                         </div>

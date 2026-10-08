@@ -2,12 +2,13 @@
 Traducción de insertarMenu.php
 Inserta un menú nuevo y su relación de platos en la tabla contiene.
 """
-from dbremy import conn
-from validaciones import generarCodigoMenu
+from app.db import con_conexion
+from app.modulo_platos.validaciones import generarCodigoMenu
 from datetime import datetime
 import json
 
-def insertarMenu(data: dict) -> str:
+@con_conexion
+def insertarMenu(conn, data: dict) -> str:
     response = {}
 
     try:
@@ -31,11 +32,11 @@ def insertarMenu(data: dict) -> str:
 
         cursor = conn.cursor()
 
-        sql = "INSERT INTO Menu (id_menu, nombre, tiempos_menu, precio, descripcion, estado, fecha_creacion) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO menu (id_menu, nombre, tiempos_menu, precio, descripcion, estado, fecha_creacion) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         cursor.execute(sql, (id_menu, nombre, tiempos, precio, desc, estado, fecha))
         conn.commit()
 
-        sql_cont = "INSERT INTO Contiene (id_menu, id_plato) VALUES (%s, %s)"
+        sql_cont = "INSERT INTO contiene (id_menu, id_plato) VALUES (%s, %s)"
         for plato in platos:
             id_plato = plato.get("id_plato") if isinstance(plato, dict) else plato
             if id_plato:

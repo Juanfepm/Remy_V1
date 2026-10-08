@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
     const categorias = {1: 'Entrada', 2: 'Plato Fuerte', 3: 'Postre', 4: 'Bebida'};
-    const IMAGEN_DEFAULT = '/static/modulo_platos/platos/img/dummy_remy.png';
+    const IMAGEN_DEFAULT = RAIZ + '/static/modulo_platos/platos/img/dummy_remy.png';
 
     const partes = window.location.pathname.split('/');
     const id_plato = partes[partes.length - 1];
@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     function obtenerRutaImagen(img) {
         if (!img || img.trim() === '') return IMAGEN_DEFAULT;
         if (img.startsWith('http://') || img.startsWith('https://')) return img;
-        return `/img_remy/${img}`;
+        return `${RAIZ}/platos/img_remy/${img}`;
     }
 
     try {
-        const responsePlato = await fetch(`/api/platos/${id_plato}`);
+        const responsePlato = await fetch(`${RAIZ}/platos/api/platos/${id_plato}`);
         if (responsePlato.ok) {
             const plato = await responsePlato.json();
 
@@ -41,12 +41,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                                || document.querySelector('a[href*="modificar_plato"]') 
                                || document.querySelector('.btn-editar');
                 if (btnEditar) {
-                    btnEditar.href = `/modificar_plato/${id_plato}`;
+                    btnEditar.href = `${RAIZ}/platos/modificar_plato/${id_plato}`;
                 }
             }
         }
 
-        const responseIng = await fetch(`/api/platos/${id_plato}/ingredientes`);
+        const responseIng = await fetch(`${RAIZ}/platos/api/platos/${id_plato}/ingredientes`);
         const tbody = document.getElementById('tbody_ingredientes');
         tbody.innerHTML = '';
 

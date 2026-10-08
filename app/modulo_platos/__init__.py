@@ -1,35 +1,34 @@
+"""Módulo de platos y menús."""
 import os
 from datetime import datetime
-from flask import Flask, render_template, request, jsonify, send_from_directory
-from flask_cors import CORS
+
+from flask import Blueprint, current_app, jsonify, render_template, request, send_from_directory
 from PIL import Image
-import mysql.connector
-import requests as req
-from buscarGeneral import buscarGeneral
 
-# Directorio base apuntando a la raíz del proyecto (Remy_Web)
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+from app.db import obtener_conexion
+from app.modulo_platos.buscarGeneral import buscarGeneral
+from app.modulo_platos.services.menus.consultarMenu import consultarMenu
+from app.modulo_platos.services.menus.consultarMenuId import consultarMenuId
+from app.modulo_platos.services.menus.insertarMenu import insertarMenu
+from app.modulo_platos.services.menus.modificarMenu import modificarMenu
+from app.modulo_platos.services.platos.consultarIngrediente import consultarIngrediente
+from app.modulo_platos.services.platos.consultarPlatos import consultarPlatos
+from app.modulo_platos.services.platos.consultarPlatosId import consultarPlatosId
 
-IMG_REMY_DIR = r'C:\MAMP\htdocs\img_remy'
-PLATS_IMG_DIR = os.path.join(IMG_REMY_DIR, 'platos')
+platos_bp = Blueprint('platos', __name__, url_prefix='/platos')
 
-programa = Flask(
-    __name__,
-    template_folder=os.path.join(BASE_DIR, 'app', 'templates'),
-    static_folder=os.path.join(BASE_DIR, 'app', 'static')
-)
-CORS(programa)
-
-DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'remy',
-    'password': '12345',
-    'database': 'remy',
-    'port': 3306
-}
 
 def get_db_connection():
-    return mysql.connector.connect(**DB_CONFIG)
+    return obtener_conexion()
+
+
+def carpeta_img_platos():
+    return current_app.config['CARPETA_IMG_PLATOS']
+
+
+def respuesta_json(texto, estado=200):
+    return current_app.response_class(response=texto, status=estado, mimetype='application/json')
+
 
 MAPA_CATEGORIAS = {
     1: 'EN',
@@ -75,62 +74,58 @@ def guardar_imagen_png(file_storage, id_plato, directorio_destino):
 
 # ========== RUTAS ESTÁTICAS ==========
 
-@programa.route('/img_remy/<path:filename>')
+@platos_bp.route('/img_remy/<path:filename>')
 def obtener_imagen_local(filename):
-    ruta_en_platos = os.path.join(PLATS_IMG_DIR, filename)
-    if os.path.exists(ruta_en_platos):
-        return send_from_directory(PLATS_IMG_DIR, filename)
-    return send_from_directory(IMG_REMY_DIR, filename)
+    return send_from_directory(carpeta_img_platos(), filename)
 
 # ========== RUTAS DE VISTAS (Rutas con la jerarquía correcta) ==========
 
-@programa.route('/')
+@platos_bp.route('/')
 def index():
     return render_template('modulo_platos/platos/platos_menu.html')
 
-@programa.route('/platos_menu')
+@platos_bp.route('/platos_menu')
 def platos_menu():
     return render_template('modulo_platos/platos/platos_menu.html')
 
-@programa.route('/busqueda')
+@platos_bp.route('/busqueda')
 def busqueda():
     return render_template('modulo_platos/busqueda/busqueda.html')
 
-@programa.route('/crear_plato')
+@platos_bp.route('/crear_plato')
 def crear_plato():
     return render_template('modulo_platos/platos/crear_plato.html')
 
-@programa.route('/modificar_plato/<id_plato>')
+@platos_bp.route('/modificar_plato/<id_plato>')
 def modificar_plato(id_plato):
     return render_template('modulo_platos/platos/modificar_plato.html')
 
-@programa.route('/detalle_plato/<id_plato>')
+@platos_bp.route('/detalle_plato/<id_plato>')
 def detalle_plato(id_plato):
     return render_template('modulo_platos/platos/detalle_plato.html')
 
-@programa.route('/crear_menu')
+@platos_bp.route('/crear_menu')
 def crear_menu():
     return render_template('modulo_platos/menus/crear_menu.html')
 
-@programa.route('/modificar_menu/<id_menu>')
+@platos_bp.route('/modificar_menu/<id_menu>')
 def modificar_menu(id_menu):
     return render_template('modulo_platos/menus/modificar_menu.html')
 
-@programa.route('/detalle_menu/<id_menu>')
+@platos_bp.route('/detalle_menu/<id_menu>')
 def detalle_menu(id_menu):
     return render_template('modulo_platos/menus/detalle_menu.html')
 
 # ========== BÚSQUEDA GENERAL ==========
 
-@programa.route('/buscar')
+@platos_bp.route('/buscar')
 def buscar():
     q = request.args.get('q', '')
-    resultado = buscarGeneral(q)
-    return programa.response_class(response=resultado, status=200, mimetype='application/json')
+    return respuesta_json(buscarGeneral(q))
 
 # ========== API INGREDIENTES (directa a BD) ==========
 
-@programa.route('/api/ingredientes', methods=['GET'])
+@platos_bp.route('/api/ingredientes', methods=['GET'])
 def obtener_ingredientes():
     conn = None
     try:
@@ -148,22 +143,19 @@ def obtener_ingredientes():
 
 # ========== API PLATOS ==========
 
-@programa.route('/api/platos', methods=['GET'])
+@platos_bp.route('/api/platos', methods=['GET'])
 def proxy_platos():
-    r = req.get('http://localhost:5085/platos')
-    return programa.response_class(response=r.text, status=r.status_code, mimetype='application/json')
+    return respuesta_json(consultarPlatos())
 
-@programa.route('/api/platos/<id_plato>', methods=['GET'])
+@platos_bp.route('/api/platos/<id_plato>', methods=['GET'])
 def proxy_plato_id(id_plato):
-    r = req.get(f'http://localhost:5085/platos/{id_plato}')
-    return programa.response_class(response=r.text, status=r.status_code, mimetype='application/json')
+    return respuesta_json(consultarPlatosId(id_plato))
 
-@programa.route('/api/platos/<id_plato>/ingredientes', methods=['GET'])
+@platos_bp.route('/api/platos/<id_plato>/ingredientes', methods=['GET'])
 def proxy_plato_ingredientes(id_plato):
-    r = req.get(f'http://localhost:5085/platos/{id_plato}/ingredientes')
-    return programa.response_class(response=r.text, status=r.status_code, mimetype='application/json')
+    return respuesta_json(consultarIngrediente(id_plato))
 
-@programa.route('/api/platos/insertar', methods=['POST'])
+@platos_bp.route('/api/platos/insertar', methods=['POST'])
 def insertar_plato():
     conn = None
     try:
@@ -193,7 +185,7 @@ def insertar_plato():
         nombre_imagen_guardada = ""
         if 'imagen' in request.files and request.files['imagen'].filename != '':
             archivo_imagen = request.files['imagen']
-            nombre_imagen_guardada = guardar_imagen_png(archivo_imagen, id_plato, PLATS_IMG_DIR)
+            nombre_imagen_guardada = guardar_imagen_png(archivo_imagen, id_plato, carpeta_img_platos())
 
         fecha_creacion = datetime.now().strftime('%Y-%m-%d')
 
@@ -235,8 +227,8 @@ def insertar_plato():
 
 # ========== MODIFICACIÓN Y ELIMINACIÓN DE PLATOS ==========
 
-@programa.route('/api/platos/<id_plato>', methods=['PUT', 'POST', 'DELETE'])
-@programa.route('/api/platos/<id_plato>/modificar', methods=['PUT', 'POST'])
+@platos_bp.route('/api/platos/<id_plato>', methods=['PUT', 'POST', 'DELETE'])
+@platos_bp.route('/api/platos/<id_plato>/modificar', methods=['PUT', 'POST'])
 def modificar_plato_api(id_plato):
     conn = None
     try:
@@ -290,7 +282,7 @@ def modificar_plato_api(id_plato):
 
         nombre_imagen = plato_actual['img_plato'] or ""
         if 'imagen' in request.files and request.files['imagen'].filename != '':
-            nombre_imagen = guardar_imagen_png(request.files['imagen'], id_final, PLATS_IMG_DIR)
+            nombre_imagen = guardar_imagen_png(request.files['imagen'], id_final, carpeta_img_platos())
 
         cursor = conn.cursor()
         cursor.execute("DELETE FROM plato_ingrediente WHERE id_plato = %s", (id_plato,))
@@ -338,31 +330,25 @@ def modificar_plato_api(id_plato):
         if conn and conn.is_connected():
             conn.close()
 
-# ========== API MENUS (proxy → microservicio 5084) ==========
+# ========== API MENUS ==========
 
-@programa.route('/api/menus', methods=['GET'])
-def proxy_menus():
-    r = req.get('http://localhost:5084/menus')
-    return programa.response_class(response=r.text, status=r.status_code, mimetype='application/json')
+@platos_bp.route('/api/menus', methods=['GET'])
+def api_menus():
+    return respuesta_json(consultarMenu())
 
-@programa.route('/api/menus/<id_menu>', methods=['GET'])
-def proxy_menu_id(id_menu):
-    r = req.get(f'http://localhost:5084/menus/{id_menu}')
-    return programa.response_class(response=r.text, status=r.status_code, mimetype='application/json')
+@platos_bp.route('/api/menus/<id_menu>', methods=['GET'])
+def api_menu_id(id_menu):
+    return respuesta_json(consultarMenuId(id_menu))
 
-@programa.route('/api/menus/<id_menu>', methods=['PUT'])
-def proxy_menu_put(id_menu):
-    r = req.put(f'http://localhost:5084/menus/{id_menu}',
-                json=request.json,
-                headers={'Content-Type': 'application/json'})
-    return programa.response_class(response=r.text, status=r.status_code, mimetype='application/json')
+@platos_bp.route('/api/menus/<id_menu>', methods=['PUT'])
+def api_menu_put(id_menu):
+    data = request.get_json(silent=True) or {}
+    if "menu" in data:
+        data["menu"]["id_menu"] = id_menu
+    else:
+        data["id_menu"] = id_menu
+    return respuesta_json(modificarMenu(data))
 
-@programa.route('/api/menus', methods=['POST'])
-def proxy_menus_post():
-    r = req.post('http://localhost:5084/menus',
-                json=request.json,
-                headers={'Content-Type': 'application/json'})
-    return programa.response_class(response=r.text, status=r.status_code, mimetype='application/json')
-
-if __name__ == '__main__':
-    programa.run(host='0.0.0.0', debug=True, port=5000)
+@platos_bp.route('/api/menus', methods=['POST'])
+def api_menus_post():
+    return respuesta_json(insertarMenu(request.get_json(silent=True) or {}))

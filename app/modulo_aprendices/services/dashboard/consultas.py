@@ -1,4 +1,4 @@
-from conexiones import get_connection
+from app.db import obtener_conexion as get_connection
 
 
 class Consultas:

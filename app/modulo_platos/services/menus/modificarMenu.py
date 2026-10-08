@@ -3,10 +3,11 @@ Traducción de modificarMenu.php
 Modifica un menú existente. Usa transacción para garantizar consistencia.
 Borra y reinsertar los platos en contiene.
 """
-from dbremy import conn
+from app.db import con_conexion
 import json
 
-def modificarMenu(data: dict) -> str:
+@con_conexion
+def modificarMenu(conn, data: dict) -> str:
     response = {}
 
     try:
@@ -39,12 +40,12 @@ def modificarMenu(data: dict) -> str:
             conn.rollback()
             conn.start_transaction()
 
-        sql = "UPDATE Menu SET nombre=%s, tiempos_menu=%s, precio=%s, descripcion=%s, estado=%s WHERE id_menu=%s"
+        sql = "UPDATE menu SET nombre=%s, tiempos_menu=%s, precio=%s, descripcion=%s, estado=%s WHERE id_menu=%s"
         cursor.execute(sql, (nombre, tiempos, precio, desc, estado, id_menu))
 
-        cursor.execute("DELETE FROM Contiene WHERE id_menu = %s", (id_menu,))
+        cursor.execute("DELETE FROM contiene WHERE id_menu = %s", (id_menu,))
 
-        sql_cont = "INSERT INTO Contiene (id_menu, id_plato) VALUES (%s, %s)"
+        sql_cont = "INSERT INTO contiene (id_menu, id_plato) VALUES (%s, %s)"
         for plato in platos:
             id_plato = plato.get("id_plato") if isinstance(plato, dict) else plato
             if id_plato:

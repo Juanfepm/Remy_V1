@@ -1,12 +1,11 @@
 import bcrypt
 from datetime import datetime, date
-from flask import Flask, request, jsonify
-from flask_restful import Api, Resource
-from usuarios import mis_usuarios
-from conexion import *
+from flask import Blueprint, request, jsonify
+from flask_restful import Resource
+from app.modulo_aprendices.services.usuarios.usuarios import mis_usuarios
+from app.roles import ROL_APRENDIZ, ROL_INSTRUCTOR
 
-programa = Flask(__name__)
-api = Api(programa)
+programa = Blueprint("usuarios", __name__)
 
 def limpiar_fila_para_json(fila):
     fila_limpia = []
@@ -52,7 +51,7 @@ def validar_datos_usuario(datos, es_modificacion=False):
 
     rol = None
     if correo.endswith("@soy.sena.edu.co"):
-        rol = 0
+        rol = ROL_APRENDIZ
         if not ficha or str(ficha).strip() == "":
             return False, "El aprendiz requiere un número de ficha."
         
@@ -67,7 +66,7 @@ def validar_datos_usuario(datos, es_modificacion=False):
             return False, "La ficha no puede iniciar con cero."
 
     elif correo.endswith("@sena.edu.co"):
-        rol = 1
+        rol = ROL_INSTRUCTOR
         ficha = None
         fecha_fin = None
     else:
@@ -178,8 +177,5 @@ class Usuarios(Resource):
         return jsonify({"mensaje": "Usuario eliminado con éxito."})
 
 
-api.add_resource(ListaUsuarios, "/usuarios")
-api.add_resource(Usuarios, "/usuarios/<cedula>")
-
-if __name__ == "__main__":
-    programa.run(host="0.0.0.0", debug=True, port=5103)
+programa.add_url_rule("/usuarios", view_func=ListaUsuarios.as_view("listausuarios"))
+programa.add_url_rule("/usuarios/<cedula>", view_func=Usuarios.as_view("usuarios"))

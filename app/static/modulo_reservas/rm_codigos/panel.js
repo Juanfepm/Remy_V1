@@ -34,9 +34,9 @@ const ICO_PANEL_SALIR =
 
 const MARCAS_PANEL =
     '<div id="cont_marcas">' +
-    '<figure id="marca_sena"><img src="/static/modulo_reservas/rm_componentes/simbolo_sena_verde.svg" alt="SENA"></figure>' +
+    '<figure id="marca_sena"><img src="' + RAIZ + '/static/modulo_reservas/rm_componentes/simbolo_sena_verde.svg" alt="SENA"></figure>' +
     '<div id="linea_vert"></div>' +
-    '<figure id="marca_remy"><img src="/static/modulo_reservas/rm_componentes/remy_green.svg" alt="REMY"></figure>' +
+    '<figure id="marca_remy"><img src="' + RAIZ + '/static/modulo_reservas/rm_componentes/remy_green.svg" alt="REMY"></figure>' +
     '</div>';
 
 

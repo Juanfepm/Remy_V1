@@ -2,16 +2,17 @@
 Traducción de consultarIngrediente.php
 Trae los ingredientes de un plato específico desde plato_ingrediente.
 """
-from dbremy import conn
+from app.db import con_conexion
 import json
 
-def consultarTodosIngredientes() -> str:
+@con_conexion
+def consultarTodosIngredientes(conn) -> str:
     sql = """
         SELECT 
             id_ingrediente, 
             nombre, 
             unidad_minima AS unidad 
-        FROM Ingredientes
+        FROM ingredientes
     """
     try:
         cursor = conn.cursor()
@@ -32,7 +33,8 @@ def consultarTodosIngredientes() -> str:
         print(f"Error al consultar lista general de ingredientes: {e}")
         return json.dumps([])
 
-def consultarIngrediente(id_plato: str) -> str:
+@con_conexion
+def consultarIngrediente(conn, id_plato: str) -> str:
     if not id_plato:
         return json.dumps([])
 
@@ -43,8 +45,8 @@ def consultarIngrediente(id_plato: str) -> str:
             i.stock AS stock_general,
             pi.cantidad AS cantidad_receta,
             i.unidad_minima AS unidad
-        FROM Plato_Ingrediente pi
-        INNER JOIN Ingredientes i ON pi.id_ingrediente = i.id_ingrediente
+        FROM plato_ingrediente pi
+        INNER JOIN ingredientes i ON pi.id_ingrediente = i.id_ingrediente
         WHERE pi.id_plato = %s
     """
     try:

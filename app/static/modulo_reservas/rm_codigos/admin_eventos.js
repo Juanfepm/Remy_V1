@@ -175,7 +175,8 @@ async function guardarEvento() {
         franja_horaria: franja,
         numero_personas: Number(document.getElementById('personas_evento').value),
         asistentes: 0,
-        costo_total: Number(document.getElementById('costo_evento').value)
+        costo_total: Number(document.getElementById('costo_evento').value),
+        correo: (obtenerSesion() || {}).correo || ''
     };
 
     guardandoEvento = true;

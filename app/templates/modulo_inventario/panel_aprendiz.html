@@ -2,11 +2,12 @@
 <html lang="es">
 
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Aprendiz | REMY 1.0</title>
-    <link rel="stylesheet" href="../static/modulo_inventario/css/normalize.css">
-    <link rel="stylesheet" href="../static/modulo_inventario/css/Formato_Rm_interno.css?v=24">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/Formato_Rm_interno.css') }}?v=24">
 
 </head>
 
@@ -27,11 +28,11 @@
 
             <div id="cont_marcas">
                 <figure id="marca_sena">
-                    <img src="../static/modulo_inventario/componentes/simbolo_sena_verde.svg" alt="sena">
+                    <img src="{{ url_for('static', filename='modulo_inventario/componentes/simbolo_sena_verde.svg') }}" alt="sena">
                 </figure>
                 <div id="linea_vert"></div>
                 <figure id="marca_remy">
-                    <img src="../static/modulo_inventario/componentes/remy_green.svg" alt="remy">
+                    <img src="{{ url_for('static', filename='modulo_inventario/componentes/remy_green.svg') }}" alt="remy">
                 </figure>
             </div>
 
@@ -311,7 +312,7 @@
 
     </div>
 
-    <script src="../static/modulo_inventario/js/aprendiz_panel.js?v=1"></script>
+    <script src="{{ url_for('static', filename='modulo_inventario/js/aprendiz_panel.js') }}?v=1"></script>
 </body>
 
 </html>

@@ -2,13 +2,14 @@
 Traducción de consultarPlatos.php
 Lista todos los platos de la base de datos.
 """
-from dbremy import conn
+from app.db import con_conexion
 import json
 
-def consultarPlatos():
+@con_conexion
+def consultarPlatos(conn):
     cursor = conn.cursor()
     conn.commit()
-    sql = "SELECT * FROM Platos ORDER BY CASE WHEN estado='Activo' THEN 0 ELSE 1 END"
+    sql = "SELECT * FROM platos ORDER BY CASE WHEN estado='Activo' THEN 0 ELSE 1 END"
     cursor.execute(sql)
     columnas = [col[0] for col in cursor.description]
     resultado = cursor.fetchall()

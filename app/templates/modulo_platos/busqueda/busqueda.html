@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Búsqueda - REMY 1.0</title>
 
     <!-- Estilos CSS -->
-    <link rel="stylesheet" href="../../static/modulo_platos/busqueda/css/busqueda.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_platos/busqueda/css/busqueda.css') }}">
 
     <!-- Comportamientos JavaScript -->
-    <script src="../../static/modulo_platos/busqueda/js/busqueda_remy.js" defer></script>
+    <script src="{{ url_for('static', filename='modulo_platos/busqueda/js/busqueda_remy.js') }}" defer></script>
 </head>
 <body>
 
@@ -29,7 +30,7 @@
             <h1 class="txt-cabezote">Búsqueda General</h1>
             
             <!-- Redirección mediante href hacia platos_menu -->
-            <a href="{{ url_for('platos_menu') }}" class="btn-transparente" id="btn_cerrar_modal" title="Cerrar" aria-label="Cerrar búsqueda">
+            <a href="{{ url_for('platos.platos_menu') }}" class="btn-transparente" id="btn_cerrar_modal" title="Cerrar" aria-label="Cerrar búsqueda">
                 <svg class="ico-svg ico-cerrar-svg" viewBox="0 0 24 24" aria-hidden="true">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -88,7 +89,7 @@
 
             <!-- CONTENEDOR DUMMY SIN RESULTADOS -->
             <div id="sin_resultados_msj" class="cont-sin-resultados oculto">
-                <img src="../../static/modulo_platos/busqueda/img/dummy_busqueda_empty.png" alt="Sin resultados" class="img-dummy-empty" onerror="this.src='../../static/modulo_platos/busqueda/img/dummy_busqueda_empty.png'">
+                <img src="{{ url_for('static', filename='modulo_platos/busqueda/img/dummy_busqueda_empty.png') }}" alt="Sin resultados" class="img-dummy-empty" onerror="this.src='../../static/modulo_platos/busqueda/img/dummy_busqueda_empty.png'">
                 <p class="txt-sin-resultados">no se han encontrado resultados a tu busqueda</p>
             </div>
 

@@ -1,14 +1,18 @@
 
 
-const URL_BACKEND = 'http://localhost/Remy_V1/modulo_reservas_php/';
+// La URL de la API PHP la pone Flask (REMY_URL_API_RESERVAS) en comun/raiz.html.
+const URL_BACKEND = (typeof URL_API_RESERVAS !== 'undefined' && URL_API_RESERVAS)
+    ? URL_API_RESERVAS
+    : 'http://localhost/Remy_V1/modulo_reservas_php/';
 
 
 const URL_IMG_MENU = URL_BACKEND + 'assets/img_menu/';
 const URL_IMG_EXP = URL_BACKEND + 'assets/img_exp/';
 
 
-const ROL_INSTRUCTOR = 1;
-const ROL_APRENDIZ = 2;
+// Los roles los define Flask (app/roles.py) en comun/raiz.html.
+const ROL_INSTRUCTOR = (typeof ROLES !== 'undefined') ? ROLES.instructor : 1;
+const ROL_APRENDIZ = (typeof ROLES !== 'undefined') ? ROLES.aprendiz : 2;
 
 
 

@@ -50,7 +50,7 @@ function inicializarLogin() {
         }
 
         try {
-            const respuesta = await fetch(`${(window.location.origin && window.location.origin.startsWith('http')) ? window.location.origin : 'http://127.0.0.1:5000'}/auth/login`, {
+            const respuesta = await fetch(`${RAIZ}/inventario/api/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -81,7 +81,7 @@ function inicializarLogin() {
 
         } catch (error) {
             console.error("Error al conectar con el backend:", error);
-            alert("No fue posible conectar con el servidor backend (http://127.0.0.1:5000). Asegúrate de tener el backend encendido.");
+            alert("No fue posible conectar con el servidor. Intenta de nuevo en unos minutos.");
             if (btnEntrar) {
                 btnEntrar.textContent = "ENTRAR";
                 btnEntrar.disabled = false;

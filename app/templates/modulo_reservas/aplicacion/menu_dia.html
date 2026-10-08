@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú del día | REMY 1.0</title>
-    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/normalize.css">
-    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/formato_rm_clientes.css">
-    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/formato_menu.css">
-    <script src="/static/modulo_reservas/rm_codigos/config.js" defer></script>
-    <script src="/static/modulo_reservas/rm_codigos/api.js" defer></script>
-    <script src="/static/modulo_reservas/rm_codigos/plantillas.js" defer></script>
-    <script src="/static/modulo_reservas/rm_codigos/menu_dia.js" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_reservas/rm_codigos/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_reservas/rm_codigos/formato_rm_clientes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_reservas/rm_codigos/formato_menu.css') }}">
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/config.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/api.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/plantillas.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/menu_dia.js') }}" defer></script>
 </head>
 <body id="cuerpo_menu">
 
@@ -37,31 +38,31 @@
             <div id="cont_jornada">
                 <div class="cont-dato">
                     <figure class="iconos">
-                        <img src="/static/modulo_reservas/rm_componentes/lote_iconos/ico_calendario.svg" alt="">
+                        <img src="{{ url_for('static', filename='modulo_reservas/rm_componentes/lote_iconos/ico_calendario.svg') }}" alt="">
                     </figure>
                     <h3 class="letra-azul-dark">Disponible hoy</h3>
                 </div>
                 <div class="cont-dato">
                     <figure class="iconos">
-                        <img src="/static/modulo_reservas/rm_componentes/lote_iconos/ico_eventos.svg" alt="">
+                        <img src="{{ url_for('static', filename='modulo_reservas/rm_componentes/lote_iconos/ico_eventos.svg') }}" alt="">
                     </figure>
                     <p id="franja_menu">12:00 - 1:00 pm</p>
                 </div>
             </div>
 
             <figure id="foto_principal">
-                <img id="img_plato_fuerte" src="/static/modulo_reservas/img/principal.jpg" alt="Plato fuerte del día">
+                <img id="img_plato_fuerte" src="{{ url_for('static', filename='modulo_reservas/img/principal.jpg') }}" alt="Plato fuerte del día">
             </figure>
 
             <div id="cont_galeria">
                 <figure class="foto-mini">
-                    <img id="img_bebida" src="/static/modulo_reservas/img/bebidas.jpg" alt="Bebida">
+                    <img id="img_bebida" src="{{ url_for('static', filename='modulo_reservas/img/bebidas.jpg') }}" alt="Bebida">
                 </figure>
                 <figure class="foto-mini">
-                    <img id="img_entrada" src="/static/modulo_reservas/img/entrada.jpg" alt="Entrada">
+                    <img id="img_entrada" src="{{ url_for('static', filename='modulo_reservas/img/entrada.jpg') }}" alt="Entrada">
                 </figure>
                 <figure class="foto-mini">
-                    <img id="img_postre" src="/static/modulo_reservas/img/postre.jpg" alt="Postre">
+                    <img id="img_postre" src="{{ url_for('static', filename='modulo_reservas/img/postre.jpg') }}" alt="Postre">
                 </figure>
             </div>
 
@@ -87,7 +88,7 @@
                     <div id="cont_correo">
                         <div class="cont-dato">
                             <figure class="iconos">
-                                <img src="/static/modulo_reservas/rm_componentes/lote_iconos/ico_persona.svg" alt="">
+                                <img src="{{ url_for('static', filename='modulo_reservas/rm_componentes/lote_iconos/ico_persona.svg') }}" alt="">
                             </figure>
                             <h3>Correo institucional</h3>
                         </div>

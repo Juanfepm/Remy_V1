@@ -24,14 +24,15 @@ python run.py
 `entorno/` se excluye de Git; instala allí las dependencias antes de ejecutar
 `run.py`.
 
-Abrir `http://127.0.0.1:5000/`. El panel administrativo está en
-`http://127.0.0.1:5000/aplicacion/login.html`.
+Abrir `http://127.0.0.1:5000/reservas/`. El panel administrativo está en
+`http://127.0.0.1:5000/reservas/aplicacion/login.html`. La web de reservas es
+un blueprint de la app unificada (ver el `README.md` de la raíz).
 
 ### Backend PHP y base de datos
 
 Arrancar Apache y MySQL con XAMPP. Para que la URL predeterminada funcione,
-ubicar el repositorio como `C:\xampp\htdocs\Remy_V1` (o cambiar `URL_BACKEND`
-en `app/static/modulo_reservas/rm_codigos/config.js` si se usa otra ruta).
+ubicar el repositorio como `C:\xampp\htdocs\Remy_V1` (o poner otra URL en
+`REMY_URL_API_RESERVAS` del `.env` si se usa otra ruta).
 Configurar `REMY_DB_USER` y `REMY_DB_PASSWORD` en el entorno de Apache; las
 credenciales no se guardan en el código ni en Git. El nombre de la base
 predeterminado es `remy`; para otra base, configurar también `REMY_DB_NAME`.
@@ -153,11 +154,8 @@ rm_codigos/
   agregar_reserva.css       agregar reserva
 ```
 
-`config.js` es lo único que hay que tocar para apuntar a otro servidor:
-
-```js
-const URL_BACKEND = 'http://localhost/Remy_V1/modulo_reservas_php/';
-```
+Para apuntar a otro servidor PHP se cambia `REMY_URL_API_RESERVAS` en el
+`.env`; Flask la pasa a las páginas y `config.js` la usa como `URL_BACKEND`.
 
 ## Reservas repetidas
 

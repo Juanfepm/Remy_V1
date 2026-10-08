@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, redirect
+from flask import Blueprint, request, jsonify, redirect, url_for
 from app.modulo_inventario.services.auth_service import AuthService
 
 auth_bp = Blueprint('auth_bp', __name__, url_prefix='/auth')
@@ -19,7 +19,8 @@ def login():
 
         # Si es petición normal de formulario (no JSON ni AJAX), redirigir
         if not request.is_json and request.headers.get('Accept', '').find('text/html') != -1:
-            return redirect(f"/Remy__/Aplicacion__/{res['redirect']}", code=302)
+            vista = 'panel_instructor' if res['redirect'].startswith('panel_instructor') else 'panel_aprendiz'
+            return redirect(url_for(f'inventario.{vista}'), code=302)
 
         return jsonify(res), 200
     except ValueError as ve:

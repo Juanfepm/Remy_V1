@@ -1,12 +1,12 @@
-from flask import Flask, jsonify
-from flask_cors import CORS
-from consultas import Consultas
+from flask import Blueprint, jsonify
+from app.modulo_aprendices.services.dashboard.consultas import Consultas
 
-app = Flask(__name__)
+programa = Blueprint("dashboard", __name__)
 
 dato_consultas = Consultas()
 
-@app.route('/programa/dashboard/eventos', methods=['GET'])
+@programa.route('/programa/dashboard/eventos', methods=['GET'])
+@programa.route('/dashboard/eventos', methods=['GET'])
 def obtener_eventos():
     try:
         data = dato_consultas.listar_eventos()
@@ -15,7 +15,8 @@ def obtener_eventos():
         return jsonify({"status": "error", "message": str(e)}), 500
 
 
-@app.route('/programa/dashboard/lideres', methods=['GET'])
+@programa.route('/programa/dashboard/lideres', methods=['GET'])
+@programa.route('/dashboard/lideres', methods=['GET'])
 def obtener_lideres():
     try:
         data = dato_consultas.lista_lideres()
@@ -23,7 +24,8 @@ def obtener_lideres():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
-@app.route('/programa/dashboard/menu-resumen', methods=['GET'])
+@programa.route('/programa/dashboard/menu-resumen', methods=['GET'])
+@programa.route('/dashboard/menu-resumen', methods=['GET'])
 def obtener_resumen_menu():
     
     try:
@@ -41,7 +43,8 @@ def obtener_resumen_menu():
         return jsonify({"status": "error", "message": str(e)}), 500
 
 
-@app.route('/programa/dashboard/completo', methods=['GET'])
+@programa.route('/programa/dashboard/completo', methods=['GET'])
+@programa.route('/dashboard/completo', methods=['GET'])
 def obtener_dashboard_completo():
 
     try:
@@ -58,7 +61,3 @@ def obtener_dashboard_completo():
         return jsonify({"status": "success", "data": dashboard}), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5107, debug=True)

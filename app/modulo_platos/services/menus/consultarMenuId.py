@@ -2,19 +2,20 @@
 Traducción de consultarMenuId.php
 Busca un menú por su id_menu con sus platos anidados.
 """
-from dbremy import conn
+from app.db import con_conexion
 import json
 
-def consultarMenuId(id_menu: str):
+@con_conexion
+def consultarMenuId(conn, id_menu: str):
     if not id_menu:
         return json.dumps({"error": "No se proporcionó id_menu"}, ensure_ascii=False)
 
     sql = """
         SELECT m.*, p.id_plato, p.nombre AS plato_nombre, p.categoria,
                p.descripcion AS plato_descripcion, p.img_plato
-        FROM Menu m
-        LEFT JOIN Contiene c ON m.id_menu = c.id_menu
-        LEFT JOIN Platos p ON c.id_plato = p.id_plato
+        FROM menu m
+        LEFT JOIN contiene c ON m.id_menu = c.id_menu
+        LEFT JOIN platos p ON c.id_plato = p.id_plato
         WHERE m.id_menu = %s
     """
     cursor = conn.cursor()

@@ -20,8 +20,28 @@ if ($data) {
     if (stripos($experiencia, 'vino') !== false) { $img = 'vino.jpg'; }
     if (stripos($experiencia, 'queso') !== false) { $img = 'quesos.jpg'; }
 
-    $correo = "carlos.lopez@gmail.com";
-    $id_menu = "MEN-000001";
+    // El evento queda a nombre de quien lo crea (el instructor en sesión) y
+    // con un menú activo real: correo_fk e id_menu_fk son llaves foráneas.
+    $correo = mysqli_real_escape_string($conexion, strtolower(trim($data['correo'] ?? '')));
+    if ($correo === '') {
+        http_response_code(400);
+        echo json_encode(["error" => "Falta el correo de quien crea el evento"]);
+        exit;
+    }
+    mysqli_query($conexion, "INSERT INTO cliente (correo_pk, fecha_registro) VALUES ('$correo', NOW())
+                             ON DUPLICATE KEY UPDATE correo_pk = correo_pk");
+
+    $id_menu = mysqli_real_escape_string($conexion, $data['id_menu'] ?? '');
+    if ($id_menu === '') {
+        $fila = mysqli_fetch_assoc(mysqli_query($conexion,
+            "SELECT id_menu FROM menu WHERE estado = 'activo' ORDER BY id_menu ASC LIMIT 1"));
+        $id_menu = $fila['id_menu'] ?? '';
+    }
+    if ($id_menu === '') {
+        http_response_code(400);
+        echo json_encode(["error" => "No hay ningún menú activo para asociar al evento"]);
+        exit;
+    }
 
     $query = "INSERT INTO eventos (id_evento, estado, correo_fk, franja_horaria, fecha_inicio, fecha_fin, numero_personas, experiencia, descripcion, id_menu_fk, costo_total, tipo_servicio, asistentes, imagen)
               VALUES ('$id', 'activo', '$correo', '$franja', '$fecha_inicio', '$fecha_fin', $personas, '$experiencia', '$descripcion', '$id_menu', $costo, 'Presencial', $asistentes, '$img')";

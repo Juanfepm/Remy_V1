@@ -16,6 +16,7 @@ $host = getenv('REMY_DB_HOST') ?: "localhost";
 $user = getenv('REMY_DB_USER');
 $pass = getenv('REMY_DB_PASSWORD');
 $db   = getenv('REMY_DB_NAME') ?: "remy";
+$port = (int) (getenv('REMY_DB_PORT') ?: 3306);
 
 if ($user === false || $user === '' || $pass === false) {
     http_response_code(500);
@@ -24,7 +25,7 @@ if ($user === false || $user === '' || $pass === false) {
     exit;
 }
 
-$conexion = mysqli_connect($host, $user, $pass, $db);
+$conexion = mysqli_connect($host, $user, $pass, $db, $port);
 
 if (!$conexion) {
     header('Content-Type: application/json');

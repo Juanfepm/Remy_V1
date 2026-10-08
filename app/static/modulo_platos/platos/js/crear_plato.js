@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cargar ingredientes desde la API
     async function cargarIngredientesDesdeDB() {
         try {
-            const respuesta = await fetch('/api/ingredientes');
+            const respuesta = await fetch(RAIZ + '/platos/api/ingredientes');
             if (!respuesta.ok) return;
 
             const data = await respuesta.json();
@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                const response = await fetch('/api/platos/insertar', {
+                const response = await fetch(RAIZ + '/platos/api/platos/insertar', {
                     method: 'POST',
                     body: formData
                 });
@@ -346,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const resultado = await response.json();
 
                 if (response.ok && resultado.status === 'success') {
-                    window.location.href = '/platos_menu';
+                    window.location.href = RAIZ + '/platos/platos_menu';
                 } else {
                     alert('Error: ' + (resultado.message || 'No se pudo guardar el plato.'));
                 }

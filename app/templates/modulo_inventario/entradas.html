@@ -2,11 +2,12 @@
 <html lang="es">
 
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entradas | REMY 1.0</title>
-    <link rel="stylesheet" href="../static/modulo_inventario/css/normalize.css">
-    <link rel="stylesheet" href="../static/modulo_inventario/css/Formato_Rm_interno.css?v=18">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/Formato_Rm_interno.css') }}?v=18">
 </head>
 
 <body id="cuerpo_inventario">
@@ -23,9 +24,9 @@
                 </svg>
             </label>
             <div id="cont_marcas">
-                <figure id="marca_sena"><img src="../static/modulo_inventario/componentes/simbolo_sena_verde.svg" alt="SENA"></figure>
+                <figure id="marca_sena"><img src="{{ url_for('static', filename='modulo_inventario/componentes/simbolo_sena_verde.svg') }}" alt="SENA"></figure>
                 <div id="linea_vert"></div>
-                <figure id="marca_remy"><img src="../static/modulo_inventario/componentes/remy_green.svg" alt="REMY"></figure>
+                <figure id="marca_remy"><img src="{{ url_for('static', filename='modulo_inventario/componentes/remy_green.svg') }}" alt="REMY"></figure>
             </div>
             <nav id="menu_lateral">
                 <a href="inventario.html" class="item-menu" id="link_inventario">
@@ -150,7 +151,7 @@
         </main>
     </div>
 </body>
-<script src="../static/modulo_inventario/js/inventario_api.js?v=22"></script>
+<script src="{{ url_for('static', filename='modulo_inventario/js/inventario_api.js') }}?v=22"></script>
 <script>
     // Fallback for loadSummaryData in case it's not loaded
     if (typeof loadSummaryData === 'undefined') {

@@ -9,7 +9,7 @@ function inicializarBusquedaREMY() {
 
     if (!inputBusqueda) return;
 
-    const IMAGEN_DEFAULT = '/static/modulo_platos/busqueda/img/dummy_remy.png';
+    const IMAGEN_DEFAULT = RAIZ + '/static/modulo_platos/platos/img/dummy_remy.png';
 
     // Función aux para resolver la ruta de la imagen
     function obtenerRutaImagen(img) {
@@ -17,7 +17,7 @@ function inicializarBusquedaREMY() {
         if (img.startsWith('http://') || img.startsWith('https://')) {
             return img;
         }
-        return `/img_remy/${img}`;
+        return `${RAIZ}/platos/img_remy/${img}`;
     }
 
     // Función para manejar el clic y la navegación según el tipo de registro
@@ -25,9 +25,9 @@ function inicializarBusquedaREMY() {
         const tipoLimpio = tipo ? tipo.toLowerCase().trim() : '';
 
         if (tipoLimpio === 'plato') {
-            window.location.href = `/detalle_plato/${id}`;
+            window.location.href = `${RAIZ}/platos/detalle_plato/${id}`;
         } else if (tipoLimpio === 'menú' || tipoLimpio === 'menu') {
-            window.location.href = `/detalle_menu/${id}`;
+            window.location.href = `${RAIZ}/platos/detalle_menu/${id}`;
         } else if (tipoLimpio === 'ingrediente') {
             console.log(`Detalle de ingrediente reservado (ID: ${id})`);
         }
@@ -37,7 +37,7 @@ function inicializarBusquedaREMY() {
         const q = inputBusqueda.value.trim();
 
         try {
-            const response = await fetch(`/buscar?q=${encodeURIComponent(q)}`);
+            const response = await fetch(`${RAIZ}/platos/buscar?q=${encodeURIComponent(q)}`);
             if (!response.ok) throw new Error('Error al conectar con la base de datos');
 
             const data = await response.json();

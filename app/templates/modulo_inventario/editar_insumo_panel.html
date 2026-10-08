@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar insumo | REMY 1.0</title>
-    <link rel="stylesheet" href="../static/modulo_inventario/css/normalize.css">
-    <link rel="stylesheet" href="../static/modulo_inventario/css/Formato_Rm_interno.css?v=18">
-    <link rel="stylesheet" href="../static/modulo_inventario/css/formato_formulario_insumo.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/Formato_Rm_interno.css') }}?v=18">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/formato_formulario_insumo.css') }}">
 </head>
 <body id="cuerpo_inventario">
     <div id="app_inventario">
         <aside id="barra_lateral">
-            <div id="cont_marcas"><figure id="marca_sena"><img src="../static/modulo_inventario/componentes/simbolo_sena_verde.svg" alt="SENA"></figure><div id="linea_vert"></div><figure id="marca_remy"><img src="../static/modulo_inventario/componentes/remy_green.svg" alt="REMY"></figure></div>
+            <div id="cont_marcas"><figure id="marca_sena"><img src="{{ url_for('static', filename='modulo_inventario/componentes/simbolo_sena_verde.svg') }}" alt="SENA"></figure><div id="linea_vert"></div><figure id="marca_remy"><img src="{{ url_for('static', filename='modulo_inventario/componentes/remy_green.svg') }}" alt="REMY"></figure></div>
             <nav id="menu_lateral">
                 <a href="insumos_panel.html" class="item-menu">
                     <svg class="ico-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -44,5 +45,5 @@
         </main>
     </div>
 </body>
-    <script src="../static/modulo_inventario/js/inventario_api.js?v=20"></script>
+    <script src="{{ url_for('static', filename='modulo_inventario/js/inventario_api.js') }}?v=20"></script>
 </html>

@@ -1,18 +1,11 @@
+import traceback
 from datetime import datetime, date
-from flask import Flask, request
-from flask_restful import Api, Resource
-from flask_cors import CORS
-from eventos import mis_eventos
-from aprendices import mis_aprendices
+from flask import Blueprint, request
+from flask_restful import Resource
+from app.modulo_aprendices.services.asignarLiderazgo.eventos import mis_eventos
+from app.modulo_aprendices.services.asignarLiderazgo.aprendices import mis_aprendices
 
-programa = Flask(__name__)
-CORS(
-    programa,
-    resources={r"/*": {"origins": "*"}},
-    allow_headers=["Content-Type", "Authorization"],
-    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-)
-api = Api(programa)
+programa = Blueprint("liderazgo", __name__)
 
 def validar_lideres(lider_cocina, lider_servicio):
     if not lider_cocina:
@@ -115,10 +108,7 @@ class ListaAprendices(Resource):
             traceback.print_exc()
             return {"mensaje": "Error al listar aprendices", "error": str(e)}, 500
 
-api.add_resource(ListaEventos, "/eventos")
-api.add_resource(Evento, "/eventos/<id_evento>")
-api.add_resource(AsignarLideres, "/eventos/<id_evento>/lideres")
-api.add_resource(ListaAprendices, "/aprendices")
-
-if __name__ == "__main__":
-    programa.run(host="0.0.0.0", debug=True, port=5104)
+programa.add_url_rule("/eventos", view_func=ListaEventos.as_view("listaeventos"))
+programa.add_url_rule("/eventos/<id_evento>", view_func=Evento.as_view("evento"))
+programa.add_url_rule("/eventos/<id_evento>/lideres", view_func=AsignarLideres.as_view("asignarlideres"))
+programa.add_url_rule("/aprendices", view_func=ListaAprendices.as_view("listaaprendices"))

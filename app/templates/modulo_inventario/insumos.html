@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insumos | REMY 1.0</title>
-    <link rel="stylesheet" href="../static/modulo_inventario/css/normalize.css">
-    <link rel="stylesheet" href="../static/modulo_inventario/css/Formato_Rm_interno.css?v=9">
-    <link rel="stylesheet" href="../static/modulo_inventario/css/formato_insumos.css">
-    <link rel="stylesheet" href="../static/modulo_inventario/css/formato_formulario_insumo.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/Formato_Rm_interno.css') }}?v=9">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/formato_insumos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/formato_formulario_insumo.css') }}">
 </head>
 <body>
     <main id="gran_padre_insumos">
         <header id="menu_lateral_insumos">
-            <figure id="marca_remy_insumos"><img src="../static/modulo_inventario/componentes/remy_green.svg" alt="Logo de Remy"></figure>
+            <figure id="marca_remy_insumos"><img src="{{ url_for('static', filename='modulo_inventario/componentes/remy_green.svg') }}" alt="Logo de Remy"></figure>
             <nav aria-label="Navegacion de inventario">
                 <div class="opciones-menu-insumos">
                     <a href="inventario.html" class="opcion-menu-insumos"><strong aria-hidden="true">[]</strong><span>Inventario</span></a>

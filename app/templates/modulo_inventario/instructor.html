@@ -3,15 +3,16 @@
 <html lang="en">
 
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="0; url=panel_instructor.html">
     <script>window.location.replace('panel_instructor.html');</script>
     <title>Instructor | REMY 1.0</title>
 
-    <link rel="stylesheet" href="../static/modulo_inventario/css/normalize.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/normalize.css') }}">
 
-    <link rel="stylesheet" href="../static/modulo_inventario/css/Formato_Rm_interno.css?v=9">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_inventario/css/Formato_Rm_interno.css') }}?v=9">
 
 </head>
 
@@ -22,7 +23,7 @@
         <header id="cabezote_sesion">
 
             <figure id="marca_remy">
-                <img src="../static/modulo_inventario/componentes/remy_green.svg" alt="remy cab">
+                <img src="{{ url_for('static', filename='modulo_inventario/componentes/remy_green.svg') }}" alt="remy cab">
             </figure>
 
             <nav id="menu_ppal">
@@ -33,7 +34,7 @@
 
                 <div id="opcs_menu">
 
-                    <a href="/eventos" class="btn-opc" id="btn_eventos">
+                    <a href="{{ url_for('reservas.pagina', page='admin_eventos.html') }}" class="btn-opc" id="btn_eventos">
                         <svg id="ic_eventos" style="enable-background:new 0 0 256 256;" version="1.1"
                             viewBox="0 0 256 256" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -47,7 +48,7 @@
                         <span>Eventos</span>
                     </a><!--fin btn_eventos-->
 
-                    <a href="/liderazgo" class="btn-opc" id="btn_liderazgo">
+                    <a href="{{ url_for('aprendices.liderazgo') }}" class="btn-opc" id="btn_liderazgo">
                         <svg version="1.1" id="ico_liderazgo" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 54.201 54.201"
                             style="enable-background:new 0 0 54.201 54.201;" xml:space="preserve">
@@ -91,7 +92,7 @@
                         <span>Liderazgo</span>
                     </a><!--fin btn_liderazgo-->
 
-                    <a href="/menu" class="btn-opc" id="btn-carta">
+                    <a href="{{ url_for('platos.platos_menu') }}" class="btn-opc" id="btn-carta">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="ico_carta">
                             <path fill="currentColor"
                                 d="M464,344.063c0-109.308-84.755-199.193-192-207.39V80H240v56.673c-107.245,8.2-192,98.082-192,207.39V377.17H464Zm-32,1.107H80v-1.107c0-97.046,78.953-176,176-176s176,78.953,176,176Z" />
@@ -100,7 +101,7 @@
                         <span>Menú</span>
                     </a><!--fin botn_carta-->
 
-                    <a href="/inventario" class="btn-opc" id="btn_inventario">
+                    <a href="{{ url_for('inventario.inventario') }}" class="btn-opc" id="btn_inventario">
                         <svg version="1.1" id="ico_inventario" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 490 490"
                             style="enable-background:new 0 0 490 490;" xml:space="preserve">
@@ -123,7 +124,7 @@
                         <span>Inventario</span>
                     </a><!--fin btn_inventario-->
 
-                    <a href="/salir" class="btn-opc" id="btn_salir">
+                    <a href="{{ url_for('inventario.salir') }}" class="btn-opc" id="btn_salir">
                         <svg height="30" viewBox="0 0 30 30" width="30" xmlns="http://www.w3.org/2000/svg"
                             id="ico_salir">
                             <path

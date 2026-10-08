@@ -1,5 +1,6 @@
-/* URL Base de la API Gateway */
-const API_BASE_URL = `http://${window.location.hostname}:5101`;
+/* URL base de la API del módulo (misma app Flask) */
+const RUTA_MODULO = RAIZ + "/aprendices";
+const API_BASE_URL = RUTA_MODULO + "/api";
 
 
 
@@ -8,10 +9,10 @@ function redireccionarALogin() {
     localStorage.removeItem("rol_usuario");
 
     const rutaActual = window.location.pathname.toLowerCase().replace(/\/$/, "");
-    const rutasPublicas = ["/login", "/", "modulo_aprendices/index.html"];
+    const rutasPublicas = [RUTA_MODULO + "/login", RUTA_MODULO].map(r => r.toLowerCase());
 
     if (!rutasPublicas.includes(rutaActual) && rutaActual !== "") {
-        window.location.href = "/login";
+        window.location.href = RUTA_MODULO + "/login";
     }
 }
 
@@ -146,7 +147,7 @@ async function iniciarSesion() {
                     if (datos.rol_usuario !== undefined && datos.rol_usuario !== null) {
                         localStorage.setItem("rol_usuario", datos.rol_usuario);
                     }
-                    window.location.href = "/dashboard";
+                    window.location.href = RUTA_MODULO + "/dashboard";
                 } else {
                     alert("Error en el formato de respuesta del servidor.");
                 }
@@ -162,7 +163,7 @@ async function iniciarSesion() {
 function aplicarControlDeRol() {
     const rol = localStorage.getItem("rol_usuario");
 
-    if (rol !== null && String(rol).trim() === "0") {
+    if (rol !== null && String(rol).trim() === String(ROLES.aprendiz)) {
         const selectoresRestringidos = [
             'a[href*="cargaMasiva"]',
             'a[href*="cargaIndividual"]',
@@ -247,12 +248,12 @@ function renderizarListaAprendices(lista) {
         contenedor.appendChild(tarjeta);
         tarjeta.addEventListener("click", (evento) => {
             if (evento.target.closest(".btn-editar") || evento.target.closest(".btn-eliminar")) return;
-            window.location.href = "/detalleAprendiz?id=" + encodeURIComponent(id);
+            window.location.href = RUTA_MODULO + "/detalleAprendiz?id=" + encodeURIComponent(id);
         });
 
         const botonEditar = tarjeta.querySelector(".btn-editar");
         botonEditar.addEventListener("click", () => {
-            window.location.href = "/modificarAprendiz?id=" + encodeURIComponent(id);
+            window.location.href = RUTA_MODULO + "/modificarAprendiz?id=" + encodeURIComponent(id);
         });
 
         const botonEliminar = tarjeta.querySelector(".btn-eliminar");
@@ -418,7 +419,7 @@ async function modificarAprendiz() {
 
         if (respuesta.ok) {
             alert(datos.mensaje || "Aprendiz modificado con éxito.");
-            window.location.href = "/listaAprendices";
+            window.location.href = RUTA_MODULO + "/listaAprendices";
         } else {
             alert(datos.mensaje || datos.error || "No fue posible modificar el aprendiz.");
         }
@@ -540,7 +541,7 @@ function cargarAprendicesMasiva() {
 
             if (respuesta.ok) {
                 alert(datos.mensaje || "Aprendices cargados correctamente.");
-                window.location.href = "/listaAprendices";
+                window.location.href = RUTA_MODULO + "/listaAprendices";
                 archivoInput.value = "";
                 if (textoArchivo) textoArchivo.textContent = "Seleccionar archivo";
             } else {
@@ -640,7 +641,7 @@ function crearUsuarioIndividual() {
 
             if (respuesta.ok) {
                 alert(resultado.mensaje || "Usuario creado con éxito.");
-                window.location.href = "/listaAprendices";
+                window.location.href = RUTA_MODULO + "/listaAprendices";
             } else {
                 alert(resultado.error || resultado.mensaje || "Error al crear usuario.");
             }
@@ -840,10 +841,10 @@ async function cargarEventosLiderazgo() {
 
                 <div class="pie_tarjeta">
                     <div class="acciones_izquierda">
-                        <a href="/detalleEvento?id=${encodeURIComponent(idEvento)}" class="btn_ver_mas">Ver más</a>
+                        <a href="${RUTA_MODULO}/detalleEvento?id=${encodeURIComponent(idEvento)}" class="btn_ver_mas">Ver más</a>
 
                         <div class="contenedor_acciones_seccion">
-                            <a href="/asignarLiderazgo?id=${encodeURIComponent(idEvento)}" class="btn_asignar_liderazgo">Asignar Liderazgos</a>
+                            <a href="${RUTA_MODULO}/asignarLiderazgo?id=${encodeURIComponent(idEvento)}" class="btn_asignar_liderazgo">Asignar Liderazgos</a>
                         </div>
                     </div>
 
@@ -862,7 +863,7 @@ async function cargarEventosLiderazgo() {
                 }
                 const id = tarjeta.dataset.id;
                 if (id) {
-                    window.location.href = `/detalleEvento?id=${encodeURIComponent(id)}`;
+                    window.location.href = `${RUTA_MODULO}/detalleEvento?id=${encodeURIComponent(id)}`;
                 }
             });
 
@@ -924,7 +925,7 @@ function asignarLideres() {
 
             if (respuesta.ok) {
                 alert(resultado.mensaje || "Líderes asignados correctamente.");
-                window.location.href = "/liderazgo";
+                window.location.href = RUTA_MODULO + "/liderazgo";
             } else {
                 alert(resultado.mensaje || resultado.error || "No fue posible asignar los líderes.");
             }
@@ -1103,7 +1104,7 @@ function crearInstructorIndividual() {
             apellidos: apellidos,
             correo: correo,
             celular: celular,
-            rol_usuario: 1,
+            rol_usuario: ROLES.instructor,
             fecha_fin_etapa_lectiva: null,
             ficha: null,
             programa_formacion: null
@@ -1134,7 +1135,7 @@ function crearInstructorIndividual() {
 
             if (respuesta.ok) {
                 alert(resultado.mensaje || "Instructor creado con éxito.");
-                window.location.href = "/listaAprendices";
+                window.location.href = RUTA_MODULO + "/listaAprendices";
             } else {
                 alert(resultado.error || resultado.mensaje || "Error al crear instructor.");
             }
@@ -1152,7 +1153,7 @@ function crearInstructorIndividual() {
 document.addEventListener("DOMContentLoaded", async () => {
 
     const rutaActual = window.location.pathname.toLowerCase();
-    const rutasPublicas = ["/login", "/login.html", "/", "/index.html"];
+    const rutasPublicas = [RUTA_MODULO + "/login", RUTA_MODULO, RUTA_MODULO + "/"].map(r => r.toLowerCase());
 
     if (!rutasPublicas.includes(rutaActual)) {
         await verificarSesion();

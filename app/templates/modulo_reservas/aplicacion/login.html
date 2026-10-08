@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% include "comun/raiz.html" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión | REMY 1.0</title>
-    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/normalize.css">
-    <link rel="stylesheet" href="/static/modulo_reservas/rm_codigos/formato_rm_interno.css">
-    <script src="/static/modulo_reservas/rm_codigos/config.js" defer></script>
-    <script src="/static/modulo_reservas/rm_codigos/api.js" defer></script>
-    <script src="/static/modulo_reservas/rm_codigos/sesion.js" defer></script>
-    <script src="/static/modulo_reservas/rm_codigos/login.js" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_reservas/rm_codigos/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_reservas/rm_codigos/formato_rm_interno.css') }}">
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/config.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/api.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/sesion.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='modulo_reservas/rm_codigos/login.js') }}" defer></script>
 </head>
 <body id="cuerpo_login">
 
     <header id="cabezote">
         <div id="cont_marcas">
             <figure id="marca_sena">
-                <img src="/static/modulo_reservas/rm_componentes/simbolo_sena_verde.svg" alt="SENA">
+                <img src="{{ url_for('static', filename='modulo_reservas/rm_componentes/simbolo_sena_verde.svg') }}" alt="SENA">
             </figure>
             <div id="linea_vert"></div>
             <figure id="marca_remy">
-                <img src="/static/modulo_reservas/rm_componentes/remy_green.svg" alt="REMY">
+                <img src="{{ url_for('static', filename='modulo_reservas/rm_componentes/remy_green.svg') }}" alt="REMY">
             </figure>
         </div>
     </header>

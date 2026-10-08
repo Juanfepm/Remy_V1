@@ -1,8 +1,8 @@
 import mysql.connector
 
 servername = "localhost"
-username = "remy"
-password = "12345"
+username = "root"
+password = ""
 dbname = "remy"
 
 conn = mysql.connector.connect(

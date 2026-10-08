@@ -18,6 +18,7 @@ from app.modulo_inventario.routes.ingrediente_router import ingrediente_bp
 from app.modulo_inventario.routes.categoria_router import categoria_bp
 from app.modulo_inventario.routes.movimiento_router import movimiento_bp
 from app.modulo_inventario.routes.auth_router import auth_bp
+from app.modulo_inventario.routes.dashboard_router import dashboard_bp
 from app.modulo_inventario.models import entrada, salida, proveedor, usuario
 
 app = Flask(
@@ -53,6 +54,7 @@ app.register_blueprint(ingrediente_bp)
 app.register_blueprint(categoria_bp)
 app.register_blueprint(movimiento_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(dashboard_bp)
 
 @app.after_request
 def add_api_headers(response):
@@ -126,6 +128,6 @@ def salir():
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))
+    port = int(os.getenv('PORT', 5200))
     print(f'Iniciando Modulo Inventario en http://127.0.0.1:{port}')
     app.run(host='0.0.0.0', port=port, debug=True)

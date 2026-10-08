@@ -2241,6 +2241,10 @@ section.dashboard-instructor-grid {
     order: 4;
 }
 
+#contenido_inventario.dashboard-instructor-grid > #panel_reservas_aprendiz {
+    order: 5;
+}
+
 header#cabezote_dashboard {
     justify-content: space-between;
 }
@@ -2356,6 +2360,42 @@ div.panel-instructor > .cabecera-panel {
     font-weight: bold;
 }
 
+#estructura_calendario_instructor td.dia-even {
+    background: var(--verde);
+    color: var(--blanco);
+    font-weight: bold;
+}
+
+.menu-resumen[hidden] {
+    display: none;
+}
+
+.enlace-panel-instructor[hidden] {
+    display: none;
+}
+
+#lista_platos_aprendiz {
+    max-height: 18rem;
+    overflow-y: auto;
+    padding-right: 0.2rem;
+}
+
+aside#barra_lateral a.item-menu.item-menu-activo {
+    background: rgba(255, 255, 255, 0.2);
+    font-weight: bold;
+}
+
+aside#barra_lateral a.item-menu.item-menu-no-disponible {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+aside#barra_lateral a.item-menu.item-menu-no-disponible:hover {
+    background: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
 .lista-alertas-instructor {
     display: flex;
     flex-direction: column;
@@ -2467,6 +2507,11 @@ div.panel-instructor > .cabecera-panel {
         grid-column: 1;
         grid-row: 3;
     }
+
+    #contenido_inventario.dashboard-instructor-grid > #panel_reservas_aprendiz {
+        grid-column: 2;
+        grid-row: 3;
+    }
 }
 
 @media screen and (max-width: 520px) {
@@ -2517,6 +2562,11 @@ div.panel-instructor > .cabecera-panel {
 
     #contenido_inventario.dashboard-instructor-grid > #panel_agenda_instructor {
         grid-column: 2;
+        grid-row: 2;
+    }
+
+    #contenido_inventario.dashboard-instructor-grid > #panel_reservas_aprendiz {
+        grid-column: 3;
         grid-row: 2;
     }
 }

@@ -23,5 +23,6 @@ class UsuarioModel(db.Model):
             'rol_usuario': self.rol_usuario,
             'ficha': self.ficha,
             'estado': self.estado,
-            'rol_nombre': 'Aprendiz' if self.rol_usuario == 1 else ('Instructor' if self.rol_usuario == 2 else 'Usuario')
+            # Roles de remy_unificado: 1 = instructor, 2 = aprendiz, 0 = aprendiz por asignar
+            'rol_nombre': 'Instructor' if self.rol_usuario == 1 else ('Aprendiz' if self.rol_usuario in (0, 2) else 'Usuario')
         }

@@ -50,7 +50,7 @@ function inicializarLogin() {
         }
 
         try {
-            const respuesta = await fetch(`${(window.location.origin && window.location.origin.startsWith('http')) ? window.location.origin : 'http://127.0.0.1:5000'}/auth/login`, {
+            const respuesta = await fetch(`${(window.location.origin && window.location.origin.startsWith('http')) ? window.location.origin : 'http://127.0.0.1:5200'}/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -76,12 +76,20 @@ function inicializarLogin() {
             sessionStorage.setItem("usuario_sesion", JSON.stringify(data.usuario));
             localStorage.setItem("usuario_sesion", JSON.stringify(data.usuario));
 
+            // Token JWT compatible con el API Gateway (mismas claves que modulo_aprendices)
+            if (data.token) {
+                localStorage.setItem("token", data.token);
+            }
+            if (data.rol_usuario !== undefined && data.rol_usuario !== null) {
+                localStorage.setItem("rol_usuario", data.rol_usuario);
+            }
+
             // Redirigir a panel aprendiz
             window.location.href = data.redirect || "panel_aprendiz.html";
 
         } catch (error) {
             console.error("Error al conectar con el backend:", error);
-            alert("No fue posible conectar con el servidor backend (http://127.0.0.1:5000). Asegúrate de tener el backend encendido.");
+            alert("No fue posible conectar con el servidor backend (http://127.0.0.1:5200). Asegúrate de tener el backend encendido.");
             if (btnEntrar) {
                 btnEntrar.textContent = "ENTRAR";
                 btnEntrar.disabled = false;

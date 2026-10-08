@@ -19,7 +19,7 @@ def login():
 
         # Si es petición normal de formulario (no JSON ni AJAX), redirigir
         if not request.is_json and request.headers.get('Accept', '').find('text/html') != -1:
-            return redirect(f"/Remy__/Aplicacion__/{res['redirect']}", code=302)
+            return redirect(f"/{res['redirect']}", code=302)
 
         return jsonify(res), 200
     except ValueError as ve:

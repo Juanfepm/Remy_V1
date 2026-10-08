@@ -1,23 +1,28 @@
 # REMY · Backend web de reservas
 
-Las API PHP de reservas están en esta carpeta y comparten la base de datos
-`remy`. La web consume estas API desde `app/static/modulo_reservas/rm_codigos`.
-El micro de correo está en [`correo/`](correo/).
+Las API PHP de reservas están en esta carpeta. La web consume estas API desde
+`app/static/modulo_reservas/rm_codigos`. El micro de correo está en
+[`correo/`](correo/).
 
 ## Puesta en marcha
 
 1. Arrancar **Apache** y **MySQL** desde XAMPP. Para que la URL de la web
    funcione sin cambios, ubicar el repositorio en `C:\xampp\htdocs\Remy_V1`.
+   Configurar `REMY_DB_USER` y `REMY_DB_PASSWORD` en Apache (directivas
+   `SetEnv`). Se puede configurar `REMY_DB_NAME` si la base no se llama
+   `remy`. No guardar credenciales en archivos versionados.
 2. Importar la base desde la raíz del repositorio:
 
 ```bash
-"C:/xampp/mysql/bin/mysql.exe" -u root < C:/xampp/htdocs/Remy_V1/app/modulo_reservas/services/bd/remy.sql
+"C:/xampp/mysql/bin/mysql.exe" -u root < C:/xampp/htdocs/Remy_V1/modulo_reservas_php/bd/remy.sql
 ```
 
    El script crea la base `remy`. Si la base ya existe, revisar
-   [`bd/README.md`](bd/README.md) antes de ejecutar una migración.
+   [`bd/README.md`](bd/README.md) antes de ejecutar una migración. Para
+   importar en otra base, consultar las instrucciones de esa guía.
 3. La URL PHP que usa la web se configura en
-   `app/static/modulo_reservas/rm_codigos/config.js`.
+   `app/static/modulo_reservas/rm_codigos/config.js`; su valor inicial es
+   `http://localhost/Remy_V1/modulo_reservas_php/`.
    El micro de correo se configura por separado en [`correo/README.md`](correo/README.md).
 
 ## Qué se unificó
@@ -50,15 +55,15 @@ conexión, así que ningún archivo tuvo que reescribir sus consultas.
   que es el nombre que espera el cliente web.
 * **`actualizar_estado_reserva.php`** y **`actualizar_evento.php`**: aceptan
   parámetros por query string además de por `$_POST` / cuerpo JSON.
-* **`menu_dia.php`**: las imágenes se sirven desde `img_menu/` del propio
+* **`menu_dia.php`**: las imágenes se sirven desde `assets/img_menu/` del propio
   backend en vez de una IP fija.
 * **`cancelar_evento.php`**: mismo trato con los parámetros por query string.
   Además ahora devuelve 404 si el id de evento no existe, en vez de un 200 vacío.
 
 ## Carpetas de imágenes
 
-* `img_menu/` - fotos de menús y platos.
-* `img_exp/`  - fotos de experiencias.
+* `assets/img_menu/` - fotos de menús y platos.
+* `assets/img_exp/`  - fotos de experiencias.
 
 ---
 
@@ -113,7 +118,7 @@ Cabeceras CORS y respuesta al `OPTIONS` de sondeo. Se incluye desde
 Guarda `imagen` según el nombre de la experiencia (`vino.jpg`, `quesos.jpg`,
 `postre.jpg`, `cafe.jpg`), igual que `insertarEvento.php`. Antes se quedaba
 con el `exp_cafe.jpg` que trae la base por defecto y que no existe en
-`img_exp/`, así que la foto salía rota.
+`assets/img_exp/`, así que la foto salía rota.
 
 ### `consulta_Menus.php`
 

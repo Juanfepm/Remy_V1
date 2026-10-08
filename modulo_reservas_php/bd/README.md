@@ -171,7 +171,7 @@ ON DUPLICATE KEY UPDATE correo_pk = correo_pk;
 | `roles` | Tabla nueva (1 instructor, 2 aprendiz) + llave desde `usuarios.rol_usuario` | Los roles sólo existían como números sueltos en `login.php` y `config.js`. |
 | `usuarios` | Índice único en `correo` | El login busca por correo; dos usuarios con el mismo correo hacían ambiguo el inicio de sesión. |
 | `eventos` | `experiencia` 14 → 64, `franja_horaria` 6 → 20 | Cortaban el texto: "Taller de Bari", "6:00 p". |
-| `eventos` | Imagen por defecto `cafe.jpg` (era `exp_cafe.jpg`) | `exp_cafe.jpg` no existe en `img_exp/`: la foto salía rota. |
+| `eventos` | Imagen por defecto `cafe.jpg` (era `exp_cafe.jpg`) | `exp_cafe.jpg` no existe en `assets/img_exp/`: la foto salía rota. |
 | `eventos` | Llaves de `lider_cocina` y `lider_servicio` hacia `usuarios`; índice en `fecha_inicio` | Igual que en `programacion_dia`. Casi todas las consultas de eventos filtran por fecha. |
 | `platos` | Fuera la llave repetida `platos_ibfk_1` | Había dos llaves idénticas hacia `categorias_platos`. |
 | `reservas_dia` | Fuera el índice `correo_fk` | Sobraba: `uq_reserva_correo_dia` empieza por la misma columna. |

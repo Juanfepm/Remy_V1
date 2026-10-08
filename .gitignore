@@ -1,17 +1,19 @@
 .DS_Store
 
 # Local environment and credentials
+.venv/
+entorno/
 **/.env
 **/.env.*
 !**/.env.ejemplo
 !**/.env.example
+**/conexion.local.php
 
 # Generated files and dependencies
 **/node_modules/
 **/vendor/
 **/__pycache__/
 **/*.py[cod]
-**/.venv/
 **/venv/
 **/.gradle/
 **/build/

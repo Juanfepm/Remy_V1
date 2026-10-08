@@ -2,40 +2,60 @@
 
 Un solo proyecto web de reservas, organizado con la estructura del repositorio:
 las páginas están en `app/templates/modulo_reservas`, los recursos en
-`app/static/modulo_reservas` y los servicios PHP en `app/modulo_reservas/services`.
+`app/static/modulo_reservas` y el backend PHP en `modulo_reservas_php/`.
 
 ## Puesta en marcha
 
 ### Web
 
-Desde la raíz del repositorio, iniciar Flask:
+Desde la raíz del repositorio, crea el entorno virtual local, actívalo, instala
+dependencias e inicia Flask:
 
 ```bash
-python -m pip install -r app/modulo_reservas/requirements.txt
-flask --app app.modulo_reservas.app run --port 5000
+python -m venv entorno
+# macOS / Linux
+source entorno/bin/activate
+# Windows
+# entorno\Scripts\activate
+python -m pip install -r requirements.txt
+python run.py
 ```
+
+`entorno/` se excluye de Git; instala allí las dependencias antes de ejecutar
+`run.py`.
 
 Abrir `http://127.0.0.1:5000/`. El panel administrativo está en
 `http://127.0.0.1:5000/aplicacion/login.html`.
 
 ### Backend PHP y base de datos
 
-Arrancar Apache y MySQL con XAMPP. Para que la URL predeterminada del backend
-funcione, ubicar el repositorio como `C:\xampp\htdocs\Remy_V1` (o cambiar
-`URL_BACKEND` en `app/static/modulo_reservas/rm_codigos/config.js` si se usa
-otra ruta).
+Arrancar Apache y MySQL con XAMPP. Para que la URL predeterminada funcione,
+ubicar el repositorio como `C:\xampp\htdocs\Remy_V1` (o cambiar `URL_BACKEND`
+en `app/static/modulo_reservas/rm_codigos/config.js` si se usa otra ruta).
+Configurar `REMY_DB_USER` y `REMY_DB_PASSWORD` en el entorno de Apache; las
+credenciales no se guardan en el código ni en Git. El nombre de la base
+predeterminado es `remy`; para otra base, configurar también `REMY_DB_NAME`.
+En XAMPP se pueden declarar con directivas `SetEnv` en la configuración
+privada de Apache y reiniciar Apache:
+
+```apache
+SetEnv REMY_DB_USER "tu_usuario"
+SetEnv REMY_DB_PASSWORD "tu_clave"
+SetEnv REMY_DB_NAME "remy"
+```
 
 Para instalar la base desde cero:
 
 ```bash
-"C:/xampp/mysql/bin/mysql.exe" -u root < C:/xampp/htdocs/Remy_V1/app/modulo_reservas/services/bd/remy.sql
+"C:/xampp/mysql/bin/mysql.exe" -u root < C:/xampp/htdocs/Remy_V1/modulo_reservas_php/bd/remy.sql
 ```
 
 Si la base `remy` ya existe, seguir las instrucciones de
-[`services/bd/README.md`](services/bd/README.md) para ejecutar la migración
+[`../../modulo_reservas_php/bd/README.md`](../../modulo_reservas_php/bd/README.md) para ejecutar la migración
 sin borrar los datos existentes. Los detalles de las API PHP están en
-[`services/README.md`](services/README.md); el micro de correo tiene su propia
-guía en [`services/correo/README.md`](services/correo/README.md).
+[`../../modulo_reservas_php/README.md`](../../modulo_reservas_php/README.md);
+el micro de correo tiene su propia guía en
+[`../../modulo_reservas_php/correo/README.md`](../../modulo_reservas_php/correo/README.md).
 
 ### Usuarios de prueba
 
@@ -78,7 +98,7 @@ Las **experiencias** de `experiencias.html` son otra cosa: son las catas que se
 suman a la reserva de un evento, no mini eventos a los que uno asista.
 
 Las tres reservas mandan un correo de confirmación a quien reservó, a través
-del micro de Python `services/correo` del backend. Si ese micro está apagado la
+del micro de Python `modulo_reservas_php/correo` del backend. Si ese micro está apagado la
 reserva se guarda igual y la pantalla lo dice.
 
 ### Administrativas - detrás del login
@@ -136,7 +156,7 @@ rm_codigos/
 `config.js` es lo único que hay que tocar para apuntar a otro servidor:
 
 ```js
-const URL_BACKEND = 'http://localhost/Remy_V1/app/modulo_reservas/services/';
+const URL_BACKEND = 'http://localhost/Remy_V1/modulo_reservas_php/';
 ```
 
 ## Reservas repetidas
@@ -174,11 +194,11 @@ nombre del usuario va al pie, donde el cliente tiene la firma de adso.
 
 ## Correos de confirmación
 
-Los manda el micro de Python del backend (`services/correo`). Hay que
+Los manda el micro de Python del backend (`modulo_reservas_php/correo`). Hay que
 arrancarlo aparte y ponerle las credenciales del correo institucional:
 
 ```bat
-cd C:\xampp\htdocs\Remy_V1\app\modulo_reservas\services\correo
+cd C:\xampp\htdocs\Remy_V1\modulo_reservas_php\correo
 pip install -r requirements.txt
 set REMY_CORREO_REMITENTE=elcorreo@sena.edu.co
 set REMY_CORREO_PASSWORD=laContraseñaDeEseCorreo

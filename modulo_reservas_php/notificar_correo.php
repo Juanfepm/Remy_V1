@@ -36,7 +36,7 @@ function notificar_por_correo($tipo, $correo, $datos) {
     if ($respuesta === false) {
         return [
             "enviado" => false,
-            "mensaje" => "No se pudo hablar con el micro de correo (¿está corriendo services/correo/app.py?): " . $error
+            "mensaje" => "No se pudo hablar con el micro de correo (¿está corriendo modulo_reservas_php/correo/app.py?): " . $error
         ];
     }
 

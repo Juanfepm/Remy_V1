@@ -1,0 +1,15 @@
+{
+  "name": "remy/web-php",
+  "description": "REMY modular PHP migration",
+  "type": "project",
+  "require": {
+    "php": "^8.2",
+    "ext-pdo_mysql": "*",
+    "ext-mysqli": "*",
+    "ext-gd": "*",
+    "ext-mbstring": "*",
+    "ext-zip": "*",
+    "phpoffice/phpspreadsheet": "^5.10",
+    "phpmailer/phpmailer": "^7.1"
+  }
+}

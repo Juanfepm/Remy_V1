@@ -1,7 +1,7 @@
 REMY_PHP — GUÍA RÁPIDA PARA INICIAR
 
 1. Abre VS Code. Ve a Archivo > Abrir carpeta y selecciona:
-   C:\xampp\htdocs\Remy_PHP
+   C:\xampp\htdocs\Remy_Web
 
 2. En VS Code, abre Terminal > Nueva terminal y selecciona PowerShell.
    Comprueba que Composer está instalado:
@@ -10,7 +10,7 @@ REMY_PHP — GUÍA RÁPIDA PARA INICIAR
    y selecciona C:\xampp\php\php.exe cuando el instalador lo solicite.
 
 3. Instala las dependencias del proyecto (la primera vez o cuando cambien):
-   Set-Location C:\xampp\htdocs\Remy_PHP
+   Set-Location C:\xampp\htdocs\Remy_Web
    composer install
    composer check-platform-reqs
    Si algún requisito falla, revisa que PHP tenga habilitadas las extensiones gd y zip.

@@ -27,7 +27,7 @@ final class Api {
         if ($path === '/eventos' && $method === 'GET') self::events();
         if (preg_match('~^/eventos/([^/]+)/lideres$~', $path, $m) && $method === 'PUT') self::leaders($m[1]);
         if (preg_match('~^/eventos/([^/]+)$~', $path, $m) && $method === 'GET') self::event($m[1]);
-        if (preg_match('~^/(?:programa/)?dashboard/(eventos|lideres|menu-resumen|completo)$~', $path, $m) && $method === 'GET') self::dashboard($m[1]);
+        if (preg_match('~^/(?:programa/)?dashboard/(eventos|lideres|menu-resumen|produccion|completo)$~', $path, $m) && $method === 'GET') self::dashboard($m[1]);
         \json_response(['error' => 'Ruta no encontrada'], 404);
     }
 
@@ -85,7 +85,6 @@ final class Api {
     private static function saveUser(?string $id = null): never {
         $data = \request_data();
         if (!$data) \json_response(['mensaje' => 'No se recibieron datos válidos.'], 400);
-        // El formulario de edición original envía "contrasena" como celular y omite correo.
         if ($id !== null) {
             $existingUser = DB::row("SELECT correo,celular FROM usuarios WHERE id_usuario=? AND estado='activo'", [$id]);
             if (!$existingUser) \json_response(['mensaje' => 'El usuario no existe.'], 404);
@@ -168,12 +167,66 @@ final class Api {
 
     private static function dashboard(string $section): never {
         $events = fn() => array_map('array_values', DB::rows("SELECT id_evento,nombre_evento,fecha_inicio,fecha_fin FROM eventos WHERE estado='activo' ORDER BY fecha_inicio ASC LIMIT 5"));
+
+        $inventarioAlerta = fn() => array_map('array_values', DB::rows("SELECT nombre, stock, unidad FROM inventario WHERE stock < stock_minimo ORDER BY stock ASC"));
+        
         $leaders = fn() => array_map('array_values', DB::rows("SELECT e.nombre_evento,e.fecha_inicio,e.numero_personas,CONCAT(u1.nombre,' ',u1.apellido) AS lider_cocina,CONCAT(u2.nombre,' ',u2.apellido) AS lider_servicio FROM eventos e LEFT JOIN usuarios u1 ON e.lider_cocina=u1.id_usuario LEFT JOIN usuarios u2 ON e.lider_servicio=u2.id_usuario WHERE e.estado='activo' ORDER BY e.fecha_inicio ASC LIMIT 5"));
-        $menu = fn() => ['total_menus' => (int)(DB::row("SELECT COUNT(*) AS n FROM menu WHERE estado='activo'")['n'] ?? 0), 'total_platos' => (int)(DB::row("SELECT COUNT(*) AS n FROM platos WHERE estado='activo'")['n'] ?? 0), 'platos' => DB::rows("SELECT p.id_plato,p.nombre AS plato_nombre,c.nombre AS categoria,p.descripcion FROM platos p INNER JOIN categorias_platos c ON p.categoria=c.id_categoria WHERE p.estado='activo'")];
+        
+        $menu = fn() => [
+            'total_menus' => (int)(DB::row("SELECT COUNT(*) AS n FROM categorias_platos WHERE estado = 'Activo'")['n'] ?? 0),
+            'total_platos' => (int)(DB::row("SELECT COUNT(*) AS n FROM platos WHERE estado = 'Activo'")['n'] ?? 0),
+            'platos' => DB::rows("
+                SELECT 
+                    c.id_categoria,
+                    c.nombre AS nombre_categoria,
+                    c.estado,
+                    COUNT(p.id_plato) AS cantidad_platos
+                FROM categorias_platos c
+                LEFT JOIN platos p ON c.id_categoria = p.categoria AND p.estado = 'Activo'
+                WHERE c.estado = 'Activo'
+                GROUP BY c.id_categoria, c.nombre, c.estado
+                ORDER BY c.id_categoria ASC;
+            ")
+        ];
+
+        $precioUnitarioMenu = 15000;
+
+        $produccion = fn() => array_map('array_values', DB::rows("
+            SELECT 
+                DATE_FORMAT(t.fecha, '%Y-%m') AS mes_anio,
+                SUM(t.ingreso_total) AS total_mes
+            FROM (
+                SELECT 
+                    rd.Fecha_reserva AS fecha,
+                    (rd.cantidad_menus * " . (int)$precioUnitarioMenu . ") AS ingreso_total
+                FROM reservas_dia rd
+
+                UNION ALL
+
+                SELECT 
+                    e.fecha_inicio AS fecha,
+                    e.costo_total AS ingreso_total
+                FROM eventos e
+                WHERE e.costo_total IS NOT NULL
+            ) t
+            WHERE DATE_FORMAT(t.fecha, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')
+            GROUP BY mes_anio
+        "));
+
         $data = match ($section) {
-            'eventos' => $events(), 'lideres' => $leaders(), 'menu-resumen' => $menu(),
-            'completo' => ['eventos' => $events(), 'lideres' => $leaders(), 'inventario_alerta' => [], 'menu_resumen' => $menu()],
+            'eventos' => $events(), 
+            'lideres' => $leaders(), 
+            'menu-resumen' => $menu(),
+            'produccion' => $produccion(),
+            'completo' => [
+                'eventos' => $events(), 
+                'lideres' => $leaders(), 
+                'inventario_alerta' => $inventarioAlerta(), 
+                'menu_resumen' => $menu(),
+                'produccion' => $produccion()
+            ],
         };
+        
         \json_response(['status' => 'success', 'data' => $data]);
     }
 

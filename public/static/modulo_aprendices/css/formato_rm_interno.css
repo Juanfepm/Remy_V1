@@ -128,14 +128,44 @@ header#cabezote_sesion {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 15px;
+
+    & #cont_logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    & figure#logo_sena {
+        width: 42px;
+    }
+
+    & .linea-vertical {
+        width: 1px;
+        height: 35px;
+        background-color: var(--verde);
+    }
 
     & figure#marca_remy {
-        margin-left: 15px;
-        width: 120px;
+        margin-left: 0;
+        width: 100px;
+    }
+
+    & figure#btn_menu,
+    & svg#btn_menu,
+    & nav#menu_ppal > figure {
+        width: 32px !important;
+        height: 32px !important;
+        cursor: pointer;
+        margin-left: auto;
+        display: flex;
+        align-items: center;
     }
 
     & nav#menu_ppal {
-        width: 40px;
+        width: auto;
+        display: flex;
+        align-items: center;
     }
 
     & nav#menu_ppal div#opcs_menu {
@@ -646,7 +676,6 @@ body.pagina_lista_aprendices #contenido_sesion {
     width: 100%;
 }
 
-/* Corregido: antes .titulo-pagina */
 .titulo_seccion {
     font-family: sena-worksans;
     text-align: center;
@@ -664,7 +693,7 @@ main#lista_ppal {
     flex-direction: column;
 }
 
-/* Corregido: antes div#encabezado_lista */
+
 div.encabezado_tarjeta {
     display: flex;
     justify-content: flex-end;
@@ -682,7 +711,7 @@ div.encabezado_tarjeta {
     gap: 10px;
 }
 
-/* Corregido: antes #btn_filtro */
+
 #btn_filtro_ficha {
     background: none;
     border: none;
@@ -1057,56 +1086,35 @@ div.dato_aprendiz {
     opacity: 0.9;
 }
 
-/*---------------Panel Instructor------------------------*/
+/* Dashboard */
+
 #contenido_Panel {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
-
 }
 
-.grid-panel {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/*--------------TARJETAS -----------------*/
-
-.tarjeta {
-    padding-top: 5px !important;
-    padding-bottom: 10px !important;
-    background-color: var(--blanco);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
-    border: 1px solid #edf2f7;
+.panel_dashboard_grid {
     display: flex;
     flex-direction: column;
+    gap: 20px;
+    padding: 15px;
     width: 100%;
-}
-
-.titulo-tarjeta {
-    font-family: sena-worksans;
-    font-size: 20px;
-    text-align: center;
-    color: var(--negro);
+    box-sizing: border-box;
 }
 
 /*------------CALENDARIO-------------------*/
 
 .header-calendario {
-    font-family: sena-worksans;
+    font-family: sena-worksans, sans-serif;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 12px;
     font-size: 14px;
+    font-weight: bold;
 }
 
 .nav-cal button {
@@ -1116,94 +1124,107 @@ div.dato_aprendiz {
     width: 26px;
     height: 26px;
     cursor: pointer;
-
 }
 
 #estructura_calendario {
-    font-family: sena-calibri;
+    font-family: sena-calibri, sans-serif;
     width: 100%;
     text-align: center;
-    font-size: 12px;
-    height: 100%;
+    font-size: 13px;
     border-collapse: collapse;
 }
 
-#estructura_calendario td {
-    border: 1px solid var(--azul-dark);
-    padding: 6px 0;
+#estructura_calendario thead th {
+    padding-bottom: 8px;
+    color: var(--negro);
+    font-weight: bold;
+    border: none;
 }
 
-#estructura_calendario td.dia-no,
-#estructura_calendario td:empty {
+#cuerpo-calendario td {
+    border: 1px solid var(--azul-dark);
+    background-color: var(--gris);
+    padding: 8px 0;
+    color: var(--negro);
+}
+
+#cuerpo-calendario td.dia-no,
+#cuerpo-calendario td:empty {
     border: none;
     background-color: transparent;
 }
 
-#estructura_calendario td.dia-hoy {
+#cuerpo-calendario td.dia-hoy {
     background-color: var(--verde-lite);
     color: var(--negro);
-    border-radius: 4px;
 }
 
-.dia-even {
-    background-color: var(--verde);
+#cuerpo-calendario td.dia-even {
+    background-color: var(--verde) !important;
+    color: var(--blanco) !important;
+}
+
+/*--------------TARJETAS -----------------*/
+
+.tarjeta {
+    background-color: var(--blanco);
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--gris);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 280px;
+    padding: 20px;
+}
+
+.titulo-tarjeta {
+    font-family: sena-worksans, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
     color: var(--negro);
-
+    margin-top: 0;
+    margin-bottom: 20px;
 }
 
-/*---------INSUMOS EN ALERTA------------*/
-.lista-insumos {
+.lista-insumos, .lista-platos, .lista-eventos, .lista-agenda {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-height: 280px;
+    max-height: 200px;
     overflow-y: auto;
-    padding-right: 4px;
-    margin-top: 20px;
-
-    & span,
-    & strong {
-        font-family: sena-worksans, sans-serif;
-    }
+    padding-right: 5px;
 }
+
+/*---------INSUMOS EN ALERTA------------*/
 
 .item-insumo {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 18px;
+    padding: 12px 16px;
     font-size: 14px;
-    font-weight: 700;
-    background-color: #ffffff;
-    border: 1px solid #e8e8e8;
-    border-radius: 12px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    font-weight: 600;
+    border-radius: 8px;
 }
 
 .item-insumo.rojo {
     background-color: var(--rojo);
     color: var(--negro);
-    border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .item-insumo.amarillo {
     background-color: var(--amarillo);
     color: var(--negro);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-#insumos_alerta .lista-insumos {
-    min-height: auto;
-    justify-content: flex-start;
-    margin-top: 20px;
 }
 
 .mensaje-stock-ok {
     width: 100%;
     padding: 24px 18px;
-    background-color: #f0fff4;
+    background-color: var(--blanco);
     border: 1px dashed var(--verde-lite);
-    border-radius: 12px;
+    border-radius: 8px;
     color: var(--azul-dark);
     text-align: center;
     box-sizing: border-box;
@@ -1211,10 +1232,11 @@ div.dato_aprendiz {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin: auto 0;
 }
 
 .mensaje-stock-ok .icono-ok {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
     color: var(--verde);
     margin-bottom: 6px;
@@ -1227,95 +1249,56 @@ div.dato_aprendiz {
 }
 
 /*-------------MENÚ--------------- */
-.stats-menu {
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
-    margin-bottom: 16px;
-    border-bottom: 1px solid #edf2f7;
-    padding-bottom: 12px;
-}
-
-.text {
-    font-family: sena-calibri;
-    font-size: 16px;
-    color: var(--gris-dark);
-    display: block;
-}
-
-.num {
-    font-family: sena-calibri;
-    font-size: 20px;
-    color: var(--negro);
-}
-
-.lista-platos {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.card-plato h4,
-.card-plato strong,
-.card-plato .nombre-plato {
-    margin-top: 0 !important;
-    margin-bottom: 6px !important;
-    padding-top: 0 !important;
-}
 
 .card-plato {
-    align-items: flex-end !important;
     padding: 12px 16px !important;
     border: 1px solid var(--gris);
     border-radius: 10px;
-    background-color: var(--blanco);
+    background-color: var(--gris);
+    display: flex;
+    align-items: center;
 }
 
-.info-plato h4 {
-    font-family: sena-worksans;
-    font-size: 12px;
-    color: var(--negro);
-    margin-bottom: 6px;
-}
-
-.cuadro-cantidad {
+.card-plato .info-plato {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+.card-plato h4 {
+    color: var(--verde);
+    margin: 0;
+    font-family: sena-calibri, sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.cuadro-cantidad {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .categoria {
-    background-color: var(--verde-lite);
-    font-family: sena-calibri;
+    font-family: sena-calibri, sans-serif;
     color: var(--negro);
-    font-size: 12px;
-    padding: 2px 8px;
-    border-radius: 6px;
+    font-size: 15px;
     font-weight: bold;
 }
 
 .cantidad {
-    border: 1px solid var(--gris);
     font-size: 14px;
     color: var(--azul-dark);
 }
 
-
 /*--------RESUMEN DE EVENTOS------------*/
-.lista-eventos {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-height: 220px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
 
 .item-evento {
     display: flex;
     justify-content: space-between;
     background-color: var(--gris);
-    padding: 12px;
+    padding: 12px 16px;
     border-radius: 10px;
     align-items: center;
     border: 1px solid var(--gris);
@@ -1324,85 +1307,63 @@ div.dato_aprendiz {
 .verde {
     color: var(--verde);
     font-weight: 700;
-    font-size: 13px;
-    font-family: sena-worksans;
+    font-size: 14px;
+    font-family: sena-worksans, sans-serif;
 }
 
 .fecha-evento {
-    font-family: sena-calibri;
+    font-family: sena-calibri, sans-serif;
     display: flex;
     flex-direction: column;
     text-align: right;
     color: var(--gris-dark);
-    font-size: 14px;
+    font-size: 12px;
 }
-
-.lista-platos {
-    max-height: 220px;
-
-    overflow-y: auto;
-
-    padding-right: 5px;
-}
-
 
 /*-----------AGENDA DE APRENDICES----------------*/
-.lista-agenda {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-height: 260px;
-    /* Limitado a unos 2 eventos */
-    overflow-y: auto;
-    padding-right: 5px;
-}
 
 .card-agenda {
     background-color: var(--gris);
-    border: 1px;
     border-radius: 10px;
-    padding: 12px;
+    padding: 14px 16px 28px 16px;
     font-size: 12px;
+    position: relative;
 }
 
 .header-agenda {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .header-agenda small {
     font-size: 12px;
-    font-family: sena-calibri;
+    font-family: sena-calibri, sans-serif;
 }
 
 .lideres p {
     font-size: 12px;
-    font-family: sena-worksans;
+    font-family: sena-worksans, sans-serif;
     color: var(--gris-dark);
-    margin-top: 2px;
+    margin: 3px 0;
 }
 
 .lideres span {
     color: var(--negro);
+    font-weight: bold;
     font-size: 12px;
-    font-family: sena-calibri;
-}
-
-.card-agenda {
-    position: relative !important;
-    padding-bottom: 24px !important;
+    font-family: sena-calibri, sans-serif;
 }
 
 .card-agenda .personas {
-    font-family: sena-worksans;
+    font-family: sena-worksans, sans-serif;
     position: absolute;
     bottom: 10px;
-    right: 12px;
+    right: 14px;
     display: flex;
     align-items: center;
     gap: 4px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     color: var(--azul-dark);
 }
@@ -1410,73 +1371,46 @@ div.dato_aprendiz {
 .card-agenda .personas svg {
     width: 15px;
     height: 15px;
-    stroke: var(--azul-dark)
+    fill: var(--azul-dark);
 }
 
 /*---------------RESUMEN DE PRODUCCIÓN-----------------*/
-.pedidos {
-    background-color: var(--blanco);
-    border: 1px solid var(--gris);
-    padding: 12px;
-    border-radius: 10px;
-    text-align: center;
-    margin-bottom: 12px;
-}
-
-.pedidos strong {
-    font-size: 15px;
-    color: var(--negro);
-}
-
-.pedidos p {
-    font-size: 12px;
-    color: var(--gris-dark);
-}
 
 .bloques-financieros {
     display: flex;
     gap: 10px;
-    margin-bottom: 14px;
+    flex: 1;
+    align-items: center;
 }
 
 .bloque {
     flex: 1;
-    padding: 12px;
+    padding: 30px 15px;
     border-radius: 10px;
     text-align: center;
+    height: 100%;
+    max-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .verde-bg {
-    background-color: var(--rojo-lite);
     background-color: var(--verde-lite);
 }
 
-.rojo-bg {
-    background-color: var(--rojo-lite);
-    color: var(--negro);
-}
-
 .bloque h4 {
-    font-family: sena-calibri;
-    font-size: 14px;
+    font-family: sena-worksans, sans-serif;
+    font-size: 16px;
+    margin: 0 0 10px 0;
+    color: var(--negro);
 }
 
 .bloque h3 {
-    font-size: 14px;
-    margin-top: 4px;
-}
-
-.margen-dia {
-    font-family: sena-calibri;
-    text-align: center;
-    font-size: 13px;
+    font-family: sena-worksans, sans-serif;
+    font-size: 18px;
+    margin: 0;
     color: var(--negro);
-}
-
-.margen-dia strong {
-    font-family: sena-worksans;
-    color: var(--negro);
-    font-size: 16px;
 }
 
 /* ---------------------------------------ASIGNAR LIDERAZGOS--------------------------------------- */
@@ -1677,6 +1611,14 @@ div#tarjeta_liderazgos {
         background-color: var(--azul-dark);
         border-right: 1px solid var(--gris);
         z-index: 1000;
+
+        & nav#menu_ppal > figure {
+            display: none;
+        }
+
+        & #btn_menu {
+            display: none;
+        }
 
 
         & #cont_logo {
@@ -1939,5 +1881,84 @@ div#tarjeta_liderazgos {
         & button#btn_asignar_liderazgos {
             width: 40%;
         }
+    }
+
+    /* Dashboard */
+
+    .panel_dashboard_grid {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        grid-template-rows: auto auto;
+        gap: 20px;
+        padding: 25px;
+        position: relative;
+        max-width: 1500px;
+        margin: 0 auto;
+    }
+
+    .columna_lateral_flotante {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        z-index: 10;
+        margin-left: 20px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        align-self: center;
+    }
+
+    .tarjeta_unificada_eventos {
+        background: var(--blanco);
+        border: 1px solid var(--gris);
+        border-radius: 16px;
+        padding: 16px 18px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        height: auto;
+        width: 310px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .contenedor_seccion_superior {
+        grid-column: 1 / span 2;
+        grid-row: 1;
+        display: flex;
+        gap: 25px;
+        border: 1.5px solid var(--gris-dark);
+        border-radius: 18px;
+        padding: 25px 25px 25px 355px;
+        background-color: var(--blanco);
+        z-index: 1;
+    }
+
+    .contenedor_seccion_inferior {
+        grid-column: 1 / span 2;
+        grid-row: 2;
+        display: flex;
+        gap: 25px;
+        border: 1.5px solid var(--gris-dark);
+        border-radius: 18px;
+        padding: 25px 25px 25px 355px;
+        background-color: var(--blanco);
+        z-index: 1;
+    }
+
+    .contenedor_seccion_superior .tarjeta,
+    .contenedor_seccion_inferior .tarjeta {
+        flex: 1;
+        background: var(--blanco);
+        border: 1px solid var(--gris);
+        border-radius: 14px;
+        padding: 20px;
+    }
+
+    .linea_divisora_interna {
+        border: none;
+        border-top: 1px solid var(--gris);
+        margin: 20px 0;
+    }
+
+    .lista-eventos {
+        max-height: 250px;
     }
 }

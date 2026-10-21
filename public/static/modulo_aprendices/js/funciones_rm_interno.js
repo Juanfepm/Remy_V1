@@ -992,39 +992,18 @@ async function cargarDetalleEvento() {
 /** Dashboard */
 
 async function cargarMenuResumen() {
-    const token = localStorage.getItem("token");
-    if (!token) {
-        redireccionarALogin();
-        return;
-    }
-
     try {
-        const respuesta = await fetch(`${API_BASE_URL}/programa/dashboard/menu-resumen`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            cache: "no-store"
+        const respuesta = await fetchConToken(`${API_BASE_URL}/programa/dashboard/menu-resumen`, {
+            method: "GET"
         });
-        if (respuesta.status === 401) {
-            alert("Tu sesión ha expirado. Por favor ingresa nuevamente.");
-            localStorage.removeItem("token");
-            redireccionarALogin();
-            return;
-        }
-
-        const nuevoToken = respuesta.headers.get("X-Nuevo-Token");
-        if (nuevoToken) {
-            localStorage.setItem("token", nuevoToken);
-        }
+        if (!respuesta || !respuesta.ok) return;
 
         const resultado = await respuesta.json();
 
-        if (respuesta.ok && resultado.status === "success") {
+        if (resultado.status === "success") {
             renderizarTarjetaMenu(resultado.data);
         } else {
-            console.error("Error al obtener los datos del menú:", resultado.error);
+            console.error("Error al obtener los datos del menú:", resultado.message || resultado.error);
         }
     } catch (error) {
         console.error("Error de conexión con el API Gateway:", error);
@@ -1047,18 +1026,21 @@ function renderizarTarjetaMenu(data) {
     contenedorPlatos.innerHTML = "";
 
     if (!data.platos || data.platos.length === 0) {
-        contenedorPlatos.innerHTML = "<p class='sin-datos'>No hay platos registrados.</p>";
+        contenedorPlatos.innerHTML = "<p class='sin-datos'>No hay categorías registradas.</p>";
         return;
     }
 
-    data.platos.forEach(plato => {
-        const nombre = plato.plato_nombre || plato[1];
+    data.platos.forEach(item => {
+        const nombreCategoria = item.nombre_categoria || item.plato_nombre || item[1] || "Categoría";
+        const cantidadPlatos = item.cantidad_platos ?? item[3] ?? 0;
+        const textoAcompañante = cantidadPlatos === 1 ? 'plato' : 'platos';
 
         const cardHTML = `
             <div class="card-plato">
                 <div class="info-plato">
-                    <h4>${nombre}</h4>
-                    <div class="cuadro-cantidad">
+                    <h4>${nombreCategoria}</h4>
+                    <div class="cuadro-cantidad letra-verde">
+                        <span>${cantidadPlatos} ${textoAcompañante}</span>
                     </div>
                 </div>
             </div>
@@ -1385,6 +1367,41 @@ function generarCalendarioTabla() {
     }
 }
 
+function renderizarResumenProduccion(produccionDatos) {
+    const contenedor = document.querySelector('#resumen_produccion .bloques-financieros');
+    if (!contenedor) return;
+
+    contenedor.innerHTML = '';
+
+    if (!Array.isArray(produccionDatos) || produccionDatos.length === 0) {
+        contenedor.innerHTML = `
+            <div class="bloque verde-bg">
+                <h4>Producción del Mes</h4>
+                <h3>$ 0</h3>
+            </div>
+        `;
+        return;
+    }
+
+    const registro = produccionDatos[0];
+    const mesAnio = Array.isArray(registro) ? registro[0] : registro.mes_anio;
+    const totalMes = Array.isArray(registro) ? registro[1] : registro.total_mes;
+
+    const costoFormateado = Number(totalMes || 0).toLocaleString('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0
+    });
+
+    const bloque = document.createElement('div');
+    bloque.className = 'bloque verde-bg';
+    bloque.innerHTML = `
+        <h4>Producción del Mes </h4>
+        <h3>${costoFormateado}</h3>
+    `;
+    contenedor.appendChild(bloque);
+}
+
 
 
 async function renderizarInsumosAlerta() {
@@ -1402,6 +1419,7 @@ async function renderizarInsumosAlerta() {
         if (resultado && resultado.data) {
             renderizarResumenEventos(resultado.data.eventos);
             renderizarAgendaAprendices(resultado.data.lideres);
+            renderizarResumenProduccion(resultado.data.produccion);
         }
 
         const insumosCriticos = resultado.data?.inventario_alerta || [];

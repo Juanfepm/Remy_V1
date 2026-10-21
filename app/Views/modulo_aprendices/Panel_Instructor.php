@@ -176,133 +176,94 @@
 
         <section id="contenido_Panel">
 
-            <!-- ÚNICO CONTENEDOR GRID PARA LAS 6 TARJETAS -->
-            <div class="grid-panel">
+            <div class="panel_dashboard_grid">
 
-                <!-- 1. CALENDARIO -->
-                <div class="tarjeta" id="calendario">
-                    <h2 class="titulo-tarjeta">Calendario</h2>
-                    <div class="header-calendario">
-                        
-                        <span id="mes-actual">Septiembre de 2026</span> 
-                        <div class="nav-cal">
-                            
-                            <button id="btn-prev-mes">&lt;</button>
-                            <button id="btn-next-mes">&gt;</button>
+                <aside class="columna_lateral_flotante">
+                    <div class="tarjeta_unificada_eventos">
+
+                        <div class="subseccion_calendario" id="calendario">
+                            <h2 class="titulo-tarjeta">Calendario</h2>
+                            <div class="header-calendario">
+                                <span id="mes-actual">Octubre de 2026</span>
+                                <div class="nav-cal">
+                                    <button id="btn-prev-mes">&lt;</button>
+                                    <button id="btn-next-mes">&gt;</button>
+                                </div>
+                            </div>
+
+                            <div id="almanaque">
+                                <table id="estructura_calendario">
+                                    <thead>
+                                        <tr>
+                                            <th>Dom</th>
+                                            <th>Lun</th>
+                                            <th>Mar</th>
+                                            <th>Mie</th>
+                                            <th>Jue</th>
+                                            <th>Vie</th>
+                                            <th>Sab</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cuerpo-calendario"></tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
 
-                    <div id="almanaque">
-                        <table id="estructura_calendario">
-                            <thead>
-                                <tr>
-                                    <td>Dom</td>
-                                    <td>Lun</td>
-                                    <td>Mar</td>
-                                    <td>Mie</td>
-                                    <td>Jue</td>
-                                    <td>Vie</td>
-                                    <td>Sab</td>
-                                </tr>
-                            </thead>
-                            <tbody id="cuerpo-calendario">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                        <hr class="linea_divisora_interna">
 
-                <!-- 2. INSUMOS EN ALERTA -->
-                <div class="tarjeta" id="insumos_alerta">
-                    <h2 class="titulo-tarjeta">Insumos en Alerta</h2>
-                    <div class="lista-insumos" id="contenedor-insumos">
-                    </div>
-                </div>
-
-                <!-- 3. MENÚ RESUMEN -->
-                <div class="tarjeta" id="menu_resumen">
-                    <h2 class="titulo-tarjeta">Menú</h2>
-                    <div class="stats-menu">
-                        <div>
-                            <span class="text">Platos</span>
-                            <strong class="num">0</strong>
+                        <div class="subseccion_eventos" id="resumen_eventos">
+                            <h2 class="titulo-tarjeta">Resumen de Eventos</h2>
+                            <div class="lista-eventos">
+                                
+                            </div>
                         </div>
-                        <div>
-                            <span class="text">Menus</span>
-                            <strong class="num">0</strong>
-                        </div>
-                    </div>
-                    <div class="lista-platos">
-                        
-                    </div>
-                </div>
 
-                <!-- 4. RESUMEN DE EVENTOS -->
-                <div class="tarjeta" id="resumen_eventos">
-                    <h2 class="titulo-tarjeta">Resumen de Eventos</h2>
-                    <div class="lista-eventos">
-                        <div class="item-evento">
-                            <span class="nombre-evento verde">Evento Producción Agricola</span>
-                            <div class="fecha-evento">
-                                <small>30 - Septiembre - 2026</small>
-                                <small>12:00 PM - 2:00 PM</small>
+                    </div>
+                </aside>
+
+                <div class="contenedor_seccion_superior">
+                    <div class="tarjeta" id="insumos_alerta">
+                        <h2 class="titulo-tarjeta">Insumos en Alerta</h2>
+                        <div class="lista-insumos" id="contenedor-insumos"></div>
+                    </div>
+
+                    <div class="tarjeta" id="menu_resumen">
+                        <h2 class="titulo-tarjeta">Menú</h2>
+                        <div class="lista-platos">
+                            <div class="card-plato">
+                                <div class="info-plato">
+                                    <div class="cuadro-cantidad">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 5. AGENDA DE APRENDICES -->
-                <div class="tarjeta" id="agenda_aprendices">
-                    <h2 class="titulo-tarjeta">Agenda de Aprendices</h2>
-                    <div class="lista-agenda">
-                        <div class="card-agenda">
-                            <div class="header-agenda">
-                                <strong class="verde">Evento SST</strong>
-                                <small>22 - Agosto - 2026</small>
+                <div class="contenedor_seccion_inferior">
+                    <div class="tarjeta" id="agenda_aprendices">
+                        <h2 class="titulo-tarjeta">Agenda de Aprendices</h2>
+                        <div class="lista-agenda">
+                            <div class="card-agenda">
+                                
                             </div>
-                            <div class="lideres">
-                                <p>Líder Cocina: <span>Frank Uldaly Montenegro Ceballos</span></p>
-                                <p>Líder Servicio: <span>Carmen Tulia Campo Campo</span></p>
-                            </div>
+                        </div>
+                    </div>
 
-                            <div class="personas">
-                                <svg id="personas" style="enable-background:new 0 0 100.4 100.4;" version="1.1" viewBox="0 0 100.4 100.4" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <path d="M76.9,34v-2.7c3.4-2,5.6-5.7,5.6-9.7v-4.8c0-6.2-5-11.2-11.2-11.2S60,10.6,60,16.8v4.8c0,3.9,2,7.5,5.4,9.5v2.9  c-1.5,0.4-2.9,1-4.3,1.8c-2.2-5.1-7.3-8.7-13.2-8.7c-5.8,0-10.7,3.4-13,8.4c-1.3-0.6-2.6-1.2-3.9-1.5v-2.7c3.4-2,5.6-5.7,5.6-9.7  v-4.8c0-6.2-5-11.2-11.2-11.2s-11.2,5-11.2,11.2v4.8c0,3.9,2,7.5,5.4,9.5v2.9c-9,2.6-15.1,10.7-15.1,20.1c0,0.8,0.7,1.5,1.5,1.5  h29.6c0.1,0,0.2,0,0.3,0c1.2,1.9,2.9,3.5,4.9,4.7v4.5c-11.9,3.2-20,13.9-20,26.3c0,0.8,0.7,1.5,1.5,1.5h51.5c0.8,0,1.5-0.7,1.5-1.5  c0-12.3-8.5-23.2-20.3-26.3v-4.3c2.1-1.2,3.8-2.8,5.1-4.8h30.7c0.8,0,1.5-0.7,1.5-1.5C92.2,44.8,85.8,36.5,76.9,34z M7.5,52.7  c0.6-7.8,6.2-14.2,13.9-16c0.7-0.2,1.2-0.8,1.2-1.5v-5c0-0.6-0.3-1.1-0.8-1.3c-2.8-1.4-4.6-4.2-4.6-7.3v-4.8c0-4.5,3.7-8.2,8.2-8.2  s8.2,3.7,8.2,8.2v4.8c0,3.1-1.9,6-4.7,7.4c-0.5,0.2-0.9,0.8-0.9,1.4v4.8c0,0.7,0.5,1.3,1.2,1.5c1.7,0.4,3.3,1,4.8,1.8  c-0.2,1-0.3,2-0.3,3.1V48c0,1.6,0.3,3.2,0.8,4.7L7.5,52.7L7.5,52.7z M52.8,58.2c-0.5,0.2-0.9,0.8-0.9,1.4v6.4c0,0.7,0.5,1.3,1.2,1.5  c10.6,2.3,18.4,11.5,19.1,22.2H23.8c0.6-10.7,8.2-19.7,18.8-22.1c0.7-0.2,1.2-0.8,1.2-1.5v-6.6c0-0.6-0.3-1.1-0.8-1.3  c-3.9-1.9-6.3-5.8-6.3-10.1v-6.4c0-6.3,5.1-11.3,11.3-11.3s11.3,5.1,11.3,11.3V48C59.3,52.3,56.8,56.3,52.8,58.2z M61.5,52.7  c0.5-1.5,0.8-3.1,0.8-4.7v-6.4c0-0.9-0.1-1.9-0.3-2.7c1.6-1,3.4-1.7,5.2-2.1c0.7-0.2,1.2-0.8,1.2-1.5v-5c0-0.6-0.3-1.1-0.8-1.3  c-2.8-1.4-4.6-4.2-4.6-7.3v-4.8c0-4.5,3.7-8.2,8.2-8.2c4.5,0,8.2,3.7,8.2,8.2v4.8c0,3.1-1.9,6-4.7,7.4c-0.5,0.2-0.9,0.8-0.9,1.4v4.8  c0,0.7,0.5,1.3,1.2,1.5c7.7,1.7,13.4,8.3,14.1,16L61.5,52.7L61.5,52.7z"/>
-                                </svg>
-                                <span>15</span>
+                    <div class="tarjeta" id="resumen_produccion">
+                        <h2 class="titulo-tarjeta">Resumen de Producción</h2>
+                        <div class="bloques-financieros">
+                            <div class="bloque verde-bg">
+                                <h4>Ventas</h4>
+                                <h3>$ 1.200.000</h3>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 6. RESUMEN DE PRODUCCIÓN -->
-                <div class="tarjeta" id="resumen_produccion">
-                    <h2 class="titulo-tarjeta">Resumen de Producción</h2>
-                    <div class="pedidos">
-                        <strong>60 Menús</strong>
-                        <p>Hoy, 20 pedidos activos</p>
-                    </div>
-                    <div class="bloques-financieros">
-                        <div class="bloque verde-bg">
-                            <h4>Ventas</h4>
-                            <h3>$ 1.200.000</h3>
-                        </div>
-                        <div class="bloque rojo-bg">
-                            <h4>Gastos</h4>
-                            <h3>$ 800.000</h3>
-                        </div>
-                    </div>
-                    <div class="margen-dia">
-                        <span>Margen del día: </span>
-                        <strong>$400.000</strong>
-                    </div>
-                </div>
-
-            </div> <!-- FIN .grid-panel -->
+            </div>
 
         </section>
-
-
-
 
     </main>
 

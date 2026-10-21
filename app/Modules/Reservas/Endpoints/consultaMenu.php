@@ -3,15 +3,15 @@
 header('Content-Type: application/json; charset=utf-8');
 
 
-include_once 'conexion.php'; 
+$conexion = \Remy\Core\Database::connectMysqli();
+$conn = $conexion;
 
 
 $conn->set_charset("utf8");
 
 
 $hoy = date('Y-m-d');
-$sql = "SELECT m.id_menu, m.nombre, m.tiempos_menu, m.precio, m.descripcion, m.estado,
-               m.fecha_creacion, m.img_plato_fuerte, m.img_bebida, m.img_entrada, m.img_postre
+$sql = "SELECT m.*
         FROM menu m
         LEFT JOIN programacion_dia p
           ON p.id_menu = m.id_menu AND DATE(p.fecha_reserva) = ?
@@ -29,9 +29,12 @@ $menu = array();
 if ($result) {
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            
             $row['precio'] = (int)$row['precio'];
             $row['tiempos_menu'] = (int)$row['tiempos_menu'];
+            $row['img_plato_fuerte'] = trim((string) ($row['img_plato_fuerte'] ?? '')) ?: 'plato.jpg';
+            $row['img_bebida'] = trim((string) ($row['img_bebida'] ?? '')) ?: 'bebida.jpg';
+            $row['img_entrada'] = trim((string) ($row['img_entrada'] ?? '')) ?: 'entrada.jpg';
+            $row['img_postre'] = trim((string) ($row['img_postre'] ?? '')) ?: 'postre.jpg';
             $menu[] = $row;
         }
     }

@@ -2,7 +2,8 @@
 
 header('Content-Type: application/json; charset=utf-8');
 
-require_once 'conexion.php';
+$conexion = \Remy\Core\Database::connectMysqli();
+$conn = $conexion;
 
 
 $baseImg = "assets/img_menu/";
@@ -14,16 +15,20 @@ $resultado = $conexion->query($sql);
 if ($resultado && $resultado->num_rows > 0) {
 
     $menu = $resultado->fetch_assoc();
+    $imagenPlatoFuerte = trim((string) ($menu['img_plato_fuerte'] ?? '')) ?: 'plato.jpg';
+    $imagenBebida = trim((string) ($menu['img_bebida'] ?? '')) ?: 'bebida.jpg';
+    $imagenEntrada = trim((string) ($menu['img_entrada'] ?? '')) ?: 'entrada.jpg';
+    $imagenPostre = trim((string) ($menu['img_postre'] ?? '')) ?: 'postre.jpg';
 
     echo json_encode([
         "titulo"      => $menu["nombre"],
         "descripcion" => $menu["descripcion"],
         "precio"      => (int)$menu["precio"],
 
-        "imagenPlatoFuerte" => $baseImg . $menu["img_plato_fuerte"],
-        "imagenBebida"      => $baseImg . $menu["img_bebida"],
-        "imagenEntrada"     => $baseImg . $menu["img_entrada"],
-        "imagenPostre"      => $baseImg . $menu["img_postre"]
+        "imagenPlatoFuerte" => $baseImg . $imagenPlatoFuerte,
+        "imagenBebida"      => $baseImg . $imagenBebida,
+        "imagenEntrada"     => $baseImg . $imagenEntrada,
+        "imagenPostre"      => $baseImg . $imagenPostre
     ], JSON_UNESCAPED_UNICODE);
 
 } else {

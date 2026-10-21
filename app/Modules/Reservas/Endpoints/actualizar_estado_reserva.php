@@ -1,5 +1,6 @@
 <?php
-include 'conexion.php';
+$conexion = \Remy\Core\Database::connectMysqli();
+$conn = $conexion;
 header('Content-Type: application/json');
 
 $id_reserva = $_POST['id_reserva'] ?? $_GET['id_reserva'] ?? '';

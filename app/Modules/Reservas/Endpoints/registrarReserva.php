@@ -1,5 +1,6 @@
 <?php
-require_once 'conexion.php';
+$conexion = \Remy\Core\Database::connectMysqli();
+$conn = $conexion;
 require_once 'correo_institucional.php';
 require_once 'notificar_correo.php';
 

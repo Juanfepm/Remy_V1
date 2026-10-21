@@ -16,6 +16,16 @@ function redireccionarALogin() {
     }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    const enlaceSalir = document.getElementById("btn_salir");
+    if (!enlaceSalir) return;
+
+    enlaceSalir.addEventListener("click", (evento) => {
+        evento.preventDefault();
+        redireccionarALogin();
+    });
+});
+
 async function verificarSesion() {
     const token = localStorage.getItem("token");
 
@@ -139,23 +149,32 @@ async function iniciarSesion() {
                 })
             });
 
-            if (respuesta.ok) {
-                const datos = await respuesta.json();
+            const datos = await respuesta.json().catch(() => ({}));
 
-                if (datos.token) {
-                    localStorage.setItem("token", datos.token);
-                    if (datos.rol_usuario !== undefined && datos.rol_usuario !== null) {
-                        localStorage.setItem("rol_usuario", datos.rol_usuario);
-                    }
-                    window.location.href = RUTA_MODULO + "/dashboard";
-                } else {
-                    alert("Error en el formato de respuesta del servidor.");
-                }
-            } else {
+            if (respuesta.status === 401) {
                 alert("Usuario o contraseña incorrectos");
+                return;
+            }
+
+            if (!respuesta.ok) {
+                const detalle = datos.message || datos.error || `HTTP ${respuesta.status}`;
+                console.error("Error del servidor durante el inicio de sesión:", detalle);
+                alert("No se pudo validar el inicio de sesión por un error del servidor. Verifica la conexión a MySQL y la configuración del proceso PHP.");
+                return;
+            }
+
+            if (datos.token) {
+                localStorage.setItem("token", datos.token);
+                if (datos.rol_usuario !== undefined && datos.rol_usuario !== null) {
+                    localStorage.setItem("rol_usuario", datos.rol_usuario);
+                }
+                window.location.href = RUTA_MODULO + "/dashboard";
+            } else {
+                alert("Error en el formato de respuesta del servidor.");
             }
         } catch (error) {
             console.error("Error en la conexión:", error);
+            alert("No se pudo contactar al servidor. Verifica que la aplicación esté iniciada.");
         }
     });
 }

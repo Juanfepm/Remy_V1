@@ -1,5 +1,6 @@
 <?php
-include 'conexion.php';
+$conexion = \Remy\Core\Database::connectMysqli();
+$conn = $conexion;
 header('Content-Type: application/json');
 
 

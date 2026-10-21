@@ -14,10 +14,19 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 try {
     $active = env_value('REMY_ACTIVE_MODULE');
-    if ($active !== '' && $path !== '/' && !str_starts_with($path, '/' . $active . '/') && !str_starts_with($path, '/static/') && !($active === 'reservas' && str_starts_with($path, '/modulo_reservas_php/'))) {
+    $activePrefix = '/' . $active;
+    $isActivePath = $active !== '' && ($path === $activePrefix || str_starts_with($path, $activePrefix . '/'));
+    if ($active !== '' && $path !== '/' && !$isActivePath && !str_starts_with($path, '/static/') && !($active === 'reservas' && str_starts_with($path, '/modulo_reservas_php/'))) {
         http_response_code(404); exit;
     }
-    if ($path === '/') redirect_to($active === '' ? '/reservas/' : '/' . $active . '/');
+    if ($path === '/') {
+        $home = match ($active) {
+            'aprendices' => '/aprendices/login',
+            'platos' => '/platos/',
+            default => '/reservas/aplicacion/menu_dia.html',
+        };
+        redirect_to($home);
+    }
     if (str_starts_with($path, '/inventario')) {
         http_response_code(204); // Ruta reservada; no se ejecuta el módulo de inventario.
         exit;
@@ -38,7 +47,7 @@ try {
         header('Content-Type: image/png');
         readfile($file); exit;
     }
-    if ($path === '/aprendices/' || $path === '/aprendices/salir') redirect_to('/aprendices/login');
+    if ($path === '/aprendices' || $path === '/aprendices/' || $path === '/aprendices/salir') redirect_to('/aprendices/login');
     $apprentices = [
         '/aprendices/login' => 'index', '/aprendices/liderazgo' => 'Liderazgo',
         '/aprendices/dashboard' => 'Panel_Instructor', '/aprendices/cargaMasiva' => 'carga_masiva/carga_masiva',
@@ -52,11 +61,12 @@ try {
     ];
     if (isset($apprentices[$path])) { render_view('modulo_aprendices/' . $apprentices[$path]); exit; }
     $dishes = [
-        '/' => 'platos/platos_menu', '/platos_menu' => 'platos/platos_menu',
+        '/platos_menu' => 'platos/platos_menu',
         '/busqueda' => 'busqueda/busqueda', '/crear_plato' => 'platos/crear_plato',
         '/crear_menu' => 'menus/crear_menu',
     ];
-    if (str_starts_with($path, '/platos')) {
+    if ($path === '/platos' || $path === '/platos/') redirect_to('/platos/platos_menu');
+    if (str_starts_with($path, '/platos/')) {
         $sub = substr($path, strlen('/platos'));
         if (isset($dishes[$sub])) { render_view('modulo_platos/' . $dishes[$sub]); exit; }
         if (preg_match('~^/(modificar_plato|detalle_plato|modificar_menu|detalle_menu)/[^/]+$~', $sub, $m)) {
@@ -64,15 +74,14 @@ try {
             render_view('modulo_platos/' . $folder . '/' . $m[1]); exit;
         }
     }
-    if ($path === '/reservas/' || $path === '/reservas') { render_view('modulo_reservas/index'); exit; }
-    if ($path === '/reservas/aplicacion/index.html') redirect_to('/reservas/');
+    if ($path === '/reservas/' || $path === '/reservas' || $path === '/reservas/aplicacion/index.html') redirect_to('/reservas/aplicacion/menu_dia.html');
     if (preg_match('~^/reservas/aplicacion/([a-zA-Z0-9_]+)\.html$~', $path, $m)) {
         render_view('modulo_reservas/aplicacion/' . $m[1]); exit;
     }
     http_response_code(404);
     echo 'Página no encontrada';
 } catch (Throwable $e) {
-    error_log($e);
+    error_log((string) $e);
     if (str_contains($path, '/api/') || str_starts_with($path, '/modulo_reservas_php/')) json_response(['error' => 'Error interno del servidor'], 500);
     http_response_code(500);
     echo 'Error interno del servidor';

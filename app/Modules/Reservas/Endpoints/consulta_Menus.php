@@ -2,18 +2,10 @@
 
 header('Content-Type: application/json; charset=utf-8');
 
-require_once 'conexion.php';
+$conexion = \Remy\Core\Database::connectMysqli();
+$conn = $conexion;
 
-$sql = "SELECT
-			id_menu AS IdMenu,
-			nombre AS Nombre,
-			tiempos_menu AS TiemposMenu,
-			precio AS Precio,
-			descripcion AS Descripcion,
-			img_plato_fuerte AS ImgMenu
-		FROM menu
-		WHERE estado = 'activo'
-		ORDER BY fecha_creacion DESC";
+$sql = "SELECT * FROM menu WHERE estado = 'activo' ORDER BY fecha_creacion DESC";
 
 $resultado = $conexion->query($sql);
 
@@ -27,9 +19,14 @@ if (!$resultado) {
 $menus = [];
 
 while ($menu = $resultado->fetch_assoc()) {
-	$menu['TiemposMenu'] = (int) $menu['TiemposMenu'];
-	$menu['Precio'] = (int) $menu['Precio'];
-	$menus[] = $menu;
+	$menus[] = [
+		'IdMenu' => $menu['id_menu'],
+		'Nombre' => $menu['nombre'],
+		'TiemposMenu' => (int) $menu['tiempos_menu'],
+		'Precio' => (int) $menu['precio'],
+		'Descripcion' => $menu['descripcion'] ?? '',
+		'ImgMenu' => trim((string) ($menu['img_plato_fuerte'] ?? '')) ?: 'plato.jpg',
+	];
 }
 
 echo json_encode($menus, JSON_UNESCAPED_UNICODE);

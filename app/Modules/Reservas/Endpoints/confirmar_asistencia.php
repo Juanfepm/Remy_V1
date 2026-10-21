@@ -1,5 +1,6 @@
 <?php
-include 'conexion.php';
+$conexion = \Remy\Core\Database::connectMysqli();
+$conn = $conexion;
 include 'correo_institucional.php';
 include_once 'notificar_correo.php';
 

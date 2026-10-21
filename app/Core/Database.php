@@ -8,12 +8,7 @@ final class Database {
     public static function connect(): PDO {
         static $pdo;
         if ($pdo instanceof PDO) return $pdo;
-        $host = \env_value('REMY_DB_HOST', 'localhost');
-        $port = \env_value('REMY_DB_PORT', '3306');
-        $name = \env_value('REMY_DB_NAME', 'remy');
-        $user = \env_value('REMY_DB_USER');
-        $pass = \env_value('REMY_DB_PASSWORD');
-        if ($user === '') throw new \RuntimeException('Configure REMY_DB_USER.');
+        [$host, $port, $name, $user, $pass] = self::configuration();
         $pdo = new PDO("mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4", $user, $pass, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -21,6 +16,28 @@ final class Database {
         ]);
         $pdo->exec("SET time_zone = '-05:00'");
         return $pdo;
+    }
+
+    /** Shared MySQLi connection for the legacy Reservations endpoints. */
+    public static function connectMysqli(): \mysqli {
+        static $connection;
+        if ($connection instanceof \mysqli) return $connection;
+
+        [$host, $port, $name, $user, $pass] = self::configuration();
+        $connection = new \mysqli($host, $user, $pass, $name, $port);
+        $connection->set_charset('utf8mb4');
+        $connection->query("SET time_zone = '-05:00'");
+        return $connection;
+    }
+
+    private static function configuration(): array {
+        $host = \env_value('REMY_DB_HOST', 'localhost');
+        $port = (int) \env_value('REMY_DB_PORT', '3306');
+        $name = \env_value('REMY_DB_NAME', 'remy');
+        $user = \env_value('REMY_DB_USER');
+        $pass = \env_value('REMY_DB_PASSWORD');
+        if ($user === '') throw new \RuntimeException('Configure REMY_DB_USER.');
+        return [$host, $port, $name, $user, $pass];
     }
 
     public static function rows(string $sql, array $params = []): array {

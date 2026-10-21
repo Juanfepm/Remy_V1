@@ -18,7 +18,13 @@ function env_value(string $key, string $default = ''): string {
 
 function base_url(string $path = ''): string {
     $explicit = getenv('REMY_BASE_PATH');
-    $base = $explicit !== false ? rtrim($explicit, '/') : rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/index.php')), '/.');
+    $scriptName = parse_url((string) ($_SERVER['SCRIPT_NAME'] ?? '/index.php'), PHP_URL_PATH) ?: '/index.php';
+    $entryPoint = strtolower(basename(str_replace('\\', '/', $scriptName)));
+    $scriptDir = in_array($entryPoint, ['index.php', 'router.php'], true)
+        ? dirname($scriptName)
+        : '';
+    $scriptDir = str_replace('\\', '/', $scriptDir);
+    $base = $explicit !== false ? rtrim($explicit, '/') : rtrim($scriptDir, '/.');
     if ($base === '/') $base = '';
     return $base . ($path === '' ? '' : '/' . ltrim($path, '/'));
 }

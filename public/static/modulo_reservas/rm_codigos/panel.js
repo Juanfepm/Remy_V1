@@ -70,6 +70,12 @@ function pintarPanel(sesion) {
     }
 
     opciones +=
+        '<a href="' + RAIZ + '/aprendices/dashboard" class="btn-opc btn-modulo-externo">' +
+        '<span>Aprendices</span></a>' +
+        '<a href="' + RAIZ + '/platos/platos_menu" class="btn-opc btn-modulo-externo">' +
+        '<span>Platos y menús</span></a>';
+
+    opciones +=
         '<a href="#" class="btn-opc btn_salir">' + ICO_PANEL_SALIR + '<span>Cerrar Sesión</span></a>';
 
     cabezote.innerHTML =

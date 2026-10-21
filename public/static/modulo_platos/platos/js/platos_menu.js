@@ -7,6 +7,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const mediaQueryPC = window.matchMedia('(min-width: 1020px)');
     const btnFlotantePlatos = document.getElementById('btn_flotante_platos');
     const btnFlotanteMenu   = document.getElementById('btn_flotante_menu');
+    const btnSalir = document.getElementById('btn_salir');
+
+    if (btnSalir) {
+        btnSalir.addEventListener('click', (evento) => {
+            evento.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('rol_usuario');
+            sessionStorage.removeItem('remy_sesion');
+            fetch(URL_API_RESERVAS + 'logout.php', { method: 'POST', credentials: 'same-origin' })
+                .catch(() => {})
+                .finally(() => { window.location.href = RAIZ + '/aprendices/login'; });
+        });
+    }
 
     // Elementos para el Menú Lateral en Móvil
     const btnMenuMovil = document.getElementById('btn_menu_movil');

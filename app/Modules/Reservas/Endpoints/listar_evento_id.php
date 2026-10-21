@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
-include 'conexion.php';
+$conexion = \Remy\Core\Database::connectMysqli();
+$conn = $conexion;
 
 $idEvento = $_GET['id_evento'] ?? null;
 

@@ -2,6 +2,10 @@
 
 Aplicación modular con **Aprendices**, **Platos y menús** y **Reservas**. Las rutas de **Inventario** devuelven contenido vacío (HTTP 204). La base de datos MySQL existente se conserva. PHP sirve páginas y API desde `public/index.php`; las vistas y consultas permanecen fuera del directorio público.
 
+## Conexion compartida
+
+`app/Core/Database.php` centraliza la configuracion y conexion MySQL. Aprendices y Platos usan su conexion PDO; los endpoints heredados de Reservas usan el conector MySQLi del mismo archivo. Los modulos no mantienen archivos locales de credenciales o conexion.
+
 ## Estructura
 
 ```
@@ -20,13 +24,56 @@ activadores/                   Un iniciador local por módulo funcional
 
 ## Instalación local
 
-1. Instalar **PHP 8.2 o posterior**, Composer, MySQL y las extensiones que aparecen en `requirements.txt`. En XAMPP, comprobar que esa versión y extensiones estén activas.
-2. Desde la carpeta del proyecto, ejecutar `composer install`.
-3. Definir `REMY_DB_USER`, `REMY_DB_PASSWORD`, `REMY_DB_NAME`, `REMY_SECRET_KEY` y, para correo, `REMY_CORREO_REMITENTE` y `REMY_CORREO_PASSWORD` como variables del proceso PHP o directivas privadas `SetEnv` de Apache. `.env.example` es una lista de variables, **no se carga automáticamente**. Si no hay correo SMTP, las reservas se guardan, pero la respuesta indica que el correo no se envió.
-4. Configurar el DocumentRoot o alias de Apache a la carpeta `public/`, activar `mod_rewrite` y permitir `.htaccess`. El proyecto funciona bajo una subruta, por ejemplo `/remy/`, si el alias apunta a `public/`. La ruta raíz se detecta desde PHP; `REMY_BASE_PATH` puede fijarse si el servidor no la comunica correctamente.
-5. Para desarrollo sin Apache, ejecutar `php -S 127.0.0.1:8000 -t public public/router.php` y abrir `http://127.0.0.1:8000/`.
+Sigue estos pasos desde la carpeta del proyecto (`C:\xampp\htdocs\Remy_Web`).
 
-**Base de datos:** revisar `database/README.md` antes de importar los archivos SQL. No ejecutar un script de creación encima de una base con datos existentes sin validación y respaldo.
+### 1. Inicia los servicios
+
+En XAMPP, inicia **MySQL**. Comprueba que PHP sea la versión **8.2 o posterior** y que tenga activas las extensiones `pdo_mysql`, `mysqli`, `gd`, `mbstring` y `zip`.
+
+También necesitas tener [Composer](https://getcomposer.org/) instalado.
+
+### 2. Prepara la base de datos
+
+La aplicación usa una base MySQL llamada `remy` por defecto. Puedes conectarla a la base existente del proyecto o crear una nueva. Antes de importar SQL, lee [database/README.md](database/README.md): sus archivos no se deben ejecutar a ciegas sobre una base que ya tenga datos.
+
+### 3. Instala las dependencias de PHP
+
+Abre PowerShell en la carpeta del proyecto y ejecuta:
+
+```powershell
+composer install
+```
+
+Composer instalará las librerías que necesita la aplicación y creará la carpeta `vendor/`.
+
+### 4. Configura el acceso a MySQL
+
+En esa misma ventana de PowerShell, define los datos de tu usuario MySQL y una clave privada para los tokens:
+
+```powershell
+$env:REMY_DB_HOST = "localhost"
+$env:REMY_DB_PORT = "3306"
+$env:REMY_DB_NAME = "remy"
+$env:REMY_DB_USER = "tu_usuario_mysql"
+$env:REMY_DB_PASSWORD = "tu_contraseña_mysql"
+$env:REMY_SECRET_KEY = "escribe_aqui_una_clave_privada_larga"
+```
+
+Reemplaza `tu_usuario_mysql` y `tu_contraseña_mysql` por las credenciales reales. Si tu usuario no tiene contraseña, deja el valor así: `$env:REMY_DB_PASSWORD = ""`. Estas variables quedan disponibles en esa ventana; mantenla abierta para iniciar el servidor en el siguiente paso. El archivo `.env.example` sirve como referencia, pero la aplicación no lo carga automáticamente.
+
+El correo SMTP es opcional. Para habilitarlo, configura también `REMY_CORREO_REMITENTE` y `REMY_CORREO_PASSWORD`. Sin esas variables, las reservas se guardan, pero no se envían correos de confirmación.
+
+### 5. Inicia la aplicación
+
+En la misma ventana de PowerShell, ejecuta:
+
+```powershell
+php -S 127.0.0.1:8000 -t public public/router.php
+```
+
+Abre [http://127.0.0.1:8000/](http://127.0.0.1:8000/) en el navegador. Deja la ventana abierta mientras uses la aplicación. Para detener el servidor, presiona `Ctrl+C`.
+
+Si prefieres usar Apache de XAMPP, configura el sitio para que su directorio público apunte a `public/` y asegúrate de que Apache reciba las mismas variables de configuración.
 
 ## Activadores
 

@@ -1,0 +1,4 @@
+@import url('../../platos/css/detalle_plato.css');
+#tira_imagenes figure { margin: 0; text-align: center; }
+#tira_imagenes img { max-width: 100%; max-height: 290px; object-fit: contain; }
+#cont_puntos_carrusel button { cursor: pointer; border: 0; background: transparent; color: #39a900; }

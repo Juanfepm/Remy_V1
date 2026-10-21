@@ -1,0 +1,398 @@
+
+
+body#cuerpo_menu {
+    min-height: 100vh;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+
+main#cuerpo {
+    width: 100%;
+}
+
+header#cabezote_menu {
+    padding: 15px 8px;
+    text-align: center;
+    width: 100%;
+
+    & h2 {
+        font-size: 22px;
+        margin: 0;
+    }
+}
+
+section#tarjeta_menu {
+    margin-inline: auto;
+    padding: 0.9rem;
+    width: clamp(290px, 96%, 480px);
+
+    & h2 {
+        font-size: 28px;
+        margin: 1.2rem 0 0.5rem;
+    }
+
+    & p#txt_descripcion {
+        color: var(--gris-dark);
+        margin: 0 0 1.3rem;
+    }
+}
+
+form#forma_reserva {
+    width: 100%;
+
+    & div#cont_pedido, div#cont_correo {
+        background: var(--gris);
+        border-radius: 1rem;
+        margin: 0 0 0.8rem;
+        padding: 0.9rem;
+    }
+
+    & h3 {
+        color: var(--gris-dark);
+        font-size: 15px;
+        margin: 0;
+    }
+
+    & input.campo {
+        background: var(--blanco);
+        border: none;
+        border-radius: 3rem;
+        color: var(--negro);
+        font-size: 15px;
+        padding: 1em 1.2em;
+        width: 100%;
+    }
+
+        & input::placeholder, input::-moz-placeholder, input::-webkit-input-placeholder {
+            color: var(--gris-dark);
+        }
+}
+
+
+
+
+#cont_jornada {
+    margin: 0 0 1rem;
+    width: 100%;
+
+    & div.cont-dato {
+        margin: 0 0 5px;
+    }
+
+    & h3 {
+        font-size: 17px;
+        margin: 0;
+    }
+
+    & p {
+        color: var(--gris-dark);
+        font-size: 13px;
+        margin: 0;
+    }
+}
+
+#foto_principal {
+    width: 100%;
+
+    & img {
+        border-radius: 1rem;
+        display: block;
+    }
+}
+
+#cont_galeria {
+    margin: 1.4rem 0 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.4rem;
+}
+
+#cont_pedido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#cont_cantidad {
+    text-align: center;
+
+    & p {
+        color: var(--gris-dark);
+        font-size: 12px;
+        margin: 8px 0 0;
+    }
+}
+
+#cont_controles {
+    margin: 8px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#num_platos {
+    border-radius: 3rem;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 11px;
+    padding: 8px 28px;
+}
+
+#valor_menu {
+    font-size: 26px;
+    margin: 0;
+}
+
+#cont_correo div.cont-dato {
+    margin: 0 0 11px;
+}
+
+
+
+
+.cont-dato {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    & figure.iconos {
+        margin-right: 8px;
+        width: 21px;
+    }
+
+        & figure.iconos img {
+            filter: brightness(0);
+        }
+}
+
+.foto-mini {
+    aspect-ratio: 1 / 0.8;
+    overflow: hidden;
+    min-width: 0;
+
+    & img {
+        border-radius: 0.8rem;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.btn-circulo-mini {
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: bold;
+    height: 42px;
+    padding: 0;
+    width: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+
+
+
+@media screen and (min-width: 700px) {
+
+    header#cabezote_menu {
+        padding: 18px 12px;
+
+        & h2 {
+            font-size: 24px;
+        }
+    }
+
+    section#tarjeta_menu {
+        padding: 1.6rem;
+        width: min(92%, 620px);
+
+        & h2 {
+            font-size: 30px;
+        }
+    }
+
+    form#forma_reserva {
+
+        & div#cont_pedido, div#cont_correo {
+            padding: 1.1rem;
+        }
+
+        & h3,
+        & input.campo {
+            font-size: 16px;
+        }
+    }
+
+    #foto_principal {
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+
+        & img {
+            height: 100%;
+            object-fit: cover;
+            width: 100%;
+        }
+    }
+}
+
+
+
+@media screen and (min-width: 1100px) {
+
+    section#tarjeta_menu {
+        column-gap: 2.6rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+        grid-template-rows: auto auto 1fr;
+        max-width: 1040px;
+        padding: 2.4rem 2.8rem;
+        width: 92%;
+
+        & h2 {
+            font-size: 32px;
+        }
+    }
+
+    #cont_jornada {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        margin: 0 0 1.2rem;
+
+        & h3 {
+            font-size: 19px;
+        }
+
+        & p {
+            font-size: 15px;
+        }
+    }
+
+    #foto_principal {
+        aspect-ratio: 4 / 3;
+        grid-column: 1;
+        grid-row: 2;
+        margin: 0;
+    }
+
+    #cont_galeria {
+        grid-column: 1;
+        grid-row: 3;
+        margin: 1.2rem 0 0;
+    }
+
+    #cont_detalle {
+        grid-column: 2;
+        grid-row: 2 / 4;
+    }
+
+    form#forma_reserva {
+
+        & div#cont_pedido, div#cont_correo {
+            padding: 1.3rem;
+        }
+
+        & h3,
+        & input.campo {
+            font-size: 17px;
+        }
+    }
+
+    .foto-mini {
+        width: auto;
+    }
+}
+
+
+
+@media screen and (min-width: 1600px) {
+
+    section#tarjeta_menu {
+        max-width: 1200px;
+        padding: 2.8rem 3.4rem;
+    }
+}
+
+
+
+body#cuerpo_menu {
+    background: var(--gris-lite);
+    padding-bottom: 78px;
+}
+
+@media screen and (min-width: 768px) {
+
+    body#cuerpo_menu {
+        padding-bottom: 0;
+        padding-left: 200px;
+        padding-top: 1.5rem;
+    }
+}
+
+
+#sin_menu {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 2.6rem auto;
+    max-width: 340px;
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+}
+
+#sin_menu #ico_sin_menu {
+    align-items: center;
+    background: var(--verde-lite);
+    border-radius: 50%;
+    color: var(--verde);
+    display: flex;
+    height: 128px;
+    justify-content: center;
+    margin: 0 0 0.6rem;
+    width: 128px;
+}
+
+#sin_menu #ico_sin_menu svg {
+    height: 62px;
+    width: 62px;
+}
+
+#sin_menu h2 {
+    font-size: 22px;
+    margin: 0;
+}
+
+#sin_menu p {
+    color: var(--gris-dark);
+    font-size: 0.95rem;
+    line-height: 1.45;
+    margin: 0;
+}
+
+@media screen and (max-width: 360px) {
+
+    section#tarjeta_menu {
+        padding: 0.7rem;
+        width: 100%;
+    }
+
+    #cont_galeria {
+        gap: 0.8rem;
+    }
+
+    #num_platos {
+        margin: 0 8px;
+        padding: 8px 20px;
+    }
+
+    #valor_menu {
+        font-size: 22px;
+    }
+}

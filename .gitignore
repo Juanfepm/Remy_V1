@@ -1,0 +1,4 @@
+/vendor/
+/storage/uploads/platos/*
+!/storage/uploads/platos/.gitkeep
+.env

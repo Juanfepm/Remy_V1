@@ -1,0 +1,7 @@
+PHP 8.2 or newer
+Composer (run: composer install)
+PHP extensions: pdo_mysql, mysqli, gd, mbstring, zip, dom, fileinfo, iconv, libxml, simplexml, xml, xmlreader, xmlwriter, zlib, openssl
+Composer packages declared in composer.json:
+  phpoffice/phpspreadsheet ^5.10 (Excel .xls/.xlsx import)
+  phpmailer/phpmailer ^7.1 (SMTP confirmation emails)
+No Python runtime, pip packages or separate email service are required.

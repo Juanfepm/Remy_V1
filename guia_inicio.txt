@@ -1,0 +1,43 @@
+REMY_PHP — GUÍA RÁPIDA PARA INICIAR
+
+1. Abre VS Code. Ve a Archivo > Abrir carpeta y selecciona:
+   C:\xampp\htdocs\Remy_PHP
+
+2. En VS Code, abre Terminal > Nueva terminal y selecciona PowerShell.
+   Comprueba que Composer está instalado:
+   composer --version
+   Si no aparece una versión, instala Composer desde https://getcomposer.org/Composer-Setup.exe
+   y selecciona C:\xampp\php\php.exe cuando el instalador lo solicite.
+
+3. Instala las dependencias del proyecto (la primera vez o cuando cambien):
+   Set-Location C:\xampp\htdocs\Remy_PHP
+   composer install
+   composer check-platform-reqs
+   Si algún requisito falla, revisa que PHP tenga habilitadas las extensiones gd y zip.
+
+4. Abre el Panel de control de XAMPP e inicia MySQL. Verifica que exista la base
+   de datos remy y que contenga las tablas del proyecto.
+
+5. En la misma terminal PowerShell, configura la conexión. Cambia usuario o
+   contraseña si tus credenciales de MySQL son diferentes:
+   $env:REMY_DB_HOST = "127.0.0.1"
+   $env:REMY_DB_PORT = "3306"
+   $env:REMY_DB_NAME = "remy"
+   $env:REMY_DB_USER = "root"
+   $env:REMY_DB_PASSWORD = ""
+   $env:REMY_SECRET_KEY = "reemplaza-por-una-clave-larga-y-aleatoria"
+
+6. Inicia el servidor PHP:
+   & "C:\xampp\php\php.exe" -S 127.0.0.1:8000 -t public public/router.php
+   Mantén esta terminal abierta mientras usas el sitio.
+
+7. Abre en el navegador:
+   http://127.0.0.1:8000/
+   Para detener el servidor, vuelve a la terminal y pulsa Ctrl+C.
+
+NOTAS
+- Las variables de conexión configuradas en PowerShell duran solo en esa terminal.
+  Si abres otra, vuelve a ejecutar el paso 5.
+- Si MySQL usa otra contraseña, reemplaza el valor de REMY_DB_PASSWORD.
+- Si aparece un error, revisa la terminal donde está corriendo PHP y confirma que
+  MySQL está iniciado y que la base de datos remy tiene las tablas necesarias.

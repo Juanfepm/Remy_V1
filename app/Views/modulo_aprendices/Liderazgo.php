@@ -29,7 +29,6 @@
             <nav id="menu_ppal">
 
                 <figure id="btn_menu">
-                    <?xml version="1.0" ?>
                     <!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
                     <svg height="100%"
                         style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;" version="1.1"

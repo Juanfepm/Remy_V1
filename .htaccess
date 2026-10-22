@@ -1,0 +1,27 @@
+# REMY: raíz del proyecto publicada en el servidor (p. ej. arcano.digital/remy).
+# Todo se atiende desde public/; el resto del proyecto nunca se sirve.
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Pasar el token (Authorization: Bearer ...) a PHP en FastCGI/CGI.
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Todo pasa por public/ (archivos estáticos o public/index.php).
+    RewriteRule ^public/ - [L]
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Configuración y archivos de trabajo: bloqueados aunque falle mod_rewrite.
+<FilesMatch "^(\.env.*|.*\.env|\.htaccess|\.git.*|composer\.(json|lock)|README\.md|.*\.(sql|sh|log|txt|md|py|example))$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

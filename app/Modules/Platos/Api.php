@@ -29,8 +29,8 @@ final class Api {
     }
 
     private static function ingredients(string $id): never {
-        $rows = DB::rows('SELECT i.id_ingrediente,i.nombre,i.stock,pi.cantidad,i.unidad_minima FROM plato_ingrediente pi INNER JOIN ingredientes i ON pi.id_ingrediente=i.id_ingrediente WHERE pi.id_plato=?', [$id]);
-        \json_response(array_map(fn($r) => ['id_ingrediente' => $r['id_ingrediente'], 'nombre' => $r['nombre'] ?: 'Sin nombre', 'stock' => (float)$r['stock'], 'cantidad' => (float)$r['cantidad'], 'unidad' => $r['unidad_minima'] ?: ''], $rows));
+        $rows = DB::rows('SELECT i.id_ingrediente,i.nombre,i.stock,pi.cantidad,i.unidad,i.unidad_minima FROM plato_ingrediente pi INNER JOIN ingredientes i ON pi.id_ingrediente=i.id_ingrediente WHERE pi.id_plato=?', [$id]);
+        \json_response(array_map(fn($r) => ['id_ingrediente' => $r['id_ingrediente'], 'nombre' => $r['nombre'] ?: 'Sin nombre', 'stock' => self::stockInMinimumUnits($r), 'cantidad' => (float)$r['cantidad'], 'unidad' => $r['unidad_minima'] ?: ''], $rows));
     }
 
     private static function category(string $raw): int {
@@ -167,7 +167,16 @@ final class Api {
 
     private static function search(string $text): array {
         $like = '%' . $text . '%';
-        $sql = "SELECT p.id_plato AS id_registro,p.nombre,p.descripcion,p.img_plato AS img_registro,p.fecha_creacion,'Plato' AS tipo FROM platos p LEFT JOIN categorias_platos cp ON p.categoria=cp.id_categoria WHERE p.estado='Activo' AND (p.nombre LIKE ? OR cp.nombre LIKE ? OR 'Plato' LIKE ?) UNION ALL SELECT m.id_menu,m.nombre,m.descripcion,(SELECT p2.img_plato FROM contiene c JOIN platos p2 ON c.id_plato=p2.id_plato WHERE c.id_menu=m.id_menu AND p2.categoria=2 AND p2.estado='Activo' LIMIT 1),m.fecha_creacion,'Menú' FROM menu m WHERE m.estado='Activo' AND (m.nombre LIKE ? OR 'Menú' LIKE ?) UNION ALL SELECT id_ingrediente,nombre,CONCAT('El ingrediente cuenta con un stock actual de ',stock,' ',unidad_minima,'.'),NULL,NULL,'Ingrediente' FROM ingredientes WHERE estado='Activo' AND (nombre LIKE ? OR 'Ingrediente' LIKE ?) ORDER BY nombre ASC";
+        $sql = "SELECT p.id_plato AS id_registro,p.nombre,p.descripcion,p.img_plato AS img_registro,p.fecha_creacion,'Plato' AS tipo FROM platos p LEFT JOIN categorias_platos cp ON p.categoria=cp.id_categoria WHERE p.estado='Activo' AND (p.nombre LIKE ? OR cp.nombre LIKE ? OR 'Plato' LIKE ?) UNION ALL SELECT m.id_menu,m.nombre,m.descripcion,(SELECT p2.img_plato FROM contiene c JOIN platos p2 ON c.id_plato=p2.id_plato WHERE c.id_menu=m.id_menu AND p2.categoria=2 AND p2.estado='Activo' LIMIT 1),m.fecha_creacion,'Menú' FROM menu m WHERE m.estado='Activo' AND (m.nombre LIKE ? OR 'Menú' LIKE ?) UNION ALL SELECT id_ingrediente,nombre,CONCAT('El ingrediente cuenta con un stock actual de ',CASE WHEN ((LOWER(COALESCE(unidad, 'Und')) = 'kg' AND LOWER(COALESCE(unidad_minima, 'und')) = 'gr') OR (LOWER(COALESCE(unidad, 'Und')) = 'l' AND LOWER(COALESCE(unidad_minima, 'und')) = 'ml')) THEN CASE WHEN ABS(COALESCE(stock, 0)) >= 1000 THEN COALESCE(stock, 0) ELSE COALESCE(stock, 0) * 1000 END ELSE COALESCE(stock, 0) END,' ',unidad_minima,'.'),NULL,NULL,'Ingrediente' FROM ingredientes WHERE estado='Activo' AND (nombre LIKE ? OR 'Ingrediente' LIKE ?) ORDER BY nombre ASC";
         return DB::rows($sql, array_fill(0, 7, $like));
+    }
+
+    private static function stockInMinimumUnits(array $ingredient): float {
+        $stock = (float)($ingredient['stock'] ?? 0);
+        $unit = strtolower(trim((string)($ingredient['unidad'] ?? '')));
+        $minimumUnit = strtolower(trim((string)($ingredient['unidad_minima'] ?? '')));
+        $convertible = ($unit === 'kg' && $minimumUnit === 'gr') || ($unit === 'l' && $minimumUnit === 'ml');
+        if (!$convertible) return $stock;
+        return abs($stock) >= 1000 ? $stock : $stock * 1000;
     }
 }

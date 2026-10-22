@@ -19,7 +19,7 @@ public/index.php               Enrutador y punto de entrada
 public/static/                 CSS, JS, fuentes e imágenes del navegador
 public/modulo_reservas_php/assets/   Fotos de menús y experiencias
 database/                      Esquema y migración heredados
-storage/uploads/platos/        Fotos cargadas desde el editor
+storage/uploads/platos/        Fotos de platos cargadas desde el editor
 activadores/                   Un iniciador local por módulo funcional
 ```
 

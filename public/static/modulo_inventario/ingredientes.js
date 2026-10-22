@@ -66,8 +66,9 @@ const normalizarNombreIngrediente = (nombre) => String(nombre ?? '')
 const formatearDecimal = (valor, decimales = 3) => {
     const num = Number(valor) || 0;
     return num.toLocaleString('es-CO', {
-        minimumFractionDigits: decimales,
-        maximumFractionDigits: decimales
+        minimumFractionDigits: 0,
+        maximumFractionDigits: decimales,
+        useGrouping: false
     });
 };
 
@@ -369,7 +370,7 @@ const renderizarTabla = () => {
                 </div>
             </td>
             <td><span class="badge-categoria">${escaparHTML(item.nombre_categoria)}</span></td>
-            <td><strong class="cifra-stock ${claseCifra}">${formatearDecimal(item.stock, 3)}</strong> <small>${escaparHTML(item.unidad_minima || 'und')}</small></td>
+            <td><strong class="cifra-stock ${claseCifra}">${formatearDecimal(item.stock_unidad_minima ?? item.stock, 3)}</strong> <small>${escaparHTML(item.unidad_minima || 'und')}</small></td>
             <td><strong>${item.stock_minimo}</strong> <small>${escaparHTML(item.unidad_minima || 'und')}</small></td>
             <td>
                 <div class="bloque-alerta-stock">

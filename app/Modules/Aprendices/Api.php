@@ -168,7 +168,13 @@ final class Api {
     private static function dashboard(string $section): never {
         $events = fn() => array_map('array_values', DB::rows("SELECT id_evento,nombre_evento,fecha_inicio,fecha_fin FROM eventos WHERE estado='activo' ORDER BY fecha_inicio ASC LIMIT 5"));
 
-        $inventarioAlerta = fn() => array_map('array_values', DB::rows("SELECT nombre, stock, unidad_minima AS unidad FROM ingredientes WHERE stock <= stock_minimo ORDER BY stock ASC"));
+        // El stock nuevo se guarda en Kg/L y el mínimo en gr/ml. Los registros
+        // antiguos con valores ya expresados en gr/ml se conservan al leerlos.
+        $unidadMinima = "LOWER(COALESCE(unidad_minima, 'und'))";
+        $unidadConvertida = "((LOWER(COALESCE(unidad, 'Und')) = 'kg' AND {$unidadMinima} = 'gr') OR (LOWER(COALESCE(unidad, 'Und')) = 'l' AND {$unidadMinima} = 'ml'))";
+        $stockBase = 'COALESCE(stock, 0)';
+        $stockNormalizado = "CASE WHEN {$unidadConvertida} THEN CASE WHEN ABS({$stockBase}) >= 1000 THEN {$stockBase} ELSE {$stockBase} * 1000 END ELSE {$stockBase} END";
+        $inventarioAlerta = fn() => array_map('array_values', DB::rows("SELECT nombre, {$stockNormalizado} AS stock, {$unidadMinima} AS unidad FROM ingredientes WHERE {$stockNormalizado} <= COALESCE(stock_minimo, 0) ORDER BY stock ASC"));
         
         $leaders = fn() => array_map('array_values', DB::rows("SELECT e.nombre_evento,e.fecha_inicio,e.numero_personas,CONCAT(u1.nombre,' ',u1.apellido) AS lider_cocina,CONCAT(u2.nombre,' ',u2.apellido) AS lider_servicio FROM eventos e LEFT JOIN usuarios u1 ON e.lider_cocina=u1.id_usuario LEFT JOIN usuarios u2 ON e.lider_servicio=u2.id_usuario WHERE e.estado='activo' ORDER BY e.fecha_inicio ASC LIMIT 5"));
         

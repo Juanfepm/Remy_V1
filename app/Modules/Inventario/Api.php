@@ -39,7 +39,12 @@ final class Api {
             'total_alertas_tempranas' => 0, 'total_criticos' => 0, 'total_optimos' => 0,
         ];
         foreach ($rows as &$row) {
-            $stock = (float)$row['stock'];
+            // Los registros nuevos guardan stock en unidad principal. Los
+            // antiguos que ya tienen 1000 o más gr/ml se normalizan al leerlos.
+            $stockInMinimumUnits = self::stockInMinimumUnits($row);
+            $stock = self::stockInMainUnits($row);
+            $row['stock'] = round($stock, 3);
+            $row['stock_unidad_minima'] = round($stockInMinimumUnits, 3);
             $minimumInStockUnits = self::minimumInStockUnits($row);
             $active = $row['estado'] === 'Activo';
             if ($stock <= 0) {
@@ -58,6 +63,25 @@ final class Api {
         unset($row);
 
         \json_response(['respuesta' => 'SI', 'metricas' => $metrics, 'datos' => $rows]);
+    }
+
+    private static function stockConversionFactor(array $ingredient): int {
+        $unit = strtolower(trim((string)($ingredient['unidad'] ?? '')));
+        $minimumUnit = strtolower(trim((string)($ingredient['unidad_minima'] ?? '')));
+        return (($unit === 'kg' && $minimumUnit === 'gr') || ($unit === 'l' && $minimumUnit === 'ml')) ? 1000 : 1;
+    }
+
+    private static function stockInMainUnits(array $ingredient): float {
+        $stock = (float)($ingredient['stock'] ?? 0);
+        $factor = self::stockConversionFactor($ingredient);
+        return $factor === 1000 && abs($stock) >= $factor ? $stock / $factor : $stock;
+    }
+
+    private static function stockInMinimumUnits(array $ingredient): float {
+        $stock = (float)($ingredient['stock'] ?? 0);
+        $factor = self::stockConversionFactor($ingredient);
+        if ($factor !== 1000) return $stock;
+        return abs($stock) >= $factor ? $stock : $stock * $factor;
     }
 
     private static function minimumInStockUnits(array $ingredient): float {

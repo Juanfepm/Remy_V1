@@ -12,6 +12,7 @@ final class Api {
     public static function dispatch(string $path, string $method): never {
         if ($path === '/login' && $method === 'POST') self::login();
         $user = Token::requireUser();
+        \Remy\Core\Sesion::usuario(); // mantiene viva la sesión compartida mientras se usa el panel
         if ($path === '/verificar-sesion') \json_response(['mensaje' => 'Sesión válida', 'usuario' => $user]);
         if ($path === '/usuarios') {
             if ($method === 'GET') self::users();
@@ -36,10 +37,13 @@ final class Api {
         if (!$data) \json_response(['status' => 'error', 'message' => 'No se recibieron datos en el cuerpo de la petición'], 400);
         $mail = trim((string)($data['correo'] ?? ''));
         $pass = (string)($data['contrasena'] ?? '');
-        $row = DB::row("SELECT rol_usuario, contrasena FROM usuarios WHERE correo = ? AND estado = 'activo'", [$mail]);
+        $row = DB::row("SELECT id_usuario, nombre, apellido, correo, rol_usuario, contrasena, ficha FROM usuarios WHERE correo = ? AND estado = 'activo'", [$mail]);
         if (!$row || !password_verify($pass, (string)$row['contrasena'])) {
             \json_response(['status' => 'error', 'message' => 'Las credenciales ingresadas son incorrectas'], 401);
         }
+        // Login único: además del token de esta API, abre la sesión que usan
+        // el panel de reservas, platos e inventario.
+        \Remy\Core\Sesion::abrir($row);
         \json_response(['status' => 'success', 'mensaje' => 'Inicio de sesión exitoso - Bienvenido',
             'rol_usuario' => (int)$row['rol_usuario'],
             'token' => Token::issue(['correo' => $mail, 'rol_usuario' => (int)$row['rol_usuario']])]);

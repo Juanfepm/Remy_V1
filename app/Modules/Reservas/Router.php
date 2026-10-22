@@ -21,30 +21,21 @@ final class Router {
             exit;
         }
         if ($path === 'logout.php') {
-            self::session();
-            $_SESSION = [];
-            session_destroy();
+            \Remy\Core\Sesion::cerrar();
             \json_response(['ok' => true]);
         }
         if ($path === '' || $path === '/') \redirect_to('/reservas/');
         if (!preg_match('/^[A-Za-z0-9_]+\.php$/', $path)) \json_response(['error' => 'Ruta no encontrada'], 404);
         $target = __DIR__ . '/Endpoints/' . $path;
         if (!is_file($target) || in_array($path, ['notificar_correo.php','correo_institucional.php'], true)) \json_response(['error' => 'Ruta no encontrada'], 404);
-        self::session();
+        // Sesión única del panel (la abre /aprendices/login o login.php).
         if (in_array($path, self::ADMIN, true)) {
-            $role = (int)($_SESSION['remy_rol'] ?? 0);
-            if (!in_array($role, [1,2], true)) \json_response(['ok' => false, 'mensaje' => 'Inicie sesión para continuar.'], 401);
-            if (in_array($path, self::INSTRUCTOR, true) && $role !== 1) \json_response(['ok' => false, 'mensaje' => 'Sólo instructores.'], 403);
+            \Remy\Core\Sesion::exigirApi();
+            if (in_array($path, self::INSTRUCTOR, true) && !\Remy\Core\Sesion::esInstructor()) \json_response(['ok' => false, 'mensaje' => 'Sólo instructores.'], 403);
         }
         // The existing PHP endpoints use relative includes; keep their working directory private.
         chdir(dirname($target));
         require $target;
         exit;
-    }
-
-    private static function session(): void {
-        if (session_status() === PHP_SESSION_ACTIVE) return;
-        session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax', 'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off', 'path' => \base_url('/')]);
-        if (!session_start()) throw new \RuntimeException('No se pudo iniciar la sesion PHP.');
     }
 }

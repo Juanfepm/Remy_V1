@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <script>const RAIZ = <?= json_encode(base_url(''), JSON_UNESCAPED_SLASHES) ?>; const URL_API_RESERVAS = <?= json_encode(base_url('/modulo_reservas_php/'), JSON_UNESCAPED_SLASHES) ?>; const ROLES = {instructor: 1, aprendiz: 2};</script>
+    <script>const RAIZ = <?= json_encode(base_url(''), JSON_UNESCAPED_SLASHES) ?>; const URL_API_RESERVAS = <?= json_encode(base_url('/modulo_reservas_php/'), JSON_UNESCAPED_SLASHES) ?>; const ROLES = {instructor: 1, aprendiz: 2}; const SESION_SERVIDOR = <?= json_encode(\Remy\Core\Sesion::usuario(), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) ?>;</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservas de eventos | REMY 1.0</title>

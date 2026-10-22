@@ -12,6 +12,12 @@ elseif ($base !== '' && $path === $base) $path = '/';
 $path = rawurldecode($path);
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
+// Páginas del panel: exigen la sesión única que abre /aprendices/login.
+$exigirPanel = static function (bool $soloInstructor = false, string $siNoEsInstructor = '/aprendices/dashboard'): void {
+    if (!\Remy\Core\Sesion::usuario()) redirect_to('/aprendices/login');
+    if ($soloInstructor && !\Remy\Core\Sesion::esInstructor()) redirect_to($siNoEsInstructor);
+};
+
 try {
     $active = env_value('REMY_ACTIVE_MODULE');
     $activePrefix = '/' . $active;
@@ -19,7 +25,9 @@ try {
     $isInventoryPath = $path === '/inventario' || str_starts_with($path, '/inventario/');
     $inventoryAvailable = $isInventoryPath && in_array($active, ['aprendices', 'platos', 'inventario'], true);
     $inventoryReturnPath = $active === 'inventario' && ($path === '/platos' || str_starts_with($path, '/platos/') || $path === '/aprendices/dashboard');
-    if ($active !== '' && $path !== '/' && !$isActivePath && !$inventoryAvailable && !$inventoryReturnPath && !str_starts_with($path, '/static/') && !($active === 'reservas' && str_starts_with($path, '/modulo_reservas_php/'))) {
+    // El login del panel es único: disponible aunque se ejecute un solo módulo.
+    $isLoginPath = in_array($path, ['/aprendices/login', '/aprendices/salir', '/aprendices/api/login'], true);
+    if ($active !== '' && $path !== '/' && !$isActivePath && !$isLoginPath && !$inventoryAvailable && !$inventoryReturnPath && !str_starts_with($path, '/static/') && !($active === 'reservas' && str_starts_with($path, '/modulo_reservas_php/'))) {
         http_response_code(404); exit;
     }
     if ($path === '/') {
@@ -33,9 +41,10 @@ try {
     }
     if ($path === '/inventario' || $path === '/inventario/') redirect_to('/inventario/ingredientes');
     if (str_starts_with($path, '/inventario/api/')) {
+        \Remy\Core\Sesion::exigirApi();
         \Remy\Modules\Inventario\Api::dispatch(substr($path, strlen('/inventario')), $method);
     }
-    if ($path === '/inventario/ingredientes') { render_view('modulo_inventario/index'); exit; }
+    if ($path === '/inventario/ingredientes') { $exigirPanel(); render_view('modulo_inventario/index'); exit; }
     if (str_starts_with($path, '/modulo_reservas_php/')) {
         \Remy\Modules\Reservas\Router::dispatch(substr($path, strlen('/modulo_reservas_php/')), $method);
     }
@@ -43,6 +52,7 @@ try {
         \Remy\Modules\Aprendices\Api::dispatch(substr($path, strlen('/aprendices/api')), $method);
     }
     if (str_starts_with($path, '/platos/api/') || $path === '/platos/buscar') {
+        \Remy\Core\Sesion::exigirApi();
         \Remy\Modules\Platos\Api::dispatch(substr($path, strlen('/platos')), $method);
     }
     if (preg_match('~^/platos/img_remy/([^/]+)$~', $path, $m)) {
@@ -52,7 +62,8 @@ try {
         header('Content-Type: image/png');
         readfile($file); exit;
     }
-    if ($path === '/aprendices' || $path === '/aprendices/' || $path === '/aprendices/salir') redirect_to('/aprendices/login');
+    if ($path === '/aprendices/salir') { \Remy\Core\Sesion::cerrar(); redirect_to('/aprendices/login'); }
+    if ($path === '/aprendices' || $path === '/aprendices/') redirect_to('/aprendices/login');
     $apprentices = [
         '/aprendices/login' => 'index', '/aprendices/liderazgo' => 'Liderazgo',
         '/aprendices/dashboard' => 'Panel_Instructor', '/aprendices/cargaMasiva' => 'carga_masiva/carga_masiva',
@@ -64,7 +75,10 @@ try {
         '/aprendices/detalleAprendiz' => 'usuario/detalleAprendiz',
         '/aprendices/modificarAprendiz' => 'usuario/ModificarAprendiz',
     ];
-    if (isset($apprentices[$path])) { render_view('modulo_aprendices/' . $apprentices[$path]); exit; }
+    if (isset($apprentices[$path])) {
+        if ($path !== '/aprendices/login') $exigirPanel();
+        render_view('modulo_aprendices/' . $apprentices[$path]); exit;
+    }
     $dishes = [
         '/platos_menu' => 'platos/platos_menu',
         '/busqueda' => 'busqueda/busqueda', '/crear_plato' => 'platos/crear_plato',
@@ -73,14 +87,20 @@ try {
     if ($path === '/platos' || $path === '/platos/') redirect_to('/platos/platos_menu');
     if (str_starts_with($path, '/platos/')) {
         $sub = substr($path, strlen('/platos'));
-        if (isset($dishes[$sub])) { render_view('modulo_platos/' . $dishes[$sub]); exit; }
+        if (isset($dishes[$sub])) { $exigirPanel(); render_view('modulo_platos/' . $dishes[$sub]); exit; }
         if (preg_match('~^/(modificar_plato|detalle_plato|modificar_menu|detalle_menu)/[^/]+$~', $sub, $m)) {
+            $exigirPanel();
             $folder = str_ends_with($m[1], '_menu') ? 'menus' : 'platos';
             render_view('modulo_platos/' . $folder . '/' . $m[1]); exit;
         }
     }
     if ($path === '/reservas/' || $path === '/reservas' || $path === '/reservas/aplicacion/index.html') redirect_to('/reservas/aplicacion/menu_dia.html');
+    // El login del panel es uno solo: el de /aprendices/login.
+    if ($path === '/reservas/aplicacion/login.html') redirect_to('/aprendices/login');
     if (preg_match('~^/reservas/aplicacion/([a-zA-Z0-9_]+)\.html$~', $path, $m)) {
+        // Administración de reservas: con sesión; eventos y experiencias, sólo instructor.
+        if (in_array($m[1], ['dashboard', 'admin_agregar_reserva', 'admin_reservas_dia', 'admin_reservas_eventos', 'aprendiz', 'instructor'], true)) $exigirPanel();
+        if (in_array($m[1], ['admin_eventos', 'admin_experiencias'], true)) $exigirPanel(true, '/reservas/aplicacion/dashboard.html');
         render_view('modulo_reservas/aplicacion/' . $m[1]); exit;
     }
     http_response_code(404);

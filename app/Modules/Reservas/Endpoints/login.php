@@ -77,10 +77,7 @@ if ($rol !== ROL_INSTRUCTOR && $rol !== ROL_APRENDIZ) {
 }
 
 // La sesión real se mantiene en el servidor; sessionStorage sólo pinta el panel.
-if (session_status() !== PHP_SESSION_ACTIVE) session_start();
-session_regenerate_id(true);
-$_SESSION['remy_usuario'] = $usuario['id_usuario'];
-$_SESSION['remy_rol'] = $rol;
+\Remy\Core\Sesion::abrir($usuario);
 
 echo json_encode([
     "ok"        => true,

@@ -7,6 +7,16 @@ function guardarSesion(usuario) {
 }
 
 function obtenerSesion() {
+    // En las páginas del panel el servidor indica quién tiene la sesión
+    // abierta (login único en /aprendices/login): esa es la que vale.
+    if (typeof SESION_SERVIDOR !== 'undefined') {
+        if (!SESION_SERVIDOR) {
+            sessionStorage.removeItem(LLAVE_SESION);
+            return null;
+        }
+        guardarSesion(SESION_SERVIDOR);
+        return SESION_SERVIDOR;
+    }
     const guardado = sessionStorage.getItem(LLAVE_SESION);
     if (!guardado) return null;
     try {
@@ -16,17 +26,19 @@ function obtenerSesion() {
     }
 }
 
+// Cierra la sesión de todo el panel (también la de aprendices).
 function cerrarSesion() {
     sessionStorage.removeItem(LLAVE_SESION);
-    fetch(URL_BACKEND + 'logout.php', { method: 'POST', credentials: 'same-origin' })
-        .finally(() => { window.location.href = 'login.html'; });
+    localStorage.removeItem('token');
+    localStorage.removeItem('rol_usuario');
+    window.location.href = RAIZ + '/aprendices/salir';
 }
 
 
 function exigirSesion() {
     const sesion = obtenerSesion();
     if (!sesion) {
-        window.location.href = 'login.html';
+        window.location.href = RAIZ + '/aprendices/login';
         return null;
     }
     return sesion;

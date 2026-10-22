@@ -20,9 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const enlaceSalir = document.getElementById("btn_salir");
     if (!enlaceSalir) return;
 
+    // Salir cierra la sesión de todo el panel (reservas, platos e inventario).
     enlaceSalir.addEventListener("click", (evento) => {
         evento.preventDefault();
-        redireccionarALogin();
+        localStorage.removeItem("token");
+        localStorage.removeItem("rol_usuario");
+        sessionStorage.removeItem("remy_sesion");
+        window.location.href = RUTA_MODULO + "/salir";
     });
 });
 
@@ -1159,6 +1163,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!rutasPublicas.includes(rutaActual)) {
         await verificarSesion();
         aplicarControlDeRol();
+    } else {
+        // En el login no hay sesión: se descarta cualquier token anterior.
+        localStorage.removeItem("token");
+        localStorage.removeItem("rol_usuario");
+        sessionStorage.removeItem("remy_sesion");
     }
 
     if (document.getElementById("usuario")) {

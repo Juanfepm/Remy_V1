@@ -52,7 +52,11 @@ function inicializarBusquedaREMY() {
             msjSinResultados.classList.add('oculto');
 
             data.forEach(item => {
+                const esIngrediente = String(item.tipo || '').trim().toLowerCase() === 'ingrediente';
                 const fecha = item.fecha_creacion ? item.fecha_creacion.split('T')[0] : 'Sin fecha';
+                const bloqueFecha = esIngrediente
+                    ? ''
+                    : `<p class="fecha-creacion">Fecha creación: <time datetime="${fecha}">${fecha}</time></p>`;
                 const rutaImagen = obtenerRutaImagen(item.img_registro);
 
                 contenedor.innerHTML += `
@@ -72,7 +76,7 @@ function inicializarBusquedaREMY() {
                             <h2 class="tit-item">${item.nombre ? item.nombre.toUpperCase() : 'SIN TÍTULO'}</h2>
                             <p class="desc-item">${item.descripcion || 'Sin descripción disponible.'}</p>
                             <p class="tag-categoria"><strong>-${item.tipo}</strong></p>
-                            <p class="fecha-creacion">Fecha creación: <time datetime="${fecha}">${fecha}</time></p>
+                            ${bloqueFecha}
                         </div>
                     </article>
                 `;

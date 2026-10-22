@@ -240,7 +240,7 @@ $origen = (string)($_GET['from'] ?? '');
 
                         <div class="campo-form col-4">
                             <label for="campo_id">ID Ingrediente <span class="obligatorio">*</span></label>
-                            <input type="text" id="campo_id" name="id_ingrediente" maxlength="16" required placeholder="Elige una categoría" pattern="^[0-9A-Za-z]{1,16}$" title="Código único de hasta 16 caracteres">
+                            <input type="text" id="campo_id" name="id_ingrediente" maxlength="16" required readonly placeholder="Elige una categoría" pattern="^[0-9A-Za-z]{1,16}$" title="Código único de hasta 16 caracteres">
                             <span class="pista-campo">Máx 3 caracteres</span>
                         </div>
 
@@ -254,8 +254,9 @@ $origen = (string)($_GET['from'] ?? '');
 
                         <div class="campo-form col-12">
                             <label for="campo_nombre">Nombre del Producto <span class="obligatorio">*</span></label>
-                            <input type="text" id="campo_nombre" name="nombre" maxlength="20" required placeholder="Ej: Pechuga de Pollo">
-                            <span class="pista-campo"><span id="contador_chars_nombre">0</span>/20 caracteres permitidos</span>
+                            <input type="text" id="campo_nombre" name="nombre" maxlength="32" required placeholder="Ej: Pechuga de Pollo" aria-describedby="error_nombre_duplicado">
+                            <span id="error_nombre_duplicado" class="alerta-campo-duplicado oculto" role="alert" aria-live="polite"></span>
+                            <span class="pista-campo"><span id="contador_chars_nombre">0</span>/32 caracteres permitidos</span>
                         </div>
 
                         <div class="campo-form col-4">
@@ -266,32 +267,27 @@ $origen = (string)($_GET['from'] ?? '');
 
                         <div class="campo-form col-4">
                             <label for="campo_unidad">Unidad <span class="obligatorio">*</span></label>
-                            <input type="text" id="campo_unidad" name="unidad" maxlength="3" required placeholder="Kg" list="lista_unidades">
-                            <datalist id="lista_unidades">
+                            <select id="campo_unidad" name="unidad" required>
                                 <option value="Kg">Kilogramos (Kg)</option>
                                 <option value="L">Litros (L)</option>
                                 <option value="Und">Unidades (Und)</option>
-                                <option value="Gr">Gramos (Gr)</option>
-                                <option value="Ml">Mililitros (Ml)</option>
-                            </datalist>
-                            <span class="pista-campo">Máx 3 carac. (Kg, L, Und)</span>
+                            </select>
+                            <span class="pista-campo">Selecciona la unidad principal</span>
                         </div>
 
                         <div class="campo-form col-4">
                             <label for="campo_unidad_minima">Unidad Mínima</label>
-                            <input type="text" id="campo_unidad_minima" name="unidad_minima" maxlength="3" placeholder="Gr" list="lista_unidades_min">
-                            <datalist id="lista_unidades_min">
-                                <option value="Gr">Gramos (Gr)</option>
-                                <option value="Ml">Mililitros (Ml)</option>
-                                <option value="Und">Unidad (Und)</option>
-                            </datalist>
-                            <span class="pista-campo">Para recetas de cocina</span>
+                            <input type="text" id="campo_unidad_minima" name="unidad_minima" maxlength="3" placeholder="gr" readonly aria-readonly="true">
+                            <span class="pista-campo">Se define automáticamente</span>
                         </div>
 
                         <div class="campo-form col-6">
                             <label for="campo_stock_minimo">Stock Mínimo (Alerta Temprana) <span class="obligatorio">*</span></label>
-                            <input type="number" id="campo_stock_minimo" name="stock_minimo" min="0" step="1" required placeholder="10">
-                            <span class="pista-campo destacado">Dispara la alerta al descender a este valor</span>
+                            <div class="campo-input-unidad">
+                                <input type="number" id="campo_stock_minimo" name="stock_minimo" min="0" step="1" required placeholder="10" aria-describedby="pista_stock_minimo">
+                                <span class="sufijo-unidad-minima" id="indicador_stock_minimo_unidad" aria-hidden="true">gr</span>
+                            </div>
+                            <span class="pista-campo destacado" id="pista_stock_minimo">Dispara la alerta al descender a este valor</span>
                         </div>
 
                         <div class="campo-form col-6">

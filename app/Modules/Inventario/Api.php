@@ -26,7 +26,7 @@ final class Api {
                 COALESCE(i.nombre, '') AS nombre,
                 CAST(COALESCE(i.stock, 0) AS DECIMAL(12,3)) AS stock,
                 COALESCE(i.unidad, 'Und') AS unidad,
-                COALESCE(i.unidad_minima, 'Und') AS unidad_minima,
+                LOWER(COALESCE(i.unidad_minima, 'und')) AS unidad_minima,
                 COALESCE(i.descripcion, '') AS descripcion,
                 CAST(COALESCE(i.stock_minimo, 0) AS UNSIGNED) AS stock_minimo,
                 COALESCE(i.estado, 'Activo') AS estado
@@ -40,24 +40,36 @@ final class Api {
         ];
         foreach ($rows as &$row) {
             $stock = (float)$row['stock'];
-            $minimum = (int)$row['stock_minimo'];
+            $minimumInStockUnits = self::minimumInStockUnits($row);
             $active = $row['estado'] === 'Activo';
             if ($stock <= 0) {
                 $row['nivel_alerta'] = 'CRITICO';
                 if ($active) $metrics['total_criticos']++;
-            } elseif ($stock <= $minimum) {
+            } elseif ($stock <= $minimumInStockUnits) {
                 $row['nivel_alerta'] = 'ALERTA_TEMPRANA';
                 if ($active) $metrics['total_alertas_tempranas']++;
             } else {
                 $row['nivel_alerta'] = 'OPTIMO';
                 if ($active) $metrics['total_optimos']++;
             }
-            $row['porcentaje_stock'] = $minimum > 0 ? round(($stock / $minimum) * 100, 1) : 100.0;
+            $row['porcentaje_stock'] = $minimumInStockUnits > 0 ? round(($stock / $minimumInStockUnits) * 100, 1) : 100.0;
             $metrics[$active ? 'total_activos' : 'total_inactivos']++;
         }
         unset($row);
 
         \json_response(['respuesta' => 'SI', 'metricas' => $metrics, 'datos' => $rows]);
+    }
+
+    private static function minimumInStockUnits(array $ingredient): float {
+        $minimum = (float)($ingredient['stock_minimo'] ?? 0);
+        $unit = strtolower(trim((string)($ingredient['unidad'] ?? '')));
+        $minimumUnit = strtolower(trim((string)($ingredient['unidad_minima'] ?? '')));
+
+        if (($unit === 'kg' && $minimumUnit === 'gr') || ($unit === 'l' && $minimumUnit === 'ml')) {
+            return $minimum / 1000;
+        }
+
+        return $minimum;
     }
 
     private static function listCategories(): never {
@@ -100,6 +112,9 @@ final class Api {
         $id = trim((string)($data['id_ingrediente'] ?? ''));
         if ($id === '') $id = self::nextCategoryId($data['categoria']);
         if (mb_strlen($id) > 16) \json_response(['respuesta' => 'NO', 'mensaje' => 'El ID admite máximo 16 caracteres.'], 400);
+        if (self::ingredientNameExists($data['nombre'])) {
+            \json_response(['respuesta' => 'DUPLICADO_NOMBRE', 'mensaje' => 'Ya existe otro ingrediente con ese nombre.'], 409);
+        }
 
         try {
             DB::exec('INSERT INTO ingredientes (id_ingrediente, categoria, nombre, stock, unidad, unidad_minima, descripcion, stock_minimo, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [
@@ -118,8 +133,13 @@ final class Api {
         $data = self::validatedPayload();
         $id = trim((string)($data['id_ingrediente'] ?? ''));
         if ($id === '' || mb_strlen($id) > 16) \json_response(['respuesta' => 'NO', 'mensaje' => 'El ID del ingrediente no es válido.'], 400);
-        if (!DB::row('SELECT id_ingrediente FROM ingredientes WHERE id_ingrediente = ?', [$id])) {
+        $current = DB::row('SELECT id_ingrediente FROM ingredientes WHERE id_ingrediente = ?', [$id]);
+        if (!$current) {
             \json_response(['respuesta' => 'NO', 'mensaje' => 'Ingrediente no encontrado.'], 404);
+        }
+        $nameUnchanged = DB::row('SELECT id_ingrediente FROM ingredientes WHERE id_ingrediente = ? AND TRIM(nombre) = TRIM(?)', [$id, $data['nombre']]) !== null;
+        if (!$nameUnchanged && self::ingredientNameExists($data['nombre'], $id)) {
+            \json_response(['respuesta' => 'DUPLICADO_NOMBRE', 'mensaje' => 'Ya existe otro ingrediente con ese nombre.'], 409);
         }
 
         DB::exec('UPDATE ingredientes SET categoria=?, nombre=?, stock=?, unidad=?, unidad_minima=?, descripcion=?, stock_minimo=?, estado=? WHERE id_ingrediente=?', [
@@ -147,6 +167,8 @@ final class Api {
         $data = \request_data();
         $category = trim((string)($data['categoria'] ?? ''));
         $name = trim((string)($data['nombre'] ?? ''));
+        $unit = trim((string)($data['unidad'] ?? ''));
+        $minimumUnit = ['Kg' => 'gr', 'L' => 'ml', 'Und' => 'und'][$unit] ?? null;
         $stock = filter_var($data['stock'] ?? 0, FILTER_VALIDATE_FLOAT);
         $minimum = filter_var($data['stock_minimo'] ?? 0, FILTER_VALIDATE_INT);
         $state = trim((string)($data['estado'] ?? 'Activo'));
@@ -154,7 +176,8 @@ final class Api {
             \json_response(['respuesta' => 'NO', 'mensaje' => 'Nombre, categoría y cantidades válidas son obligatorios.'], 400);
         }
         if (!in_array($state, ['Activo', 'Inactivo'], true)) $state = 'Activo';
-        if (mb_strlen($name) > 64) \json_response(['respuesta' => 'NO', 'mensaje' => 'El nombre admite máximo 64 caracteres.'], 400);
+        if (mb_strlen($name) > 32) \json_response(['respuesta' => 'NO', 'mensaje' => 'El nombre admite máximo 32 caracteres.'], 400);
+        if ($minimumUnit === null) \json_response(['respuesta' => 'NO', 'mensaje' => 'Selecciona una unidad válida: Kg, L o Und.'], 400);
         if (!DB::row('SELECT id_categoria FROM categoria_ingredientes WHERE id_categoria = ?', [$category])) {
             \json_response(['respuesta' => 'NO', 'mensaje' => 'Selecciona una categoría existente.'], 400);
         }
@@ -163,11 +186,22 @@ final class Api {
             'categoria' => $category,
             'nombre' => $name,
             'stock' => (float)$stock,
-            'unidad' => mb_substr(trim((string)($data['unidad'] ?? 'Und')), 0, 10),
-            'unidad_minima' => mb_substr(trim((string)($data['unidad_minima'] ?? 'Und')), 0, 10),
+            'unidad' => $unit,
+            'unidad_minima' => $minimumUnit,
             'descripcion' => trim((string)($data['descripcion'] ?? '')),
             'stock_minimo' => (int)$minimum,
             'estado' => $state,
         ];
+    }
+
+    private static function ingredientNameExists(string $name, ?string $excludeId = null): bool {
+        $sql = 'SELECT id_ingrediente FROM ingredientes WHERE TRIM(nombre) = TRIM(?)';
+        $params = [$name];
+        if ($excludeId !== null) {
+            $sql .= ' AND id_ingrediente <> ?';
+            $params[] = $excludeId;
+        }
+        $sql .= ' LIMIT 1';
+        return DB::row($sql, $params) !== null;
     }
 }

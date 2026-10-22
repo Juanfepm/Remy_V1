@@ -680,6 +680,37 @@ section#seccion_listado {
     }
 }
 
+/* Alerta compacta alineada con la paleta de alertas del módulo. */
+.campo-form .alerta-campo-duplicado {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    max-width: 100%;
+    margin-top: 7px;
+    padding: 5px 9px;
+    border: 1px solid var(--rojo-lite);
+    border-radius: 10px;
+    background-color: #FFEBEE;
+    color: var(--rojo);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.campo-form .alerta-campo-duplicado::before {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    content: "!";
+    font-size: 0.65rem;
+    flex-shrink: 0;
+}
+
 /* BOTONES DE ACCIÓN DE LA FILA */
 .acciones-fila {
     display: flex;
@@ -919,6 +950,27 @@ dialog.modal-dialog {
             }
         }
 
+        & .campo-input-unidad {
+            position: relative;
+            width: 100%;
+
+            & input {
+                width: 100%;
+                padding-right: 58px;
+            }
+
+            & .sufijo-unidad-minima {
+                position: absolute;
+                top: 50%;
+                right: 14px;
+                transform: translateY(-50%);
+                color: var(--azul-dark);
+                font-size: 0.85rem;
+                font-weight: 700;
+                pointer-events: none;
+            }
+        }
+
         & textarea {
             resize: vertical;
         }
@@ -1047,6 +1099,36 @@ dialog.modal-dialog {
             width: 100%;
             justify-content: space-between;
         }
+    }
+}
+
+@media screen and (min-width: 901px) and (max-height: 800px) {
+    dialog#modal_ingrediente.modal-dialog {
+        max-height: calc(100vh - 24px);
+        overflow-y: auto;
+    }
+
+    dialog#modal_ingrediente .modal-tarjeta {
+        max-height: calc(100vh - 24px);
+    }
+
+    dialog#modal_ingrediente #formulario_ingrediente {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    dialog#modal_ingrediente .modal-cuerpo {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    dialog#modal_ingrediente .modal-footer {
+        flex: 0 0 auto;
     }
 }
 

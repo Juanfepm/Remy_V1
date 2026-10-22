@@ -180,6 +180,13 @@ CREATE TABLE IF NOT EXISTS `categoria_ingredientes` (
   PRIMARY KEY (`id_categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT IGNORE INTO `categoria_ingredientes` (`id_categoria`, `nombre`) VALUES
+  ('CAT01', 'Frutas'),
+  ('CAT02', 'Verduras'),
+  ('CAT03', 'Carnes'),
+  ('CAT04', 'Lácteos'),
+  ('CAT05', 'Granos');
+
 CREATE TABLE IF NOT EXISTS `ingredientes` (
   `id_ingrediente` varchar(12) NOT NULL,
   `categoria`      varchar(12) NOT NULL,

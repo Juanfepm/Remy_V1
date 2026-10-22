@@ -30,8 +30,7 @@ const estadoApp = {
     },
     modoModal: 'CREAR', // 'CREAR' | 'EDITAR'
     ingredienteEnEdicion: null,
-    ingredienteParaCambioEstado: null,
-    idEditadoManualmente: false
+    ingredienteParaCambioEstado: null
 };
 
 // --------------------------------------------------------------------------
@@ -58,12 +57,61 @@ const escaparHTML = (str) => {
         .replace(/'/g, '&#39;');
 };
 
+const normalizarNombreIngrediente = (nombre) => String(nombre ?? '')
+    .trim()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase();
+
 const formatearDecimal = (valor, decimales = 3) => {
     const num = Number(valor) || 0;
     return num.toLocaleString('es-CO', {
         minimumFractionDigits: decimales,
         maximumFractionDigits: decimales
     });
+};
+
+const actualizarUnidadMinima = () => {
+    const unidad = document.getElementById('campo_unidad')?.value || 'Und';
+    const unidadMinima = { Kg: 'gr', L: 'ml', Und: 'und' }[unidad] || 'und';
+    const campoUnidadMinima = document.getElementById('campo_unidad_minima');
+    const indicadorStockMinimo = document.getElementById('indicador_stock_minimo_unidad');
+
+    if (campoUnidadMinima) campoUnidadMinima.value = unidadMinima;
+    if (indicadorStockMinimo) indicadorStockMinimo.textContent = unidadMinima;
+};
+
+const limpiarErrorNombreDuplicado = () => {
+    const campoNombre = document.getElementById('campo_nombre');
+    const alerta = document.getElementById('error_nombre_duplicado');
+    if (alerta) {
+        alerta.textContent = '';
+        alerta.classList.add('oculto');
+    }
+    if (campoNombre) campoNombre.removeAttribute('aria-invalid');
+};
+
+const mostrarErrorNombreDuplicado = (mensaje = 'Ya existe un ingrediente con este nombre.') => {
+    const campoNombre = document.getElementById('campo_nombre');
+    const alerta = document.getElementById('error_nombre_duplicado');
+    if (!campoNombre || !alerta) return;
+
+    alerta.textContent = mensaje;
+    alerta.classList.remove('oculto');
+    campoNombre.setAttribute('aria-invalid', 'true');
+
+    const cuerpoModal = document.querySelector('#modal_ingrediente .modal-cuerpo');
+    if (cuerpoModal) {
+        const posicion = campoNombre.getBoundingClientRect().top
+            - cuerpoModal.getBoundingClientRect().top
+            + cuerpoModal.scrollTop
+            - 20;
+        cuerpoModal.scrollTo({ top: Math.max(0, posicion), behavior: 'smooth' });
+    } else {
+        campoNombre.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    window.setTimeout(() => campoNombre.focus({ preventScroll: true }), 250);
 };
 
 // Sistema de Notificaciones Toast Flotantes
@@ -321,8 +369,8 @@ const renderizarTabla = () => {
                 </div>
             </td>
             <td><span class="badge-categoria">${escaparHTML(item.nombre_categoria)}</span></td>
-            <td><strong class="cifra-stock ${claseCifra}">${formatearDecimal(item.stock, 3)}</strong> <small>${escaparHTML(item.unidad)}</small></td>
-            <td><strong>${item.stock_minimo}</strong> <small>${escaparHTML(item.unidad)}</small></td>
+            <td><strong class="cifra-stock ${claseCifra}">${formatearDecimal(item.stock, 3)}</strong> <small>${escaparHTML(item.unidad_minima || 'und')}</small></td>
+            <td><strong>${item.stock_minimo}</strong> <small>${escaparHTML(item.unidad_minima || 'und')}</small></td>
             <td>
                 <div class="bloque-alerta-stock">
                     ${badgeNivel}
@@ -367,20 +415,20 @@ const abrirModalCrear = async () => {
     if (!modal || !form) return;
 
     form.reset();
+    limpiarErrorNombreDuplicado();
     titulo.textContent = 'Registrar Nuevo Ingrediente';
     subtitulo.textContent = 'Ingresa los datos del producto e inventario para el restaurante';
     if (contadorChars) contadorChars.textContent = '0';
 
     // El ID se calcula al elegir una categoría.
-    estadoApp.idEditadoManualmente = false;
     campoId.value = '';
-    campoId.readOnly = false;
+    campoId.readOnly = true;
 
     // Valores por defecto
     document.getElementById('campo_stock').value = '0';
     document.getElementById('campo_stock_minimo').value = '5';
     document.getElementById('campo_unidad').value = 'Kg';
-    document.getElementById('campo_unidad_minima').value = 'Gr';
+    actualizarUnidadMinima();
     document.getElementById('campo_estado').value = 'Activo';
 
     modal.showModal();
@@ -392,8 +440,6 @@ const abrirModalEditar = (idIngrediente) => {
 
     estadoApp.modoModal = 'EDITAR';
     estadoApp.ingredienteEnEdicion = item;
-    estadoApp.idEditadoManualmente = true;
-
     const modal = document.getElementById('modal_ingrediente');
     const form = document.getElementById('formulario_ingrediente');
     const titulo = document.getElementById('modal_titulo');
@@ -404,6 +450,7 @@ const abrirModalEditar = (idIngrediente) => {
     if (!modal || !form) return;
 
     form.reset();
+    limpiarErrorNombreDuplicado();
     titulo.textContent = `Editar Ingrediente: ${item.nombre}`;
     subtitulo.textContent = `Actualiza cantidades, unidades y nivel de alerta temprana para [ID: ${item.id_ingrediente}]`;
 
@@ -414,7 +461,7 @@ const abrirModalEditar = (idIngrediente) => {
     document.getElementById('campo_nombre').value = item.nombre || '';
     document.getElementById('campo_stock').value = item.stock;
     document.getElementById('campo_unidad').value = item.unidad || 'Und';
-    document.getElementById('campo_unidad_minima').value = item.unidad_minima || '';
+    actualizarUnidadMinima();
     document.getElementById('campo_stock_minimo').value = item.stock_minimo;
     document.getElementById('campo_estado').value = item.estado || 'Activo';
     document.getElementById('campo_descripcion').value = item.descripcion || '';
@@ -460,6 +507,19 @@ const procesarFormularioIngrediente = async (evento) => {
         return;
     }
 
+    const nombreNormalizado = normalizarNombreIngrediente(datos.nombre);
+    const nombreActual = normalizarNombreIngrediente(estadoApp.ingredienteEnEdicion?.nombre);
+    const nombreSinCambios = estadoApp.modoModal === 'EDITAR' && nombreNormalizado === nombreActual;
+    const existeNombreDuplicado = estadoApp.ingredientes.some(item =>
+        String(item.id_ingrediente) !== String(estadoApp.ingredienteEnEdicion?.id_ingrediente || '') &&
+        normalizarNombreIngrediente(item.nombre) === nombreNormalizado
+    );
+    if (existeNombreDuplicado && !nombreSinCambios) {
+        mostrarErrorNombreDuplicado();
+        return;
+    }
+    limpiarErrorNombreDuplicado();
+
     if (btnSubmit) {
         btnSubmit.disabled = true;
         btnSubmit.querySelector('span').textContent = 'Guardando...';
@@ -485,6 +545,8 @@ const procesarFormularioIngrediente = async (evento) => {
             await cargarIngredientes();
         } else if (json.respuesta === 'DUPLICADO') {
             mostrarToast(json.mensaje || 'El ID ya existe', 'error');
+        } else if (json.respuesta === 'DUPLICADO_NOMBRE') {
+            mostrarErrorNombreDuplicado(json.mensaje || 'Ya existe un ingrediente con este nombre.');
         } else {
             mostrarToast(json.mensaje || 'Ocurrió un error', 'error');
         }
@@ -617,28 +679,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const campoId = document.getElementById('campo_id');
     const campoCategoria = document.getElementById('campo_categoria');
-    if (campoId) {
-        campoId.addEventListener('input', () => {
-            if (estadoApp.modoModal === 'CREAR') estadoApp.idEditadoManualmente = true;
-        });
-    }
+    if (campoId) campoId.readOnly = true;
     if (campoCategoria) {
         campoCategoria.addEventListener('change', async () => {
-            if (estadoApp.modoModal !== 'CREAR' || estadoApp.idEditadoManualmente || !campoCategoria.value) return;
+            if (estadoApp.modoModal !== 'CREAR' || !campoCategoria.value) return;
             const categoriaSeleccionada = campoCategoria.value;
             const siguienteId = await obtenerSiguienteId(categoriaSeleccionada);
-            if (categoriaSeleccionada === campoCategoria.value && !estadoApp.idEditadoManualmente) {
+            if (categoriaSeleccionada === campoCategoria.value) {
                 campoId.value = siguienteId;
             }
         });
     }
 
-    // 7. Contador de caracteres en tiempo real para nombre (máx 20)
+    const campoUnidad = document.getElementById('campo_unidad');
+    if (campoUnidad) campoUnidad.addEventListener('change', actualizarUnidadMinima);
+
+    // 7. Contador de caracteres en tiempo real para nombre (max 32)
     const campoNombre = document.getElementById('campo_nombre');
     const contadorChars = document.getElementById('contador_chars_nombre');
     if (campoNombre && contadorChars) {
         campoNombre.addEventListener('input', () => {
             contadorChars.textContent = String(campoNombre.value.length);
+            if (campoNombre.hasAttribute('aria-invalid')) limpiarErrorNombreDuplicado();
         });
     }
 

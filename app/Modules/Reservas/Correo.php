@@ -25,17 +25,22 @@ final class Correo {
         $plain = $titles[$type] . "\n\n" . $messages[$type] . "\n\n";
         foreach ($fields as $label => $value) $plain .= "$label: $value\n";
         try {
+            $port = (int)\env_value('REMY_SMTP_PORT', '587');
+            // ssl = conexión cifrada desde el inicio (puerto 465); starttls = 587.
+            $security = strtolower(\env_value('REMY_SMTP_SEGURIDAD', $port === 465 ? 'ssl' : 'starttls'));
             $mailer = new PHPMailer(true);
             $mailer->isSMTP();
             $mailer->Host = \env_value('REMY_SMTP_HOST', 'smtp.gmail.com');
-            $mailer->Port = (int)\env_value('REMY_SMTP_PORT', '587');
+            $mailer->Port = $port;
             $mailer->SMTPAuth = true;
-            $mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mailer->SMTPSecure = in_array($security, ['ssl', 'smtps'], true) ? PHPMailer::ENCRYPTION_SMTPS : PHPMailer::ENCRYPTION_STARTTLS;
             $mailer->Username = $sender;
             $mailer->Password = $password;
-            $mailer->Timeout = 20;
+            $mailer->Timeout = 10;
             $mailer->CharSet = 'UTF-8';
-            $mailer->setFrom($sender, 'REMY');
+            $mailer->setFrom($sender, \env_value('REMY_CORREO_NOMBRE', 'REMY'));
+            $replyTo = \env_value('REMY_CORREO_RESPUESTA');
+            if ($replyTo !== '') $mailer->addReplyTo($replyTo);
             $mailer->addAddress($address);
             $mailer->Subject = 'REMY · ' . $titles[$type];
             $mailer->Body = $html;

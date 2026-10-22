@@ -29,7 +29,8 @@ function inicializarBusquedaREMY() {
         } else if (tipoLimpio === 'menú' || tipoLimpio === 'menu') {
             window.location.href = `${RAIZ}/platos/detalle_menu/${id}`;
         } else if (tipoLimpio === 'ingrediente') {
-            console.log(`Detalle de ingrediente reservado (ID: ${id})`);
+            const params = new URLSearchParams({ from: 'platos', id: String(id) });
+            window.location.href = `${RAIZ}/inventario/ingredientes?${params.toString()}`;
         }
     }
 
@@ -116,7 +117,7 @@ function inicializarBusquedaREMY() {
     opcionesFiltro.forEach(opcion => {
         opcion.addEventListener('click', () => {
             inputBusqueda.value = opcion.textContent.trim();
-            menuFilltro.classList.add('oculto');
+            menuFiltro.classList.add('oculto');
             buscar();
         });
     });

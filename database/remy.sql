@@ -1,3 +1,6 @@
+-- Esquema y datos iniciales unificados para instalaciones nuevas de REMY.
+-- Contiene los módulos integrados y las filas de ejemplo del proyecto.
+
 SET NAMES utf8mb4;
 
 CREATE DATABASE IF NOT EXISTS `remy`
@@ -181,9 +184,12 @@ CREATE TABLE IF NOT EXISTS `ingredientes` (
   `id_ingrediente` varchar(12) NOT NULL,
   `categoria`      varchar(12) NOT NULL,
   `nombre`         varchar(64) DEFAULT NULL,
-  `stock`          int(11)     DEFAULT NULL,
+  `stock`          decimal(12,3) DEFAULT NULL,
+  `unidad`         varchar(10) DEFAULT 'Und',
   `unidad_minima`  varchar(10) DEFAULT NULL,
+  `descripcion`    text        DEFAULT NULL,
   `stock_minimo`   int(11)     DEFAULT NULL,
+  `estado`         varchar(10) NOT NULL DEFAULT 'Activo',
   PRIMARY KEY (`id_ingrediente`),
   KEY `categoria` (`categoria`),
   CONSTRAINT `ingredientes_ibfk_1` FOREIGN KEY (`categoria`) REFERENCES `categoria_ingredientes` (`id_categoria`)

@@ -8,7 +8,7 @@ use Remy\Core\Database as DB;
 final class Api {
     public static function dispatch(string $path, string $method): never {
         if ($path === '/buscar' && $method === 'GET') \json_response(self::search(trim((string)($_GET['q'] ?? ''))));
-        if ($path === '/api/ingredientes' && $method === 'GET') \json_response(DB::rows('SELECT id_ingrediente,nombre,unidad_minima FROM ingredientes ORDER BY nombre ASC'));
+        if ($path === '/api/ingredientes' && $method === 'GET') \json_response(DB::rows("SELECT id_ingrediente,nombre,unidad_minima FROM ingredientes WHERE estado='Activo' ORDER BY nombre ASC"));
         if ($path === '/api/platos' && $method === 'GET') \json_response(DB::rows("SELECT * FROM platos ORDER BY CASE WHEN estado='Activo' THEN 0 ELSE 1 END"));
         if ($path === '/api/platos/insertar' && $method === 'POST') self::saveDish();
         if (preg_match('~^/api/platos/([^/]+)/ingredientes$~', $path, $m) && $method === 'GET') self::ingredients($m[1]);
@@ -167,7 +167,7 @@ final class Api {
 
     private static function search(string $text): array {
         $like = '%' . $text . '%';
-        $sql = "SELECT p.id_plato AS id_registro,p.nombre,p.descripcion,p.img_plato AS img_registro,p.fecha_creacion,'Plato' AS tipo FROM platos p LEFT JOIN categorias_platos cp ON p.categoria=cp.id_categoria WHERE p.estado='Activo' AND (p.nombre LIKE ? OR cp.nombre LIKE ? OR 'Plato' LIKE ?) UNION ALL SELECT m.id_menu,m.nombre,m.descripcion,(SELECT p2.img_plato FROM contiene c JOIN platos p2 ON c.id_plato=p2.id_plato WHERE c.id_menu=m.id_menu AND p2.categoria=2 AND p2.estado='Activo' LIMIT 1),m.fecha_creacion,'Menú' FROM menu m WHERE m.estado='Activo' AND (m.nombre LIKE ? OR 'Menú' LIKE ?) UNION ALL SELECT id_ingrediente,nombre,CONCAT('El ingrediente cuenta con un stock actual de ',stock,' ',unidad_minima,'.'),NULL,NULL,'Ingrediente' FROM ingredientes WHERE nombre LIKE ? OR 'Ingrediente' LIKE ? ORDER BY nombre ASC";
+        $sql = "SELECT p.id_plato AS id_registro,p.nombre,p.descripcion,p.img_plato AS img_registro,p.fecha_creacion,'Plato' AS tipo FROM platos p LEFT JOIN categorias_platos cp ON p.categoria=cp.id_categoria WHERE p.estado='Activo' AND (p.nombre LIKE ? OR cp.nombre LIKE ? OR 'Plato' LIKE ?) UNION ALL SELECT m.id_menu,m.nombre,m.descripcion,(SELECT p2.img_plato FROM contiene c JOIN platos p2 ON c.id_plato=p2.id_plato WHERE c.id_menu=m.id_menu AND p2.categoria=2 AND p2.estado='Activo' LIMIT 1),m.fecha_creacion,'Menú' FROM menu m WHERE m.estado='Activo' AND (m.nombre LIKE ? OR 'Menú' LIKE ?) UNION ALL SELECT id_ingrediente,nombre,CONCAT('El ingrediente cuenta con un stock actual de ',stock,' ',unidad_minima,'.'),NULL,NULL,'Ingrediente' FROM ingredientes WHERE estado='Activo' AND (nombre LIKE ? OR 'Ingrediente' LIKE ?) ORDER BY nombre ASC";
         return DB::rows($sql, array_fill(0, 7, $like));
     }
 }

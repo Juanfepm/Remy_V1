@@ -112,7 +112,7 @@
 
                     </a><!--Fin boton liderazgo-->
 
-                    <a href="<?= htmlspecialchars(base_url('/inventario/'), ENT_QUOTES, 'UTF-8') ?>" class="btn-opc" id="btn_inventario">
+                    <a href="<?= htmlspecialchars(base_url('/inventario/ingredientes?from=aprendices'), ENT_QUOTES, 'UTF-8') ?>" class="btn-opc" id="btn_inventario">
                             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                 viewBox="0 0 490 490" style="enable-background:new 0 0 490 490;" xml:space="preserve">
                             <g>

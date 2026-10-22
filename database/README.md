@@ -1,5 +1,5 @@
 # Base de datos
 
-`remy.sql` documenta una instalación nueva. `migracion_integracion.sql` proviene del proyecto original y contiene cambios sobre tablas existentes. La aplicación PHP usa la misma base MySQL de REMY; cambiar de lenguaje no requiere borrar ni recrear datos.
+`remy.sql` es el único documento SQL de instalación. Contiene el esquema integrado de los módulos y las filas de ejemplo del proyecto.
 
-Antes de aplicar SQL a una base con información real, comparar su esquema con estos scripts y realizar copia de seguridad. No ejecutar `remy.sql` sobre producción suponiendo que la estructura es idéntica. Los servicios de platos conservan tablas `ingredientes` y `plato_ingrediente` para recetas; no hay módulo web/API de inventario.
+Está preparado para instalaciones nuevas. Antes de cambiar una base existente, realiza una copia de seguridad y compara su estructura y datos; no uses este documento como actualización directa de una base operativa. La aplicación PHP conecta los módulos a la misma base MySQL. Platos, Inventario y Aprendices comparten la tabla `ingredientes`.

@@ -16,21 +16,26 @@ try {
     $active = env_value('REMY_ACTIVE_MODULE');
     $activePrefix = '/' . $active;
     $isActivePath = $active !== '' && ($path === $activePrefix || str_starts_with($path, $activePrefix . '/'));
-    if ($active !== '' && $path !== '/' && !$isActivePath && !str_starts_with($path, '/static/') && !($active === 'reservas' && str_starts_with($path, '/modulo_reservas_php/'))) {
+    $isInventoryPath = $path === '/inventario' || str_starts_with($path, '/inventario/');
+    $inventoryAvailable = $isInventoryPath && in_array($active, ['aprendices', 'platos', 'inventario'], true);
+    $inventoryReturnPath = $active === 'inventario' && ($path === '/platos' || str_starts_with($path, '/platos/') || $path === '/aprendices/dashboard');
+    if ($active !== '' && $path !== '/' && !$isActivePath && !$inventoryAvailable && !$inventoryReturnPath && !str_starts_with($path, '/static/') && !($active === 'reservas' && str_starts_with($path, '/modulo_reservas_php/'))) {
         http_response_code(404); exit;
     }
     if ($path === '/') {
         $home = match ($active) {
             'aprendices' => '/aprendices/login',
             'platos' => '/platos/',
+            'inventario' => '/inventario/ingredientes',
             default => '/reservas/aplicacion/menu_dia.html',
         };
         redirect_to($home);
     }
-    if (str_starts_with($path, '/inventario')) {
-        http_response_code(204); // Ruta reservada; no se ejecuta el módulo de inventario.
-        exit;
+    if ($path === '/inventario' || $path === '/inventario/') redirect_to('/inventario/ingredientes');
+    if (str_starts_with($path, '/inventario/api/')) {
+        \Remy\Modules\Inventario\Api::dispatch(substr($path, strlen('/inventario')), $method);
     }
+    if ($path === '/inventario/ingredientes') { render_view('modulo_inventario/index'); exit; }
     if (str_starts_with($path, '/modulo_reservas_php/')) {
         \Remy\Modules\Reservas\Router::dispatch(substr($path, strlen('/modulo_reservas_php/')), $method);
     }

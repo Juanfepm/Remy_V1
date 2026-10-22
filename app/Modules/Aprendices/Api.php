@@ -168,7 +168,7 @@ final class Api {
     private static function dashboard(string $section): never {
         $events = fn() => array_map('array_values', DB::rows("SELECT id_evento,nombre_evento,fecha_inicio,fecha_fin FROM eventos WHERE estado='activo' ORDER BY fecha_inicio ASC LIMIT 5"));
 
-        $inventarioAlerta = fn() => array_map('array_values', DB::rows("SELECT nombre, stock, unidad FROM inventario WHERE stock < stock_minimo ORDER BY stock ASC"));
+        $inventarioAlerta = fn() => array_map('array_values', DB::rows("SELECT nombre, stock, unidad_minima AS unidad FROM ingredientes WHERE stock <= stock_minimo ORDER BY stock ASC"));
         
         $leaders = fn() => array_map('array_values', DB::rows("SELECT e.nombre_evento,e.fecha_inicio,e.numero_personas,CONCAT(u1.nombre,' ',u1.apellido) AS lider_cocina,CONCAT(u2.nombre,' ',u2.apellido) AS lider_servicio FROM eventos e LEFT JOIN usuarios u1 ON e.lider_cocina=u1.id_usuario LEFT JOIN usuarios u2 ON e.lider_servicio=u2.id_usuario WHERE e.estado='activo' ORDER BY e.fecha_inicio ASC LIMIT 5"));
         

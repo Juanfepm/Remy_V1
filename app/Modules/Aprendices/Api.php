@@ -236,15 +236,19 @@ final class Api {
         $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         if (!in_array($extension, ['xlsx','xls'], true)) \json_response(['error' => 'Debe seleccionar un archivo Excel (.xlsx o .xls)'], 400);
         if (!class_exists(\PhpOffice\PhpSpreadsheet\IOFactory::class)) \json_response(['error' => 'Instale las dependencias de Composer para importar Excel.'], 503);
-        $sheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file['tmp_name'])->getActiveSheet()->toArray(null, true, true, false);
+        // Valores sin formato: las fechas llegan como número de serie de Excel
+        // y los números largos (cédula, teléfono) no se redondean.
+        $sheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file['tmp_name'])->getActiveSheet()->toArray(null, true, false, false);
         $headers = array_map(fn($v) => strtolower(trim((string)$v)), array_shift($sheet) ?? []);
         $required = ['cedula','nombres','apellidos','correo','telefono','ficha','fecha fin etapa lectiva'];
         $missing = array_values(array_diff($required, $headers));
         if ($missing) \json_response(['error' => 'El documento excel que quieres cargar no tiene todas las columnas requeridas.', 'detalle' => ['faltantes' => $missing, 'requeridas' => $required]], 400);
         $records = []; $errors = [];
         foreach ($sheet as $index => $row) {
-            $r = array_combine($headers, array_map(fn($v) => trim((string)($v ?? '')), array_pad($row, count($headers), '')));
-            $id = $r['cedula']; $phone = $r['telefono']; $mail = strtolower($r['correo']); $ficha = $r['ficha']; $fecha = $r['fecha fin etapa lectiva'];
+            $row = array_pad($row, count($headers), '');
+            $fecha = self::excelDate($row[array_search('fecha fin etapa lectiva', $headers, true)]);
+            $r = array_combine($headers, array_map([self::class, 'cellText'], $row));
+            $id = $r['cedula']; $phone = $r['telefono']; $mail = strtolower($r['correo']); $ficha = $r['ficha'];
             if (!preg_match('/^[1-9][0-9]{7,9}$/', $id) || !$r['nombres'] || !$r['apellidos'] || !str_ends_with($mail, '@soy.sena.edu.co') || !preg_match('/^3[0-9]{9}$/', $phone) || !preg_match('/^[1-9][0-9]{6,7}$/', $ficha) || !$fecha) {
                 $errors[] = ['fila' => $index + 2, 'error' => 'Datos incompletos o inválidos. Revise cédula, nombres, correo, teléfono, ficha y fecha.']; continue;
             }
@@ -254,5 +258,23 @@ final class Api {
         }
         $count = count($records);
         \json_response(['mensaje' => "Carga completada. Se registraron $count aprendices.", 'registros_creados' => $count, 'registros' => $records, 'errores' => count($errors), 'detalle_errores' => $errors], $count === 0 && $errors ? 400 : 200);
+    }
+
+    private static function cellText(mixed $value): string {
+        if (is_float($value) && floor($value) === $value) return sprintf('%.0f', $value);
+        return trim((string)($value ?? ''));
+    }
+
+    /** Fecha de Excel (número de serie), AAAA-MM-DD o DD/MM/AAAA -> AAAA-MM-DD; null si no es válida. */
+    private static function excelDate(mixed $value): ?string {
+        if (is_int($value) || is_float($value)) {
+            return \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject((float)$value)->format('Y-m-d');
+        }
+        $text = trim((string)($value ?? ''));
+        foreach (['Y-m-d', 'd/m/Y', 'j/n/Y', 'd-m-Y', 'Y/m/d'] as $format) {
+            $date = \DateTime::createFromFormat('!' . $format, $text);
+            if ($date && $date->format($format) === $text) return $date->format('Y-m-d');
+        }
+        return null;
     }
 }

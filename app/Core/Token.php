@@ -27,7 +27,11 @@ final class Token {
     }
 
     public static function requireUser(): array {
-        $header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+        // Apache con PHP en FastCGI/CGI no siempre pasa Authorization a $_SERVER.
+        $header = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+        if ($header === '' && function_exists('getallheaders')) {
+            $header = array_change_key_case(getallheaders(), CASE_LOWER)['authorization'] ?? '';
+        }
         $claims = str_starts_with($header, 'Bearer ') ? self::verify(substr($header, 7)) : null;
         if (!$claims) \json_response(['error' => 'Token ausente, inválido o expirado'], 401);
         header('X-Nuevo-Token: ' . self::issue(array_diff_key($claims, ['exp' => 1])));

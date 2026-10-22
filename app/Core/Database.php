@@ -24,7 +24,14 @@ final class Database {
         if ($connection instanceof \mysqli) return $connection;
 
         [$host, $port, $name, $user, $pass] = self::configuration();
+        // Los endpoints de Reservas revisan errno/->error después de cada
+        // consulta (p. ej. 1062 = duplicado -> 409). Desde PHP 8.1 mysqli lanza
+        // excepciones por defecto y esas ramas nunca se ejecutaban.
+        mysqli_report(MYSQLI_REPORT_OFF);
         $connection = new \mysqli($host, $user, $pass, $name, $port);
+        if ($connection->connect_errno) {
+            throw new \RuntimeException('No se pudo conectar a MySQL: ' . $connection->connect_error);
+        }
         $connection->set_charset('utf8mb4');
         $connection->query("SET time_zone = '-05:00'");
         return $connection;
